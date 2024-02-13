@@ -130,7 +130,7 @@ const HOME = () => {
 
       <Text style={[styles.classificaoDeDonas, styles.classificaoFlexBox]}>
         CACAU INTELIGENTE:
-        DIAGÓSTICO DE DOÊNÇAS
+        DIAGNÓSTICO DE DOÊNÇAS
       </Text>
 
     </View>
