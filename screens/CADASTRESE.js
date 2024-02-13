@@ -57,6 +57,7 @@ const CADASTRESE = () => {
 
       {/* Entrar com o Google */}
       <View style={styles.google}>
+
         <View style={styles.google1}>
           <View style={[styles.googleInner, styles.innerBorder]}>
             <View style={[styles.entrarComOGoogleWrapper, styles.inicioFlexBox1]}>
@@ -71,6 +72,7 @@ const CADASTRESE = () => {
             source={require("../assets/google--jpeg.png")}
           />
         </View>
+        
       </View>
 
       {/* Titulo Início */}
