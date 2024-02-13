@@ -1,35 +1,44 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# dependencies
-node_modules/
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Expo
-.expo/
-dist/
-web-build/
+# Runtime data
+pids
+*.pid
+*.seed
+*.log
 
-# Native
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+# Directory used by npm for globally installed node modules
+node_modules
 
-# Metro
-.metro-health-check*
+# Yarn Integrity file
+.yarn-integrity
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
+# Environment secrets
+.env
+.env.local
+.env.*.local
 
-# macOS
+# MacOS
 .DS_Store
-*.pem
 
-# local env files
-.env*.local
+# Windows
+Thumbs.db
 
-# typescript
-*.tsbuildinfo
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# Expo OTA update
+.expo/
+.expo-shared/
+
+# Turtle
+turtle-build/
+  
