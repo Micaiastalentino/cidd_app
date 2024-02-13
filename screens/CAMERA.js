@@ -9,13 +9,16 @@ const CAMERA = () => {
 
   return (
     <View style={styles.camera}>
+
       <View style={styles.barramenu}>
+
         <View style={[styles.fotos, styles.fotosFlexBox]}>
           <Text style={[styles.fotos1, styles.fotos1Typo]}>Fotos</Text>
         </View>
+
         <Pressable
           style={styles.bototirarfoto}
-          onPress={() => navigation.navigate("DIAGSAUDAVEL")}
+          onPress={() => navigation.navigate()} //DIAGNÓSTICO
         >
           <Image
             style={styles.iconLayout}
@@ -23,6 +26,7 @@ const CAMERA = () => {
             source={require("../assets/bototirarfoto.png")}
           />
         </Pressable>
+
         <View style={styles.dicascaptura}>
           <Image
             style={styles.fiRrBulbIcon}
@@ -74,7 +78,7 @@ const CAMERA = () => {
               source={require("../assets/fibrangleright.png")}
             />
           </Pressable>
-          <Text style={styles.appcacau}>APPCACAU</Text>
+          <Text style={styles.appcacau}>CÂMERA</Text>
         </View>
       </View>
     </View>
@@ -85,6 +89,7 @@ const styles = StyleSheet.create({
   fotosFlexBox: {
     justifyContent: "center",
     alignItems: "center",
+    left: -5,
   },
   fotos1Typo: {
     color: Color.colorSienna,
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xs,
   },
   barraSuperiorFixaPosition: {
-    left: 0,
+    left: 25,
     position: "absolute",
   },
   iconLayout: {
@@ -127,24 +132,27 @@ const styles = StyleSheet.create({
   dicasDeCaptura: {
     textAlign: "center",
     display: "flex",
-    width: 108,
+    width: 130,
     justifyContent: "center",
     alignItems: "center",
   },
   dicascaptura: {
     width: 97,
-    marginLeft: 37,
+    marginLeft: 45,
     alignItems: "center",
   },
+
+  //BARRA MENU
   barramenu: {
-    top: 558,
-    left: 10,
+    top: 660,
+    left: 30,
     height: 60,
     minHeight: 60,
     alignItems: "center",
     flexDirection: "row",
     position: "absolute",
   },
+
   cacauSaudavelBackgroundIcon: {
     top: 45,
     height: 485,
@@ -208,6 +216,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_5xs,
     backgroundColor: Color.colorWhite,
     flex: 1,
+    top: 50,
     height: 640,
     width: "100%",
   },

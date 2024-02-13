@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
+import CAMERA from "./CAMERA";
 
 const HOME = () => {
   const navigation = useNavigation();
@@ -41,7 +42,7 @@ const HOME = () => {
             </View>
             <Pressable
               style={styles.menu3}
-              onPress={() => navigation.navigate()} //CAMERA
+              onPress={() => navigation.navigate(CAMERA)} //CAMERA
             >
               <View style={styles.container}>
                 <Image
