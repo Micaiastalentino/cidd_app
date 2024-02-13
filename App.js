@@ -73,7 +73,15 @@ const App = () => {
             <Stack.Screen
               name="CAMERA"
               component={CAMERA}
-              options={{ headerShown: false }}
+              options={{ 
+                headerShown: true,
+                headerTitle: "CÂMERA",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
             />
           </Stack.Navigator>
         ) : null}
