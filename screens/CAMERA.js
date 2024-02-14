@@ -3,14 +3,12 @@ import { Text, StyleSheet, View, Pressable, TouchableOpacity} from "react-native
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
-
 import { Camera } from 'expo-camera';
-
 
 const CAMERA = () => {
   const navigation = useNavigation();
   
-  //CAM
+  // Camera
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -43,9 +41,7 @@ const CAMERA = () => {
 
   return (
     <View style={styles.container}>
-
-      <Camera style={styles.camera} type={Camera.Constants.Type.back} ref={(ref) => setCameraRef(ref)} />
-
+      <Camera style={styles.camera} type={Camera.Constants.Type.back} ref={(ref) => setCameraRef(ref)}/>
       <View style={styles.barramenu}>
         <View style={[styles.circulo]}>
           <Text>Fotos</Text>
@@ -82,6 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: 'center',
   },
+  
   camera: {
     flex: 0.8,
     width: "100%",
