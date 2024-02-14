@@ -4,6 +4,7 @@ import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { Camera } from 'expo-camera';
+import ChamadaAPI from "../api/ChamadaAPI";
 
 const CAMERA = () => {
   const navigation = useNavigation();
@@ -43,20 +44,22 @@ const CAMERA = () => {
     <View style={styles.container}>
       <Camera style={styles.camera} type={Camera.Constants.Type.back} ref={(ref) => setCameraRef(ref)}/>
       <View style={styles.barramenu}>
-        <View style={[styles.circulo]}>
-          <Text>Fotos</Text>
-        </View>
-        <Pressable
+        
+        <TouchableOpacity onPress={this.selecionarImagem} style={[styles.circulo]}>
+          <Text style={styles.tirarfoto}>Fotos</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
           style={styles.botaotirarfoto}
-          onPress={(takePicture) => navigation.navigate()} //DIAGNÓSTICO
+          onPress={(takePicture) => navigation.navigate()}
         >
           <Image
             style={styles.botaoicontirarfoto}
             contentFit="cover"
             source={require("../assets/bototirarfoto.png")}
           />
-        </Pressable>
-        <View style={styles.dicascaptura}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.dicascaptura}>
           <Image
             style={styles.iconcaptura}
             contentFit="cover"
@@ -65,7 +68,7 @@ const CAMERA = () => {
           <Text style={[styles.TextdicasDeCaptura]}>
             Dicas de Captura
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -82,6 +85,11 @@ const styles = StyleSheet.create({
   camera: {
     flex: 0.8,
     width: "100%",
+  },
+
+  tirarfoto:{
+    marginTop: 2,
+
   },
 
 
