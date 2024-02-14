@@ -1,84 +1,74 @@
-import * as React from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import React, { useRef, useState, useEffect } from 'react';
+import { Text, StyleSheet, View, Pressable, TouchableOpacity} from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
-import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { Color, Border, Padding } from "../GlobalStyles";
+
+import { Camera } from 'expo-camera';
+
 
 const CAMERA = () => {
   const navigation = useNavigation();
+  
+  //CAM
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+
+  // Verificar as permissões da câmera ao carregar o componente;
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  // Tirar uma foto;
+  const takePicture = async () => {
+    if (cameraRef) {
+      const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
+      setCapturedImage(image.uri);
+      console.log(image.uri) //teste
+    }
+  };
+
+  if (hasPermission === null) {
+    // Se ainda não foi solicitada a permissão, aguarde...
+    return <View />;
+  }
+  if (hasPermission === false) {
+    // Se a permissão foi negada, mostre uma mensagem.
+    return <Text>Sem acesso à câmera</Text>;
+  }
 
   return (
-    <View style={styles.camera}>
+    <View style={styles.container}>
+
+      <Camera style={styles.camera} type={Camera.Constants.Type.back} ref={(ref) => setCameraRef(ref)} />
 
       <View style={styles.barramenu}>
-
-        <View style={[styles.fotos, styles.fotosFlexBox]}>
-          <Text style={[styles.fotos1, styles.fotos1Typo]}>Fotos</Text>
+        <View style={[styles.circulo]}>
+          <Text>Fotos</Text>
         </View>
-
         <Pressable
-          style={styles.bototirarfoto}
-          onPress={() => navigation.navigate()} //DIAGNÓSTICO
+          style={styles.botaotirarfoto}
+          onPress={(takePicture) => navigation.navigate()} //DIAGNÓSTICO
         >
           <Image
-            style={styles.iconLayout}
+            style={styles.botaoicontirarfoto}
             contentFit="cover"
             source={require("../assets/bototirarfoto.png")}
           />
         </Pressable>
-
         <View style={styles.dicascaptura}>
           <Image
-            style={styles.fiRrBulbIcon}
+            style={styles.iconcaptura}
             contentFit="cover"
             source={require("../assets/firrbulb.png")}
           />
-          <Text style={[styles.dicasDeCaptura, styles.fotos1Typo]}>
+          <Text style={[styles.TextdicasDeCaptura]}>
             Dicas de Captura
           </Text>
-        </View>
-      </View>
-      <Image
-        style={[
-          styles.cacauSaudavelBackgroundIcon,
-          styles.barraSuperiorFixaPosition,
-        ]}
-        contentFit="cover"
-        source={require("../assets/cacau-saudavel-background.png")}
-      />
-      <Image
-        style={styles.vectorIcon}
-        contentFit="cover"
-        source={require("../assets/vector.png")}
-      />
-      <View style={styles.flashCam}>
-        <Image
-          style={styles.flashDesligadoIcon}
-          contentFit="cover"
-          source={require("../assets/flash-desligado.png")}
-        />
-        <Image
-          style={styles.girarCamIcon}
-          contentFit="cover"
-          source={require("../assets/girar-cam.png")}
-        />
-      </View>
-      <View
-        style={[styles.barraSuperiorFixa, styles.barraSuperiorFixaPosition]}
-      >
-        <View style={styles.barraDgnc} />
-        <View style={styles.fiBrAngleRightParent}>
-          <Pressable
-            style={styles.fiBrAngleRight}
-            onPress={() => navigation.navigate("HOME")}
-          >
-            <Image
-              style={[styles.icon1, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/fibrangleright.png")}
-            />
-          </Pressable>
-          <Text style={styles.appcacau}>CÂMERA</Text>
         </View>
       </View>
     </View>
@@ -86,29 +76,23 @@ const CAMERA = () => {
 };
 
 const styles = StyleSheet.create({
-  fotosFlexBox: {
-    justifyContent: "center",
-    alignItems: "center",
-    left: -5,
+  //CAMERA
+  container: {
+    flex: 1,
+    alignItems: 'center',
   },
-  fotos1Typo: {
-    color: Color.colorSienna,
-    fontFamily: FontFamily.poppinsRegular,
-    lineHeight: 20,
-    fontSize: FontSize.size_xs,
+  camera: {
+    flex: 0.8,
+    width: "100%",
   },
-  barraSuperiorFixaPosition: {
-    left: 25,
-    position: "absolute",
-  },
-  iconLayout: {
+
+
+  botaoicontirarfoto: {
     height: "100%",
     width: "100%",
   },
-  fotos1: {
-    textAlign: "left",
-  },
-  fotos: {
+  
+  circulo: {
     borderRadius: Border.br_31xl,
     borderStyle: "solid",
     borderColor: Color.colorSienna,
@@ -119,23 +103,27 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     flexDirection: "row",
   },
-  bototirarfoto: {
+  
+  botaotirarfoto: {
     width: 74,
     height: 74,
     marginLeft: 37,
   },
-  fiRrBulbIcon: {
+  
+  iconcaptura: {
     width: 34,
     height: 33,
     overflow: "hidden",
   },
-  dicasDeCaptura: {
+
+  TextdicasDeCaptura: {
     textAlign: "center",
     display: "flex",
     width: 130,
     justifyContent: "center",
     alignItems: "center",
   },
+
   dicascaptura: {
     width: 97,
     marginLeft: 45,
@@ -144,81 +132,13 @@ const styles = StyleSheet.create({
 
   //BARRA MENU
   barramenu: {
-    top: 660,
-    left: 30,
+    top: 600,
+    left: 23,
     height: 60,
     minHeight: 60,
     alignItems: "center",
     flexDirection: "row",
     position: "absolute",
-  },
-
-  cacauSaudavelBackgroundIcon: {
-    top: 45,
-    height: 485,
-    width: 360,
-  },
-  vectorIcon: {
-    top: 161,
-    left: 34,
-    width: 292,
-    height: 292,
-    position: "absolute",
-  },
-  flashDesligadoIcon: {
-    width: 21,
-    height: 21,
-  },
-  girarCamIcon: {
-    width: 25,
-    height: 25,
-    marginLeft: 18,
-  },
-  flashCam: {
-    top: 121,
-    left: 258,
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",
-  },
-  barraDgnc: {
-    backgroundColor: Color.colorSienna,
-    height: 45,
-    zIndex: 0,
-    width: 360,
-  },
-  icon1: {
-    overflow: "hidden",
-  },
-  fiBrAngleRight: {
-    width: 20,
-    height: 20,
-  },
-  appcacau: {
-    fontSize: FontSize.size_base,
-    fontWeight: "700",
-    fontFamily: FontFamily.montserratBold,
-    color: Color.colorWhite,
-    marginLeft: 96,
-    textAlign: "left",
-  },
-  fiBrAngleRightParent: {
-    top: 12,
-    left: 12,
-    zIndex: 1,
-    flexDirection: "row",
-    position: "absolute",
-  },
-  barraSuperiorFixa: {
-    top: 0,
-  },
-  camera: {
-    borderRadius: Border.br_5xs,
-    backgroundColor: Color.colorWhite,
-    flex: 1,
-    top: 50,
-    height: 640,
-    width: "100%",
   },
 });
 
