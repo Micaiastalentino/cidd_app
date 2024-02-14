@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   //CAMERA
   container: {
     flex: 1,
+    backgroundColor: "white",
     alignItems: 'center',
   },
   camera: {
