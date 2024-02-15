@@ -3,43 +3,62 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
-class ChamadaAPI extends Component {
-    state = {
-        imageBase64: null,
-    };
-
-    selecionarImagem = async () => {
-        try {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                quality: 1,
-            });
+//Função Exportável Selecionar Imagem;
+export async function selecionarImagem() {
+    try {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 1,
+        });
+        
+        if (!result.cancelled) {
+            const imageUri = result.assets[0].uri;
+            return await convertImageToBase64(imageUri);
             
-            if (!result.cancelled) {
-                const imageUri = result.assets[0].uri;
-                this.convertImageToBase64(imageUri);
-            }
-        } catch (error) {
-            console.log('Erro ao selecionar imagem:', error);
         }
-    };
+    } catch (error) {
+        console.log('Erro ao selecionar imagem:', error);
+    }
+}
 
-    convertImageToBase64 = async (imageUri) => {
+//Função Exportável Conversor de Base64;
+export async function convertImageToBase64(imageUri) {
+    return new Promise(async (resolve, reject) => {
         try {
             const response = await fetch(imageUri);
             const blob = await response.blob();
             const reader = new FileReader();
             reader.onload = () => {
                 const base64 = reader.result.split(',')[1];
-                this.setState({ imageBase64: base64 });
+                resolve(base64);
             };
             reader.readAsDataURL(blob);
         } catch (error) {
-            console.log('Erro ao converter imagem para base64:', error);
+            reject(error);
+        }
+    });
+}
+
+//Classe principal - ChamadaAPI
+export class ChamadaAPI extends Component {
+    state = {
+        imageBase64: null,
+    };
+
+    // Tirar depois essa função (inutilizada);
+    selecionarImagemHandler = async () => {
+        try {
+            const base64Image = await selecionarImagem(); //Função SelecionarImagem Convertida;
+            if (base64Image) {
+                this.setState({ imageBase64: base64Image });
+            }
+        } catch (error) {
+            console.error('Erro ao selecionar imagem:', error);
         }
     };
 
+    //Envia para API a imagem em Base64;
     chamarAPI = async () => {
         try {
             const { imageBase64 } = this.state;
@@ -57,7 +76,7 @@ class ChamadaAPI extends Component {
 
             console.log(imageBase64);
 
-            const res = await axios.post('http://192.168.1.102:5000/predict', imageBase64, config);
+            const res = await axios.post('http://192.168.1.102:5000/predict', imageBase64, config); //Endereço API;
             console.log(res.data);
 
         } catch (error) {
@@ -79,7 +98,7 @@ class ChamadaAPI extends Component {
                 {this.state.imageBase64 && (
                     <Image source={{ uri: `data:image/jpeg;base64,${this.state.imageBase64}` }} style={{ width: 200, height: 200 }} />
                 )}
-                <TouchableOpacity onPress={this.selecionarImagem} style={styles.buttonContainer}>
+                <TouchableOpacity onPress={this.selecionarImagemHandler} style={styles.buttonContainer}>
                     <Text style={styles.text}>Selecionar Imagem</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.chamarAPI} style={styles.buttonContainer}>
