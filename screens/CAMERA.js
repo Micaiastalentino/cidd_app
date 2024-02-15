@@ -7,15 +7,17 @@ import { Camera } from 'expo-camera';
 import {selecionarImagem, convertImageToBase64} from "../api/ChamadaAPI";
 import axios from 'axios';
 
+
+
 const CAMERA = () => {
   const navigation = useNavigation();
-  
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento
+
   // Camera
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
-  const [isLoading, setIsLoading] = useState(false);
 
   // Verificar as permissões da câmera ao carregar o componente;
   useEffect(() => {
@@ -34,17 +36,12 @@ const CAMERA = () => {
     return <Text>Sem acesso à câmera</Text>;
   }
 
-  const showLoading = () => {
-    setIsLoading(true);
-  };
-
-  const hideLoading = () => {
-    setIsLoading(false);
-  };
-
   // Tirar uma foto;
   const takePicture = async () => {
     if (cameraRef) {
+
+      setIsLoading(true); // Ativar o carregamento ao tirar a foto
+
       const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
       setCapturedImage(image.uri);
 
@@ -52,24 +49,36 @@ const CAMERA = () => {
         const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter Imagem Cam para Base64
         if (img_cam_base64) {
           setImageBase64(img_cam_base64); // Atualiza o estado da imagem em base64
+
+          setIsLoading(false); // Desativar o carregamento após obter a imagem
+
         }
       } catch (error) {
+
+        setIsLoading(false); // Se houver erro, garantir que o carregamento seja desativado
+
         console.error('Erro ao converter imagem:', error);
       }
     }
-    setTimeout(() => {
-      hideLoading();
-    }, 2000); // Simulação de uma resposta depois de 2 segundos
   };
 
   //Selecionar Foto;
   const selecionarImagemHandler = async () => {
     try {
+
+        setIsLoading(true); // Ativar o carregamento ao selecionar a imagem
+        
         const img_armaz_base64 = await selecionarImagem(); //Função SelecionarImagem Convertida de ChamadaAPI;
         if (img_armaz_base64) {
           setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64
+
+          setIsLoading(false); // Desativar o carregamento após obter a imagem
+
         }
     } catch (error) {
+
+        setIsLoading(false); // Se houver erro, garantir que o carregamento seja desativado
+
         console.error('Erro ao selecionar imagem:', error);
     }
   };
@@ -104,9 +113,6 @@ const CAMERA = () => {
         }
         console.error('Erro geral ao chamar a API:', error);
     }
-    setTimeout(() => {
-      hideLoading();
-    }, 2000); // Simulação de uma resposta depois de 2 segundos
   };
 
   return (
@@ -123,7 +129,6 @@ const CAMERA = () => {
         {/*Botão Tirar Foto*/}
         <TouchableOpacity style={styles.botaotirarfoto}
           onPress={() => {
-            showLoading();
             takePicture();
             this.chamarAPI();
            }}>
@@ -147,11 +152,12 @@ const CAMERA = () => {
         </TouchableOpacity>
       </View>
 
-      {/*Tentativa de colocar Loading*/}
+      {/* Tela de carregamento */}
       {isLoading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text>Carregando...</Text>
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="#FFFFFF" />
+          </View>
         </View>
       )}
     </View>
@@ -167,8 +173,16 @@ const styles = StyleSheet.create({
   },
   
   loadingContainer: {
-    position: 'relative',
-    marginEnd: 100,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  loading: {
+    padding: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderRadius: 10,
   },
 
   camera: {
