@@ -4,11 +4,11 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
+import ExibeImagem from "../componentes/ExibeImagem";
+import { useRoute } from "@react-navigation/native";
 
 const DIAGSAUDAVEL = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { setCapturedImage } = route.params;
 
   return (
     <ScrollView style={styles.containerscrol}>
@@ -81,6 +81,8 @@ const DIAGSAUDAVEL = () => {
               </View>
             </View>
 
+            
+
             <View style={styles.cacau}>
 
               <View style={styles.background} />
@@ -88,7 +90,7 @@ const DIAGSAUDAVEL = () => {
               <Image
                 style={[styles.cacauSaudvelIcon, styles.cacauSaudvelIconPosition]}
                 contentFit="cover"
-                source={{setCapturedImage}}
+                //source={}
               />
               
             </View>

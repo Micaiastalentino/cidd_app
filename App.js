@@ -54,12 +54,12 @@ const App = () => {
               name="CONFIGURACOES"
               component={CONFIGURACOES}
               options={{ headerShown: false }}
-            />*/}
+            />
             <Stack.Screen
               name="CADASTRESE"
               component={CADASTRESE}
               options={{ headerShown: false }}
-            />
+            />*/}
             <Stack.Screen
               name="HOME"
               component={HOME}
