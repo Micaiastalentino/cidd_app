@@ -73,9 +73,11 @@ const CAMERA = () => {
   //Selecionar Foto;
   const selecionarImagemHandler = async () => {
     try {
-        const img_armaz_base64 = await selecionarImagem(); //Função SelecionarImagem Convertida de ChamadaAPI;
+        const img_armaz = await selecionarImagem(); //Função SelecionarImagem Convertida de ChamadaAPI;
+        const img_armaz_base64 = await convertImageToBase64(img_armaz);
         if (img_armaz_base64) {
           setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64
+          console.log(imageBase64)
         }
     } catch (error) {
         console.error('Erro ao selecionar imagem:', error);
@@ -121,7 +123,20 @@ const CAMERA = () => {
 
       <View style={styles.barramenu}>
         {/*Botão Selecionar Imagem*/}
-        <TouchableOpacity onPress={selecionarImagemHandler} style={[styles.circulo]}>
+        <TouchableOpacity style={[styles.circulo]}
+          onPress={async () => {
+            await selecionarImagemHandler();
+            try {
+              showLoading(); // Mostra a tela de carregamento
+              await chamarAPI(); // Chama a API
+              // O código abaixo será executado apenas se a chamada da API for bem-sucedida
+              navigation.navigate('DIAGSAUDAVEL');
+            } catch (error) {
+              console.error('Erro ao processar solicitação:', error);
+            } finally {
+              setIsLoading(false); // Oculta a tela de carregamento, independentemente do resultado da chamada da API
+            }
+          }}>
           <Text style={styles.tirarfoto}>Fotos</Text>
         </TouchableOpacity>
 
@@ -132,10 +147,9 @@ const CAMERA = () => {
             
             try {
               await takePicture(); // Tira a foto
-              //await chamarAPI(); // Chama a API
-
+              await chamarAPI(); // Chama a API
               // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              navigation.navigate('DIAGSAUDAVEL',{setCapturedImage});
+              navigation.navigate('DIAGSAUDAVEL', {capturedImage});
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
@@ -164,7 +178,6 @@ const CAMERA = () => {
 
       {/* Tela de carregamento */}
       <LoadingModal visible={isLoading} />
-
     </View>
   );
 };
@@ -240,8 +253,8 @@ const styles = StyleSheet.create({
 
   //BARRA MENU
   barramenu: {
-    top: 600,
-    left: 23,
+    top: "85%",
+    left: "4.5%",
     height: 60,
     minHeight: 60,
     alignItems: "center",

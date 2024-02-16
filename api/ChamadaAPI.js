@@ -14,7 +14,7 @@ export async function selecionarImagem() {
         
         if (!result.cancelled) {
             const imageUri = result.assets[0].uri;
-            return await convertImageToBase64(imageUri);
+            return imageUri;
             
         }
     } catch (error) {

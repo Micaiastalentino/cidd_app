@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
 import CAMERA from "./CAMERA";
+import { Feather } from '@expo/vector-icons';
+
 
 const HOME = () => {
   const navigation = useNavigation();
@@ -25,11 +27,7 @@ const HOME = () => {
           {/*Menu barra inferior Layout*/}
           <View style={styles.menuList}>
             <View style={styles.menu11}>
-              <Image
-                style={[styles.lihomeIcon, styles.iconLayout]}
-                contentFit="cover"
-                source={require("../assets/lihome.png")}
-              />
+              <Feather style={[styles.lihomeIcon, styles.iconLayout]} name="home" size={24}/> 
               <Text style={[styles.incio, styles.infoSpaceBlock]}>Início</Text>
             </View>
             <View style={styles.menu11}>
@@ -77,32 +75,7 @@ const HOME = () => {
           </View>
         </View>
       </View>
-      
-      {/*Barra Superior Layout*/}
-      <View style={[styles.barraDgnc, styles.barraDgncLayout]} />
 
-      <View style={styles.iconAppParent}>
-        <Image
-          style={styles.iconLayout}
-          contentFit="cover"
-          source={require("../assets/app.png")}
-        />
-        <Text style={styles.appcaCau}>
-          <Text style={styles.appcaCauTxtContainer}>CIDD</Text>
-        </Text>
-        
-        <Pressable
-          style={styles.configuracoes_app}
-          onPress={() => navigation.navigate()} //CONFIGURAÇÕES
-        >
-          <Image
-            style={styles.icon}
-            contentFit="cover"
-            source={require("../assets/fibrmenuburger1.png")}
-          />
-        </Pressable>
-
-      </View>
 
       <Text style={[styles.compartilharLink, styles.classificaoFlexBox]}>
         Compartilhar link
@@ -139,31 +112,37 @@ const HOME = () => {
 };
 
 const styles = StyleSheet.create({
+  //IMG SOBREPOSTA CACAU;
   homeItemPosition: {
     borderBottomLeftRadius: Border.br_11xl,
     borderBottomRightRadius: Border.br_11xl,
     width: 450,
     height: 700,
-    top: 85,
     position: "absolute",
   },
+
+  //ICONES;
   iconLayout: {
     height: 24,
     width: 24,
   },
+
   infoSpaceBlock: {
     marginTop: 6,
     textAlign: "left",
   },
+
   infoTypo: {
     fontFamily: FontFamily.poppinsRegular,
     lineHeight: 16,
     fontSize: FontSize.size_xs,
   },
+
   barraDgncLayout: {
     height: 45,
     position: "absolute",
   },
+
   classificaoFlexBox: {
     textAlign: "center",
     display: "flex",
@@ -172,6 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
   },
+
   homeInnerLayout: {
     height: 72,
     width: 74,
@@ -179,29 +159,32 @@ const styles = StyleSheet.create({
     top: 365,
     position: "absolute",
   },
+
   backgroundCacauIcon: {
     width: "100%",
     height: "100%",
   },
+
   homeChild: {
-    top: 45,
     width: "100%",
     height: "100%",
     position: "absolute",
   },
   lihomeIcon: {
+    color: Color.colorRosybrown,
     overflow: "hidden",
   },
   incio: {
     fontWeight: "500",
     fontFamily: FontFamily.poppinsMedium,
-    color: "#1bca81",
+    color: Color.colorRosybrown,
     lineHeight: 16,
     fontSize: FontSize.size_xs,
     textAlign: "left",
   },
   menu11: {
     alignItems: "center",
+    color: Color.colorRosybrown,
     flex: 1,
   },
   info: {
@@ -215,9 +198,11 @@ const styles = StyleSheet.create({
     height: 30,
     overflow: "hidden",
   },
+
+  //BORDA CAMERA;
   container: {
     borderRadius: 100,
-    backgroundColor: "rgba(28, 202, 129, 0.9)",
+    backgroundColor: "#1cca81",
     borderStyle: "solid",
     borderColor: Color.colorWhite,
     borderWidth: 4,
@@ -226,6 +211,7 @@ const styles = StyleSheet.create({
     padding: 14,
     flexDirection: "row",
   },
+
   menu3: {
     width: 83,
     height: 70,
@@ -244,8 +230,9 @@ const styles = StyleSheet.create({
     width: "131.7%",
   },
 
+  //BARRA INFERIOR
   barrainferior: {
-    top:"73%",
+    top:"70.5%",
     position: "absolute",
   },
   

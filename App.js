@@ -1,6 +1,18 @@
-const Stack = createNativeStackNavigator();
 import * as React from "react";
+
 import { NavigationContainer } from "@react-navigation/native";
+
+import { useNavigation } from "@react-navigation/native";
+
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { Entypo } from '@expo/vector-icons';
+
+
+import { Image } from "expo-image";
+
+import { View, Text, Pressable, TouchableOpacity } from "react-native";
+
 import { useFonts } from "expo-font";
 import LOGIN from "./screens/LOGIN";
 import CAPTURA from "./screens/CAPTURA";
@@ -11,8 +23,7 @@ import DIAGSAUDAVEL from "./screens/DIAGSAUDAVEL";
 import CADASTRESE from "./screens/CADASTRESE";
 import CAMERA from "./screens/CAMERA";
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
@@ -54,16 +65,40 @@ const App = () => {
               name="CONFIGURACOES"
               component={CONFIGURACOES}
               options={{ headerShown: false }}
-            />*/}
+            />
             <Stack.Screen
               name="CADASTRESE"
               component={CADASTRESE}
               options={{ headerShown: false }}
-            />
+            />*/}
             <Stack.Screen
               name="HOME"
               component={HOME}
-              options={{ headerShown: false }}
+              options={({ navigation }) => ({ //NAVIGATION COMO PARÂMETRO PARA ACESSAR FUN. NAVIGATE;
+                headerShown: true,
+                headerTitle: "CIDD",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+                headerRight: () => (
+                  <TouchableOpacity 
+                    /*onPress={() => navigation.navigate('CAMERA')}*/>
+                    <Entypo name="menu" size={33} color="white" />
+                  </TouchableOpacity>
+                ),
+                headerLeft: () => (
+                  <Image
+                    style={{
+                      height: 26,
+                      width: 26,
+                    }}
+                    contentFit="cover"
+                    source={require("./assets/app.png")} 
+                  />
+                ),
+              })}
             />
             <Stack.Screen
               name="DIAGSAUDAVEL"
