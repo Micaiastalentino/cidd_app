@@ -56,6 +56,11 @@ const App = () => {
               options={{ headerShown: false }}
             />*/}
             <Stack.Screen
+              name="CADASTRESE"
+              component={CADASTRESE}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="HOME"
               component={HOME}
               options={{ headerShown: false }}
@@ -63,11 +68,6 @@ const App = () => {
             <Stack.Screen
               name="DIAGSAUDAVEL"
               component={DIAGSAUDAVEL}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CADASTRESE"
-              component={CADASTRESE}
               options={{ headerShown: false }}
             />
             <Stack.Screen
