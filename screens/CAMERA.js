@@ -1,13 +1,22 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator} from "react-native";
+// Tela de Login
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { Camera } from 'expo-camera';
-import {selecionarImagem, convertImageToBase64} from "../api/ChamadaAPI";
+import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI";
 import axios from 'axios';
 
 
+const LoadingModal = ({ visible }) => (
+  <Modal transparent visible={visible}>
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="black" />
+    </View>
+  </Modal>
+);
 
 const CAMERA = () => {
   const navigation = useNavigation();
@@ -36,11 +45,14 @@ const CAMERA = () => {
     return <Text>Sem acesso à câmera</Text>;
   }
 
+  // Função para mostrar a tela de carregamento
+  const showLoading = () => {
+    setIsLoading(true);
+  };
+
   // Tirar uma foto;
   const takePicture = async () => {
     if (cameraRef) {
-
-      setIsLoading(true); // Ativar o carregamento ao tirar a foto
 
       const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
       setCapturedImage(image.uri);
@@ -49,13 +61,9 @@ const CAMERA = () => {
         const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter Imagem Cam para Base64
         if (img_cam_base64) {
           setImageBase64(img_cam_base64); // Atualiza o estado da imagem em base64
-
-          setIsLoading(false); // Desativar o carregamento após obter a imagem
-
         }
+        
       } catch (error) {
-
-        setIsLoading(false); // Se houver erro, garantir que o carregamento seja desativado
 
         console.error('Erro ao converter imagem:', error);
       }
@@ -65,20 +73,11 @@ const CAMERA = () => {
   //Selecionar Foto;
   const selecionarImagemHandler = async () => {
     try {
-
-        setIsLoading(true); // Ativar o carregamento ao selecionar a imagem
-        
         const img_armaz_base64 = await selecionarImagem(); //Função SelecionarImagem Convertida de ChamadaAPI;
         if (img_armaz_base64) {
           setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64
-
-          setIsLoading(false); // Desativar o carregamento após obter a imagem
-
         }
     } catch (error) {
-
-        setIsLoading(false); // Se houver erro, garantir que o carregamento seja desativado
-
         console.error('Erro ao selecionar imagem:', error);
     }
   };
@@ -128,10 +127,21 @@ const CAMERA = () => {
 
         {/*Botão Tirar Foto*/}
         <TouchableOpacity style={styles.botaotirarfoto}
-          onPress={() => {
-            takePicture();
-            this.chamarAPI();
-           }}>
+          onPress={async () => {
+            showLoading(); // Mostra a tela de carregamento
+            
+            try {
+              await takePicture(); // Tira a foto
+              await chamarAPI(); // Chama a API
+
+              // O código abaixo será executado apenas se a chamada da API for bem-sucedida
+              navigation.navigate('DIAGSAUDAVEL'); // Navega para a próxima tela
+            } catch (error) {
+              console.error('Erro ao processar solicitação:', error);
+            } finally {
+              setIsLoading(false); // Oculta a tela de carregamento, independentemente do resultado da chamada da API
+            }
+          }}>
           <Image
             style={styles.botaoicontirarfoto}
             contentFit="cover"
@@ -153,13 +163,8 @@ const CAMERA = () => {
       </View>
 
       {/* Tela de carregamento */}
-      {isLoading && (
-        <View style={styles.loadingContainer}>
-          <View style={styles.loading}>
-            <ActivityIndicator size="large" color="#FFFFFF" />
-          </View>
-        </View>
-      )}
+      <LoadingModal visible={isLoading} />
+
     </View>
   );
 };
@@ -174,15 +179,9 @@ const styles = StyleSheet.create({
   
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  loading: {
-    padding: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderRadius: 10,
   },
 
   camera: {
