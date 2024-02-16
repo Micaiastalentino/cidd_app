@@ -1,12 +1,11 @@
-// Tela de Login
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
-import { Camera } from 'expo-camera';
 import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI";
+import ExibeImagem from "../componentes/ExibeImagem";
+import { Camera } from 'expo-camera';
 import axios from 'axios';
 
 
@@ -14,6 +13,7 @@ const LoadingModal = ({ visible }) => (
   <Modal transparent visible={visible}>
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color="black" />
+      <Text>Diagnosticando...</Text>
     </View>
   </Modal>
 );
@@ -132,10 +132,10 @@ const CAMERA = () => {
             
             try {
               await takePicture(); // Tira a foto
-              await chamarAPI(); // Chama a API
+              //await chamarAPI(); // Chama a API
 
               // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              navigation.navigate('DIAGSAUDAVEL'); // Navega para a próxima tela
+              navigation.navigate('DIAGSAUDAVEL',{setCapturedImage});
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {

@@ -68,7 +68,15 @@ const App = () => {
             <Stack.Screen
               name="DIAGSAUDAVEL"
               component={DIAGSAUDAVEL}
-              options={{ headerShown: false }}
+              options={{ 
+                headerShown: true,
+                headerTitle: "DIAGNÓSTICO",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
             />
             <Stack.Screen
               name="CAMERA"

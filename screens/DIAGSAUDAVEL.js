@@ -1,146 +1,152 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
+
 const DIAGSAUDAVEL = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { setCapturedImage } = route.params;
 
   return (
-    <View style={styles.diagSaudavel}>
-      <View style={styles.diagnstico}>
-        <Image
-          style={[styles.diagnsticoChild, styles.diagnsticoChildPosition]}
-          contentFit="cover"
-          source={require("../assets/rectangle-3.png")}
-        />
-        <View style={[styles.detalhesDaAnlise, styles.diagnsticoChildPosition]}>
-          <View style={styles.grficoPizza}>
-            <View style={styles.grficoDeRosca}>
-              <Image
-                style={[styles.dashboardIcon, styles.dashboardIconLayout]}
-                contentFit="cover"
-                source={require("../assets/dashboard.png")}
-              />
-              <View style={styles.textos}>
-                <Text style={[styles.vassDeBruxa, styles.saudvelTypo]}>
-                  Vass. de Bruxa
-                </Text>
-                <Text style={[styles.saudvel, styles.saudvelTypo]}>
-                  Saudável
-                </Text>
-                <Text style={[styles.text, styles.textTypo]}>35%</Text>
-                <Text style={[styles.text1, styles.textTypo]}>90%</Text>
-              </View>
-            </View>
-            <View style={[styles.linha03, styles.linhaBorder]} />
-            <Text style={[styles.anliseGrfica, styles.cacauFlexBox]}>
-              Análise Gráfica
-            </Text>
-          </View>
-          <View style={[styles.linha4, styles.linhaBorder]} />
-          <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
-            Cuidados e Precauções
-          </Text>
-          <View
-            style={[styles.detalhesDoResultado, styles.imagemCapturadaPosition]}
-          >
-            <Text style={[styles.oCacauCapturado, styles.dePrecisoTypo]}>
-              O cacau capturado apresenta uma casca saudável e brilhante e
-              consistente, livre de manchas ou deformidades. Sua cor varia
-              conforme o estágio de maturação, indo de verde a tons
-              amarelo/vermelho intensos. A forma simétrica e uniforme indica um
-              desenvolvimento adequado, enquanto a textura da casca, firme e sem
-              rugosidades excessivas, sugere frescor e saúde.
-            </Text>
-            <View style={[styles.linha03, styles.linhaBorder]} />
-            <Text style={[styles.sobreOCacau, styles.cacauFlexBox]}>
-              Sobre o cacau
-            </Text>
-          </View>
-          <View style={styles.legenda}>
-            <View style={styles.legenda1Position}>
-              <View style={styles.rectangleParent}>
-                <View style={styles.frameChild} />
-                <Text style={[styles.saudvel1, styles.saudvel1Typo]}>
-                  Saudável
-                </Text>
-              </View>
-              <View style={styles.rectangleGroup}>
-                <View style={styles.frameItem} />
-                <Text style={[styles.podridoParda, styles.saudvel1Typo]}>
-                  Podridão Parda
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.cacau}>
-            <View style={styles.background} />
-            <Image
-              style={[styles.cacauSaudvelIcon, styles.cacauSaudvelIconPosition]}
-              contentFit="cover"
-              source={require("../assets/cacau-saudvel.png")}
-            />
-          </View>
-          <View style={[styles.linha2, styles.linhaBorder]} />
-          <Text
-            style={[styles.imagemCapturada, styles.imagemCapturadaPosition]}
-          >
-            Imagem capturada
-          </Text>
-        </View>
-        <View style={[styles.resultadoDaAnlise, styles.legenda1Position]}>
+    <ScrollView style={styles.containerscrol}>
+      
+      <View style={styles.contPrincipal}>
+        <View style={styles.diagnstico}>
           <Image
-            style={styles.resultadoDaAnliseChild}
+            style={[styles.diagnsticoChild, styles.diagnsticoChildPosition]} //RETANGULO MAIOR
             contentFit="cover"
-            source={require("../assets/rectangle-2.png")}
+            source={require("../assets/rectangle-3.png")}
           />
-          <View style={styles.result}>
-            <Image
-              style={[styles.desenhoCacauSaudavek, styles.dashboardIconLayout]}
-              contentFit="cover"
-              source={require("../assets/desenho-cacau-saudavek1.png")}
-            />
-            <Text style={[styles.saudvel2, styles.saudvelTypo]}>Saudável</Text>
-            <Text style={[styles.dePreciso, styles.dePrecisoTypo]}>
-              (90% de precisão)
+          <View style={[styles.detalhesDaAnlise, styles.diagnsticoChildPosition]}>
+            <View style={styles.grficoPizza}>
+              <View style={styles.grficoDeRosca}>
+                <Image
+                  style={[styles.dashboardIcon, styles.dashboardIconLayout]}
+                  contentFit="cover"
+                  source={require("../assets/dashboard.png")}
+                />
+                <View style={styles.textos}>
+                  <Text style={[styles.vassDeBruxa, styles.saudvelTypo]}>
+                    Vass. de Bruxa
+                  </Text>
+                  <Text style={[styles.saudvel, styles.saudvelTypo]}>
+                    Saudável
+                  </Text>
+                  <Text style={[styles.text, styles.textTypo]}>35%</Text>
+                  <Text style={[styles.text1, styles.textTypo]}>90%</Text>
+                </View>
+              </View>
+              <View style={[styles.linha03, styles.linhaBorder]} />
+              <Text style={[styles.anliseGrfica, styles.cacauFlexBox]}>
+                Análise Gráfica
+              </Text>
+            </View>
+            <View style={[styles.linha4, styles.linhaBorder]} />
+            <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
+              Cuidados e Precauções
+            </Text>
+            <View
+              style={[styles.detalhesDoResultado, styles.imagemCapturadaPosition]}
+            >
+              <Text style={[styles.oCacauCapturado, styles.dePrecisoTypo]}>
+                O cacau capturado apresenta uma casca saudável e brilhante e
+                consistente, livre de manchas ou deformidades. Sua cor varia
+                conforme o estágio de maturação, indo de verde a tons
+                amarelo/vermelho intensos. A forma simétrica e uniforme indica um
+                desenvolvimento adequado, enquanto a textura da casca, firme e sem
+                rugosidades excessivas, sugere frescor e saúde.
+              </Text>
+              <View style={[styles.linha03, styles.linhaBorder]} />
+              <Text style={[styles.sobreOCacau, styles.cacauFlexBox]}>
+                Sobre o cacau
+              </Text>
+            </View>
+            <View style={styles.legenda}>
+              <View style={styles.legenda1Position}>
+                <View style={styles.rectangleParent}>
+                  <View style={styles.frameChild} />
+                  <Text style={[styles.saudvel1, styles.saudvel1Typo]}>
+                    Saudável
+                  </Text>
+                </View>
+                <View style={styles.rectangleGroup}>
+                  <View style={styles.frameItem} />
+                  <Text style={[styles.podridoParda, styles.saudvel1Typo]}>
+                    Podridão Parda
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.cacau}>
+
+              <View style={styles.background} />
+
+              <Image
+                style={[styles.cacauSaudvelIcon, styles.cacauSaudvelIconPosition]}
+                contentFit="cover"
+                source={{setCapturedImage}}
+              />
+              
+            </View>
+
+            <View style={[styles.linha2, styles.linhaBorder]} />
+
+            <Text style={[styles.imagemCapturada, styles.imagemCapturadaPosition]}>
+              Imagem capturada
             </Text>
           </View>
-          <Text
-            style={[styles.resultadoDaAnlise1, styles.cacauFlexBox]}
-          >{`Resultado da análise: `}</Text>
-        </View>
-      </View>
-      <View style={[styles.barraDgnc, styles.legenda1Position]}>
-        <View style={styles.barraDgnc1} />
-        <View
-          style={[styles.fiBrAngleRightParent, styles.cacauSaudvelIconPosition]}
-        >
-          <Pressable
-            style={styles.fiBrAngleRight}
-            onPress={() => navigation.navigate("CAMERA")}
-          >
+          
+          {/*EDITADA*/}
+          <View style={[styles.resultadoDaAnlise, styles.legenda1Position]}>
             <Image
-              style={styles.icon}
+              style={styles.resultadoDaAnliseChild} //RETANGULO MENOR
               contentFit="cover"
-              source={require("../assets/fibrangleright1.png")}
+              source={require("../assets/rectangle-2.png")}
             />
-          </Pressable>
-          <Text style={[styles.diagnstico1, styles.saudvelTypo]}>
-            DIAGNÓSTICO
-          </Text>
+
+            {/* RESULTADO: NECESSITA SER MANIPULADOS OS DADOS; */}
+            <View style={styles.resultadoTxI}>
+              <Image
+                style={[styles.desenhoCacauSaudavek, styles.dashboardIconLayout]}
+                contentFit="cover"
+                source={require("../assets/desenho-cacau-saudavek1.png")}
+              />
+
+              <Text style={[styles.saudvel2, styles.saudvelTypo]}>Saudável</Text>
+
+              <Text style={[styles.dePreciso, styles.dePrecisoTypo]}>
+                (90% de precisão)
+              </Text>
+            </View>
+            
+            <Text style={[styles.resultAnalise]}>
+              Resultado da análise:
+            </Text>
+
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  containerscrol: {
+    flex: 1,
+    backgroundColor: "white"
+  },
+
   diagnsticoChildPosition: {
     top: 127,
     left: 0,
-    width: 332,
+    width: 380,
+    borderRadius: Border.br_3xs,
+    borderWidth: 1, // largura da borda
+    borderColor: Color.colorDarkgray, // cor da borda
     position: "absolute",
   },
   dashboardIconLayout: {
@@ -171,10 +177,6 @@ const styles = StyleSheet.create({
     borderColor: Color.colorDarkgray,
     borderStyle: "solid",
     position: "absolute",
-  },
-  cacauFlexBox: {
-    display: "flex",
-    alignItems: "center",
   },
   imagemCapturadaTypo: {
     height: "1.91%",
@@ -216,7 +218,7 @@ const styles = StyleSheet.create({
   },
   diagnsticoChild: {
     height: 953,
-    borderRadius: Border.br_3xs,
+    width: 500,
     left: 0,
   },
   dashboardIcon: {
@@ -382,7 +384,8 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: "#282828",
     width: 270,
-    height: 319,
+    height: 320,
+    left: 20,
     zIndex: 0,
     borderRadius: Border.br_5xs,
   },
@@ -401,18 +404,16 @@ const styles = StyleSheet.create({
   },
   linha2: {
     top: 38,
-    width: 292,
+    width: 335,
     left: 20,
   },
   imagemCapturada: {
-    width: "87.62%",
-    top: "1.7%",
-    height: "1.91%",
+    width: "100%",
+    height: "100%",
+    top: "1%",
     alignItems: "center",
-    display: "flex",
     color: Color.colorSienna,
-    lineHeight: 13,
-    fontSize: FontSize.size_3xs,
+    fontSize: 14,
     textAlign: "left",
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
@@ -421,28 +422,30 @@ const styles = StyleSheet.create({
     height: 940,
     left: 0,
   },
+
   resultadoDaAnliseChild: {
-    top: 26,
-    height: 90,
+    height: 110,
     borderRadius: Border.br_3xs,
-    left: 0,
-    width: 332,
+    borderWidth: 1, // largura da borda
+    borderColor: Color.colorDarkgray, // cor da borda
+    width: 380,
     position: "absolute",
   },
+  
   desenhoCacauSaudavek: {
     width: "34.5%",
     right: "0.05%",
     left: "65.46%",
   },
   saudvel2: {
-    height: "44.07%",
+    height: "52%",
     width: "65.32%",
-    top: "6.78%",
     fontSize: 24,
     color: Color.colorLimegreen,
-    left: "0%",
+    left: "7%",
     position: "absolute",
   },
+
   dePreciso: {
     height: "27.12%",
     width: "50.57%",
@@ -450,75 +453,42 @@ const styles = StyleSheet.create({
     left: "1.95%",
     textAlign: "center",
   },
-  result: {
+
+  resultadoTxI: {
     height: "50.86%",
     width: "66.36%",
-    top: "35.34%",
+    top: "20%",
     right: "17.83%",
-    bottom: "13.79%",
     left: "15.81%",
     position: "absolute",
   },
-  resultadoDaAnlise1: {
-    height: "22.41%",
+
+  resultAnalise: {
     width: "99.37%",
     left: "0.33%",
-    fontSize: FontSize.size_xs,
-    alignItems: "center",
+    top: "-25%",
+    fontSize: FontSize.size_base,
     color: Color.colorSienna,
-    display: "flex",
-    textAlign: "left",
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
-    top: "0%",
-    position: "absolute",
   },
+
   resultadoDaAnlise: {
     height: 116,
-    width: 332,
+    width: 400,
   },
+
   diagnstico: {
     top: 49,
     left: 14,
     height: 1080,
-    width: 332,
+    width: 200,
     position: "absolute",
   },
-  barraDgnc1: {
-    backgroundColor: Color.colorSienna,
-    width: 360,
-    height: 45,
-    zIndex: 0,
-  },
-  icon: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
-  },
-  fiBrAngleRight: {
-    width: 20,
-    height: 20,
-  },
-  diagnstico1: {
-    fontSize: FontSize.size_base,
-    color: Color.colorWhite,
-    marginLeft: 86,
-  },
-  fiBrAngleRightParent: {
-    top: 14,
-    left: 23,
-    height: 16,
-    flexDirection: "row",
-  },
-  barraDgnc: {
-    height: 45,
-  },
-  diagSaudavel: {
+  contPrincipal: {
     backgroundColor: Color.colorWhite,
-    flex: 1,
-    height: 1218,
+    height: 1220,
     width: "100%",
-    borderRadius: Border.br_5xs,
   },
 });
 
