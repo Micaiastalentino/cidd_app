@@ -121,21 +121,27 @@ const CAMERA = () => {
         const previsao = respostaAPI.prediction;
 
         //Resultados filtrados por classe;
-        saudavel = previsao[0][0];
-        podridaoParda = previsao[0][1];
-        brocaVagem = previsao[0][2];
-        
-        let maiorNumero;
+        let saudavel = previsao[0][0];
+        let podridaoParda = previsao[0][1];
+        let brocaVagem = previsao[0][2];
 
+        let maiorNumero;
+        let result;
+        
+        //Condição para Exibir Resultados;
         if ((saudavel > podridaoParda) && (saudavel > brocaVagem)){
-          maiorNumero = saudavel.toFixed(2);
-          console.log('O fruto apresenta ', maiorNumero * 100, '(%) de ser SAUDÁVEL.')
+          maiorNumero = saudavel;
+          result = (maiorNumero * 100).toFixed(1)+ '%';
+          console.log('O fruto apresenta ', result,'de ser SAUDÁVEL.')
+
         } else if ((podridaoParda > saudavel) && (podridaoParda > brocaVagem)) {
-          maiorNumero = podridaoParda.toFixed(2);
-          console.log('O fruto apresenta ', maiorNumero * 100, '(%) de estar com PODRIDÃO PARDA.')
+          maiorNumero = podridaoParda;
+          result = (maiorNumero * 100).toFixed(1)+ '%';
+          console.log('O fruto apresenta ', result,'de ser PODRIDÃO PARDA.')
         } else {
-          maiorNumero = brocaVagem.toFixed(2);;
-          console.log('O fruto apresenta ', maiorNumero * 100, '(%) de estar com BROCA DA VAGEM.')
+          maiorNumero = brocaVagem;
+          result = (maiorNumero * 100).toFixed(1) + '%';
+          console.log('O fruto apresenta ', result,'de estar com BROCA DA VAGEM.')
         }
       }
     }catch (error) {
@@ -158,7 +164,7 @@ const CAMERA = () => {
               await chamarAPI(); // Chama a API
               await manipularDadosAPI(); //Exibe o resultado
               // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              //navigation.navigate('DIAGSAUDAVEL');
+              navigation.navigate('DIAGSAUDAVEL');
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
@@ -178,7 +184,7 @@ const CAMERA = () => {
               await chamarAPI(); // Chama a API
               // O código abaixo será executado apenas se a chamada da API for bem-sucedida
               await manipularDadosAPI();
-              //navigation.navigate('DIAGSAUDAVEL', {capturedImage});
+              navigation.navigate('DIAGSAUDAVEL', {capturedImage});
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
