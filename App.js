@@ -65,7 +65,6 @@ const App = () => {
               component={HOME}
               options={{ headerShown: false }}
             />
-            
             <Stack.Screen
               name="DIAGSAUDAVEL"
               component={DIAGSAUDAVEL}

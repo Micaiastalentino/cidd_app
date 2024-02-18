@@ -99,7 +99,7 @@ const CAMERA = () => {
 
         console.log(imageBase64);
 
-        const res = await axios.post('http://10.0.0.153:5000/predict', imageBase64, config); //Endereço API;
+        const res = await axios.post('http://192.168.1.102:5000/predict', imageBase64, config); //Endereço API;
         console.log(res.data);
 
     } catch (error) {
