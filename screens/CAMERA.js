@@ -73,7 +73,7 @@ const CAMERA = () => {
   //Selecionar Foto;
   const selecionarImagemHandler = async () => {
     try {
-        const img_armaz = await selecionarImagem(); //Função SelecionarImagem Convertida de ChamadaAPI;
+        const img_armaz = await selecionarImagem(); //Função SelecionarImagem de ChamadaAPI;
         const img_armaz_base64 = await convertImageToBase64(img_armaz);
         if (img_armaz_base64) {
           setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64
