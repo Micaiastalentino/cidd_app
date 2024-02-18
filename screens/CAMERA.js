@@ -27,6 +27,7 @@ const CAMERA = () => {
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
+  const [respostaAPI, setRespostaAPI] = useState(null);
 
   // Verificar as permissões da câmera ao carregar o componente;
   useEffect(() => {
@@ -77,7 +78,7 @@ const CAMERA = () => {
         const img_armaz_base64 = await convertImageToBase64(img_armaz);
         if (img_armaz_base64) {
           setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64
-          console.log(imageBase64)
+          //console.log(imageBase64)  //Verificar se está passando a base;
         }
     } catch (error) {
         console.error('Erro ao selecionar imagem:', error);
@@ -91,16 +92,14 @@ const CAMERA = () => {
             console.log('Selecione uma imagem antes de chamar a API');
             return;
         }
-
         const config = {
             headers: {
               'Content-Type': 'text/plain',
             },
         };
-
-        console.log(imageBase64);
-
+        //console.log(imageBase64);
         const res = await axios.post('http://192.168.1.102:5000/predict', imageBase64, config); //Endereço API;
+        setRespostaAPI(res.data); //Atualiza o estado da resposta enviada pela API;
         console.log(res.data);
 
     } catch (error) {
@@ -116,6 +115,34 @@ const CAMERA = () => {
     }
   };
 
+  manipularDadosAPI = () => {
+    try{
+      if (respostaAPI){
+        const previsao = respostaAPI.prediction;
+
+        //Resultados filtrados por classe;
+        saudavel = previsao[0][0];
+        podridaoParda = previsao[0][1];
+        brocaVagem = previsao[0][2];
+        
+        let maiorNumero;
+
+        if ((saudavel > podridaoParda) && (saudavel > brocaVagem)){
+          maiorNumero = saudavel.toFixed(2);
+          console.log('O fruto apresenta ', maiorNumero * 100, '(%) de ser SAUDÁVEL.')
+        } else if ((podridaoParda > saudavel) && (podridaoParda > brocaVagem)) {
+          maiorNumero = podridaoParda.toFixed(2);
+          console.log('O fruto apresenta ', maiorNumero * 100, '(%) de estar com PODRIDÃO PARDA.')
+        } else {
+          maiorNumero = brocaVagem.toFixed(2);;
+          console.log('O fruto apresenta ', maiorNumero * 100, '(%) de estar com BROCA DA VAGEM.')
+        }
+      }
+    }catch (error) {
+      console.error('Erro de reposta da API:', error.respostaAPI);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/*Exibe a Câmera*/}
@@ -125,14 +152,13 @@ const CAMERA = () => {
         {/*Botão Selecionar Imagem*/}
         <TouchableOpacity style={[styles.circulo]}
           onPress={async () => {
-            
-            await selecionarImagemHandler();
-
             try {
+              await selecionarImagemHandler();
               showLoading(); // Mostra a tela de carregamento
               await chamarAPI(); // Chama a API
+              await manipularDadosAPI(); //Exibe o resultado
               // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              navigation.navigate('DIAGSAUDAVEL');
+              //navigation.navigate('DIAGSAUDAVEL');
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
@@ -151,7 +177,8 @@ const CAMERA = () => {
               await takePicture(); // Tira a foto
               await chamarAPI(); // Chama a API
               // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              navigation.navigate('DIAGSAUDAVEL', {capturedImage});
+              await manipularDadosAPI();
+              //navigation.navigate('DIAGSAUDAVEL', {capturedImage});
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
@@ -166,7 +193,7 @@ const CAMERA = () => {
         </TouchableOpacity>
 
         {/*Botão Dicas Capt*/}
-        <TouchableOpacity style={styles.dicascaptura}>
+        <TouchableOpacity onPress={manipularDadosAPI} style={styles.dicascaptura}>
           <Image
             style={styles.iconcaptura}
             contentFit="cover"
