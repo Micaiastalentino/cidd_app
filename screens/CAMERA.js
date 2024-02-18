@@ -123,20 +123,7 @@ const CAMERA = () => {
 
       <View style={styles.barramenu}>
         {/*Botão Selecionar Imagem*/}
-        <TouchableOpacity style={[styles.circulo]}
-          onPress={async () => {
-            await selecionarImagemHandler();
-            try {
-              showLoading(); // Mostra a tela de carregamento
-              await chamarAPI(); // Chama a API
-              // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              navigation.navigate('DIAGSAUDAVEL');
-            } catch (error) {
-              console.error('Erro ao processar solicitação:', error);
-            } finally {
-              setIsLoading(false); // Oculta a tela de carregamento, independentemente do resultado da chamada da API
-            }
-          }}>
+        <TouchableOpacity onPress={selecionarImagemHandler} style={[styles.circulo]}>
           <Text style={styles.tirarfoto}>Fotos</Text>
         </TouchableOpacity>
 
