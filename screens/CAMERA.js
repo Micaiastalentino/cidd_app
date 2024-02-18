@@ -125,7 +125,9 @@ const CAMERA = () => {
         {/*Botão Selecionar Imagem*/}
         <TouchableOpacity style={[styles.circulo]}
           onPress={async () => {
+            
             await selecionarImagemHandler();
+
             try {
               showLoading(); // Mostra a tela de carregamento
               await chamarAPI(); // Chama a API
