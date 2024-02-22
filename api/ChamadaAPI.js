@@ -12,7 +12,7 @@ export async function selecionarImagem() {
             quality: 1,
         });
         
-        if (!result.cancelled) {
+        if (!result.canceled) {
             const imageUri = result.assets[0].uri;
             return imageUri;
             
