@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI";
-import ExibeImagem from "../componentes/ExibeImagem";
+//import ExibeImagem from "../componentes/ExibeImagem";
 import { Camera } from 'expo-camera';
 import axios from 'axios';
 
@@ -54,37 +54,40 @@ const CAMERA = () => {
   // Tirar uma foto;
   const takePicture = async () => {
     if (cameraRef) {
-
       const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
       setCapturedImage(image.uri);
-
       try {
-        const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter Imagem Cam para Base64
+        const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter ImagemCam para Base64
         if (img_cam_base64) {
           setImageBase64(img_cam_base64); // Atualiza o estado da imagem em base64
         }
-        
       } catch (error) {
-
         console.error('Erro ao converter imagem:', error);
       }
     }
   };
 
-  //Selecionar Foto;
+  // Selecionar Foto;
   const selecionarImagemHandler = async () => {
     try {
-        const img_armaz = await selecionarImagem(); //Função SelecionarImagem de ChamadaAPI;
+      const img_armaz = await selecionarImagem(); // Função SelecionarImagem de ChamadaAPI;
+      // Condição (Selecionar Imagem);
+      if (img_armaz) {
         const img_armaz_base64 = await convertImageToBase64(img_armaz);
-        if (img_armaz_base64) {
-          setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64
-          //console.log(imageBase64)  //Verificar se está passando a base;
-        }
+        setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64;
+        showLoading(); // Mostra a tela de carregamento;
+        await chamarAPI(); // Chama a API;
+        await manipularDadosAPI(); // Exibe o resultado;
+        navigation.navigate('DIAGSAUDAVEL'); // Navega para outro componente;
+      } else {
+        Alert.alert('Nenhuma imagem selecionada', 'Por favor, selecione uma imagem.'); // Alerta de seleção de imagem;
+      }
     } catch (error) {
-        console.error('Erro ao selecionar imagem:', error);
+      console.error('Erro ao selecionar imagem:', error);
     }
   };
   
+
   //Envia para API a imagem em Base64;
   chamarAPI = async () => {
     try {
@@ -98,7 +101,7 @@ const CAMERA = () => {
             },
         };
         //console.log(imageBase64);
-        const res = await axios.post('http://192.168.1.107:5000/predict', imageBase64, config); //Endereço API;
+        const res = await axios.post('http://192.168.1.104:5000/predict', imageBase64, config); //Endereço API;
         setRespostaAPI(res.data); //Atualiza o estado da resposta enviada pela API;
         console.log(res.data);
 
@@ -160,11 +163,6 @@ const CAMERA = () => {
           onPress={async () => {
             try {
               await selecionarImagemHandler();
-              showLoading(); // Mostra a tela de carregamento
-              await chamarAPI(); // Chama a API
-              await manipularDadosAPI(); //Exibe o resultado
-              // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              navigation.navigate('DIAGSAUDAVEL');
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 
 //Função Exportável Selecionar Imagem;
 export async function selecionarImagem() {
+    
     try {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -15,8 +17,8 @@ export async function selecionarImagem() {
         if (!result.canceled) {
             const imageUri = result.assets[0].uri;
             return imageUri;
-            
         }
+        
     } catch (error) {
         console.log('Erro ao selecionar imagem:', error);
     }
