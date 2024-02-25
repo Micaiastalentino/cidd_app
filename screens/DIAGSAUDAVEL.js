@@ -5,11 +5,16 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 import ExibeImagem from "../componentes/ExibeImagem";
+
 import { useRoute } from "@react-navigation/native";
 
 const DIAGSAUDAVEL = () => {
   const navigation = useNavigation();
-
+  const route = useRoute();
+  const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
+  
+  console.log('Uri no DiagSaudavel: ', img_select);
+  
   return (
     <ScrollView style={styles.containerscrol}>
       
@@ -81,18 +86,9 @@ const DIAGSAUDAVEL = () => {
               </View>
             </View>
 
-            
-
+            {/* Exibe a imagem capturada PROBLEMA DE ATUALIZAÇÃO DA IMAGEM*/}  
             <View style={styles.cacau}>
-
-              <View style={styles.background} />
-
-              <Image
-                style={[styles.cacauSaudvelIcon, styles.cacauSaudvelIconPosition]}
-                contentFit="cover"
-                //source={}
-              />
-              
+              <ExibeImagem capturedImage={img_select} />
             </View>
 
             <View style={[styles.linha2, styles.linhaBorder]} />
@@ -382,14 +378,6 @@ const styles = StyleSheet.create({
     width: 55,
     height: 22,
     position: "absolute",
-  },
-  background: {
-    backgroundColor: "#282828",
-    width: 270,
-    height: 320,
-    left: 20,
-    zIndex: 0,
-    borderRadius: Border.br_5xs,
   },
   cacauSaudvelIcon: {
     left: 29,

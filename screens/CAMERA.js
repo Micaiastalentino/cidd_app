@@ -1,14 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
-import { Image } from "expo-image";
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI";
-//import ExibeImagem from "../componentes/ExibeImagem";
 import { Camera } from 'expo-camera';
+import { Image } from "expo-image";
 import axios from 'axios';
 
-
+//Função carregamento;
 const LoadingModal = ({ visible }) => (
   <Modal transparent visible={visible}>
     <View style={styles.loadingContainer}>
@@ -28,6 +27,10 @@ const CAMERA = () => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
   const [respostaAPI, setRespostaAPI] = useState(null);
+
+  useEffect(() => {
+    console.log("capturedImage atualizado:", capturedImage);
+  }, [capturedImage]); // Execute sempre que capturedImage for atualizadoc
 
   // Verificar as permissões da câmera ao carregar o componente;
   useEffect(() => {
@@ -55,11 +58,17 @@ const CAMERA = () => {
   const takePicture = async () => {
     if (cameraRef) {
       const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
+      console.log('Image URI: ', image);
       setCapturedImage(image.uri);
+      console.log('URI da imagem tirada foto: ', capturedImage);
       try {
         const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter ImagemCam para Base64
         if (img_cam_base64) {
           setImageBase64(img_cam_base64); // Atualiza o estado da imagem em base64
+          await chamarAPI(); // Chama a API
+          // O código abaixo será executado apenas se a chamada da API for bem-sucedida
+          await manipularDadosAPI();
+          navigation.navigate('DIAGSAUDAVEL', { capturedImage: image.uri });
         }
       } catch (error) {
         console.error('Erro ao converter imagem:', error);
@@ -71,6 +80,9 @@ const CAMERA = () => {
   const selecionarImagemHandler = async () => {
     try {
       const img_armaz = await selecionarImagem(); // Função SelecionarImagem de ChamadaAPI;
+      console.log('URI da imagem selecionada: ', img_armaz);
+      setCapturedImage(img_armaz);
+
       // Condição (Selecionar Imagem);
       if (img_armaz) {
         const img_armaz_base64 = await convertImageToBase64(img_armaz);
@@ -78,7 +90,7 @@ const CAMERA = () => {
         showLoading(); // Mostra a tela de carregamento;
         await chamarAPI(); // Chama a API;
         await manipularDadosAPI(); // Exibe o resultado;
-        navigation.navigate('DIAGSAUDAVEL'); // Navega para outro componente;
+        navigation.navigate('DIAGSAUDAVEL', { capturedImage: img_armaz }); // Navega para outro componente;
       } else {
         Alert.alert('Nenhuma imagem selecionada', 'Por favor, selecione uma imagem.'); // Alerta de seleção de imagem;
       }
@@ -87,34 +99,33 @@ const CAMERA = () => {
     }
   };
   
-
   //Envia para API a imagem em Base64;
   chamarAPI = async () => {
     try {
-        if (!imageBase64) {
-            console.log('Selecione uma imagem antes de chamar a API');
-            return;
-        }
-        const config = {
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-        };
-        //console.log(imageBase64);
-        const res = await axios.post('http://192.168.1.104:5000/predict', imageBase64, config); //Endereço API;
-        setRespostaAPI(res.data); //Atualiza o estado da resposta enviada pela API;
-        console.log(res.data);
+      if (!imageBase64) {
+        console.log('Selecione uma imagem antes de chamar a API');
+        return;
+      }
+      const config = {
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+      };
+      //console.log(imageBase64);
+      const res = await axios.post('http://192.168.1.104:5000/predict', imageBase64, config); //Endereço API;
+      setRespostaAPI(res.data); //Atualiza o estado da resposta enviada pela API;
+      console.log(res.data);
 
     } catch (error) {
-        if (error.response) {
-            console.error('Erro de resposta da API:', error.response.data);
-            console.error('Status do erro:', error.response.status);
-        } else if (error.request) {
-            console.error('Sem resposta da API:', error.request);
-        } else {
-            console.error('Erro durante a configuração da requisição:', error.message);
-        }
-        console.error('Erro geral ao chamar a API:', error);
+      if (error.response) {
+        console.error('Erro de resposta da API:', error.response.data);
+        console.error('Status do erro:', error.response.status);
+      } else if (error.request) {
+        console.error('Sem resposta da API:', error.request);
+      } else {
+        console.error('Erro durante a configuração da requisição:', error.message);
+      }
+      console.error('Erro geral ao chamar a API:', error);
     }
   };
 
@@ -176,13 +187,8 @@ const CAMERA = () => {
         <TouchableOpacity style={styles.botaotirarfoto}
           onPress={async () => {
             showLoading(); // Mostra a tela de carregamento
-            
             try {
               await takePicture(); // Tira a foto
-              await chamarAPI(); // Chama a API
-              // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-              await manipularDadosAPI();
-              navigation.navigate('DIAGSAUDAVEL', {capturedImage});
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
