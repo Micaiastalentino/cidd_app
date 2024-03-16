@@ -5,58 +5,47 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 import ExibeImagem from "../componentes/ExibeImagem";
+import ComponenteDeExibicao from "../componentes/ExibePredict";
 
 import { useRoute } from "@react-navigation/native";
 
-const DIAGSAUDAVEL = () => {
+//import {PredictionItem} from "../api/PredictionItem";
+
+const DIAGSAUDAVEL_TST = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
-  
+  let {respostaAPI} = route.params;
+
   console.log('Uri no DiagSaudavel: ', img_select);
-  
+  console.log('Valor Predict - DIAGSAUDAVEL: ', respostaAPI);
+
   return (
     <ScrollView style={styles.containerscrol}>
-      
+      <ComponenteDeExibicao predictions={respostaAPI} />
       <View style={styles.contPrincipal}>
         <View style={styles.diagnstico}>
-          <Image
-            style={[styles.diagnsticoChild, styles.diagnsticoChildPosition]} //RETANGULO MAIOR
-            contentFit="cover"
-            source={require("../assets/rectangle-3.png")}
-          />
           <View style={[styles.detalhesDaAnlise, styles.diagnsticoChildPosition]}>
-            <View style={styles.grficoPizza}>
-              <View style={styles.grficoDeRosca}>
-                <Image
-                  style={[styles.dashboardIcon, styles.dashboardIconLayout]}
-                  contentFit="cover"
-                  source={require("../assets/dashboard.png")}
-                />
-                <View style={styles.textos}>
-                  <Text style={[styles.vassDeBruxa, styles.saudvelTypo]}>
-                    Vass. de Bruxa
-                  </Text>
-                  <Text style={[styles.saudvel, styles.saudvelTypo]}>
-                    Saudável
-                  </Text>
-                  <Text style={[styles.text, styles.textTypo]}>35%</Text>
-                  <Text style={[styles.text1, styles.textTypo]}>90%</Text>
-                </View>
-              </View>
+            
+            {/* ANALISE GRÁFICA */}
+            <View style={styles.viewAnaliseGrafica}>
               <View style={[styles.linha03, styles.linhaBorder]} />
-              <Text style={[styles.anliseGrfica, styles.cacauFlexBox]}>
+              <Text style={[styles.textAnaliseGrafica]}>
                 Análise Gráfica
               </Text>
             </View>
+
+            {/* CUIDADOS E PRECAUÇÕES */} 
+            {/* 
             <View style={[styles.linha4, styles.linhaBorder]} />
             <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
               Cuidados e Precauções
             </Text>
-            <View
-              style={[styles.detalhesDoResultado, styles.imagemCapturadaPosition]}
-            >
-              <Text style={[styles.oCacauCapturado, styles.dePrecisoTypo]}>
+            */}
+
+            {/* SOBRE O CACAU */}
+            <View style={[styles.SobreTodoViewCacau, styles.imagemCapturadaPosition]}>
+              <Text style={[styles.textSobreoCacau, styles.tipoFontSobreCacau]}>
                 O cacau capturado apresenta uma casca saudável e brilhante e
                 consistente, livre de manchas ou deformidades. Sua cor varia
                 conforme o estágio de maturação, indo de verde a tons
@@ -65,10 +54,13 @@ const DIAGSAUDAVEL = () => {
                 rugosidades excessivas, sugere frescor e saúde.
               </Text>
               <View style={[styles.linha03, styles.linhaBorder]} />
-              <Text style={[styles.sobreOCacau, styles.cacauFlexBox]}>
+              <Text style={[styles.titSobreCacau, styles.cacauFlexBox]}>
                 Sobre o cacau
               </Text>
             </View>
+            
+            {/* LEGENDAS */} 
+            {/* 
             <View style={styles.legenda}>
               <View style={styles.legenda1Position}>
                 <View style={styles.rectangleParent}>
@@ -85,14 +77,14 @@ const DIAGSAUDAVEL = () => {
                 </View>
               </View>
             </View>
+            */}
 
-            {/* Exibe a imagem capturada PROBLEMA DE ATUALIZAÇÃO DA IMAGEM*/}  
+            {/* Exibe a imagem capturada*/}  
             <View style={styles.cacau}>
-              <ExibeImagem capturedImage={img_select} />
+              {/* Componente ExibeImagem */}
+              <ExibeImagem capturedImage={img_select} /> 
             </View>
-
             <View style={[styles.linha2, styles.linhaBorder]} />
-
             <Text style={[styles.imagemCapturada, styles.imagemCapturadaPosition]}>
               Imagem capturada
             </Text>
@@ -106,21 +98,18 @@ const DIAGSAUDAVEL = () => {
               source={require("../assets/rectangle-2.png")}
             />
 
-            {/* RESULTADO: NECESSITA SER MANIPULADOS OS DADOS; */}
+            {/* RESULTADO DA ANALISE; */}
             <View style={styles.resultadoTxI}>
               <Image
                 style={[styles.desenhoCacauSaudavek, styles.dashboardIconLayout]}
                 contentFit="cover"
                 source={require("../assets/desenho-cacau-saudavek1.png")}
               />
-
               <Text style={[styles.saudvel2, styles.saudvelTypo]}>Saudável</Text>
-
-              <Text style={[styles.dePreciso, styles.dePrecisoTypo]}>
-                (90% de precisão)
+              <Text style={[styles.resultTextoPorcentagem]}>
+                TESTE
               </Text>
             </View>
-            
             <Text style={[styles.resultAnalise]}>
               Resultado da análise:
             </Text>
@@ -136,6 +125,24 @@ const styles = StyleSheet.create({
   containerscrol: {
     flex: 1,
     backgroundColor: "white"
+  },
+  
+  diagnstico: {
+    top: 49,
+    left: 14,
+    height: 1080,
+    width: 200,
+    position: "absolute",
+  },
+  
+  contPrincipal: {
+    backgroundColor: Color.colorWhite,
+    height: 1800,
+    width: "100%",
+  },
+
+  detalhesDaAnlise: {
+    height: 1600,
   },
 
   diagnsticoChildPosition: {
@@ -191,13 +198,7 @@ const styles = StyleSheet.create({
     left: "6.02%",
     position: "absolute",
   },
-  dePrecisoTypo: {
-    fontFamily: FontFamily.montserratMedium,
-    fontWeight: "500",
-    color: Color.colorSienna,
-    fontSize: FontSize.size_3xs,
-    position: "absolute",
-  },
+  
   saudvel1Typo: {
     marginLeft: 4,
     fontSize: FontSize.size_8xs,
@@ -209,80 +210,21 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: "absolute",
   },
+
   legenda1Position: {
     top: 0,
     left: 0,
     position: "absolute",
   },
-  diagnsticoChild: {
-    height: 953,
-    width: 500,
-    left: 0,
-  },
-  dashboardIcon: {
-    right: "0%",
-    left: "0%",
-    width: "100%",
-  },
-  vassDeBruxa: {
-    height: "33.33%",
-    width: "27.82%",
-    left: "72.18%",
-    color: Color.colorMediumslateblue_100,
-    fontSize: FontSize.size_4xs,
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    position: "absolute",
-    top: "0%",
-  },
-  saudvel: {
-    height: "27.78%",
-    width: "19.54%",
-    top: "27.47%",
-    left: "0.04%",
-    color: Color.colorLimegreen,
-    fontSize: FontSize.size_4xs,
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    position: "absolute",
-  },
-  text: {
-    width: "7.09%",
-    top: "45.99%",
-    left: "88.7%",
-    color: Color.colorMediumslateblue_100,
-  },
-  text1: {
-    width: "10.46%",
-    top: "70.37%",
-    color: Color.colorLimegreen,
-    left: "0%",
-  },
-  textos: {
-    height: "19.88%",
-    width: "98.49%",
-    top: "30.12%",
-    right: "-1.47%",
-    bottom: "50%",
-    left: "2.98%",
-    position: "absolute",
-  },
-  grficoDeRosca: {
-    top: 33,
-    backgroundColor: "#f8f8f8",
-    width: 265,
-    height: 163,
-    overflow: "hidden",
-    left: 0,
-    position: "absolute",
-  },
+
   linha03: {
-    width: 271,
-    top: 22,
+    width: 335,
+    top: 20,
     left: 0,
   },
-  anliseGrfica: {
-    height: "9.18%",
+  
+  textAnaliseGrafica: {
+    height: "15%",
     alignItems: "center",
     color: Color.colorSienna,
     display: "flex",
@@ -291,18 +233,21 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     top: "0%",
     position: "absolute",
-    lineHeight: 13,
-    fontSize: FontSize.size_3xs,
+    lineHeight: 14,
+    fontSize: 14,
     left: "0.48%",
     width: "99.52%",
   },
-  grficoPizza: {
-    top: 550,
+
+  //View Analise Grafica;
+  viewAnaliseGrafica: {
+    top: 660,
     width: 291,
     height: 196,
     left: 20,
     position: "absolute",
   },
+
   linha4: {
     top: 820,
     left: 25,
@@ -314,18 +259,27 @@ const styles = StyleSheet.create({
     left: "8.07%",
     position: "absolute",
   },
-  oCacauCapturado: {
-    height: "79.29%",
+
+  //Sobre o cacau;
+  tipoFontSobreCacau: {
+    fontFamily: FontFamily.montserratMedium,
+    fontWeight: "500",
+    color: Color.colorSienna,
+    fontSize: 12,
+    lineHeight: 17,
+    position: "absolute",
+  },
+  textSobreoCacau: {
+    height: "120%",
     top: "20.71%",
-    lineHeight: 14,
     textAlign: "justify",
     alignItems: "center",
     display: "flex",
-    left: "0.48%",
-    width: "99.52%",
+    left: "0.5%",
+    width: "103%",
     fontWeight: "500",
   },
-  sobreOCacau: {
+  titSobreCacau: {
     height: "12.86%",
     alignItems: "center",
     color: Color.colorSienna,
@@ -336,17 +290,19 @@ const styles = StyleSheet.create({
     top: "0%",
     position: "absolute",
     lineHeight: 13,
-    fontSize: FontSize.size_3xs,
+    fontSize: 14,
     left: "0.48%",
     width: "99.52%",
   },
-  detalhesDoResultado: {
+  //View Sobre o Cacau;
+  SobreTodoViewCacau: {
     height: "14.89%",
     width: "87.53%",
-    top: "41.81%",
+    top: "25%",
     right: "6.45%",
     bottom: "43.3%",
   },
+
   frameChild: {
     backgroundColor: Color.colorLimegreen,
     height: 10,
@@ -408,10 +364,6 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
   },
-  detalhesDaAnlise: {
-    height: 940,
-    left: 0,
-  },
 
   resultadoDaAnliseChild: {
     height: 110,
@@ -437,11 +389,12 @@ const styles = StyleSheet.create({
   },
 
   dePreciso: {
-    height: "27.12%",
+    height: "29",
     width: "50.57%",
     top: "66.1%",
     left: "1.95%",
     textAlign: "center",
+    color: 'red',
   },
 
   resultadoTxI: {
@@ -463,23 +416,20 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
+  resultTextoPorcentagem: {
+    width: "99.37%",
+    left: "0.33%",
+    top: "60%",
+    fontSize: FontSize.size_base,
+    color: Color.colorSienna,
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+  },
+
   resultadoDaAnlise: {
     height: 116,
     width: 400,
   },
-
-  diagnstico: {
-    top: 49,
-    left: 14,
-    height: 1080,
-    width: 200,
-    position: "absolute",
-  },
-  contPrincipal: {
-    backgroundColor: Color.colorWhite,
-    height: 1220,
-    width: "100%",
-  },
 });
 
-export default DIAGSAUDAVEL;
+export default DIAGSAUDAVEL_TST;

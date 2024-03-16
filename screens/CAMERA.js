@@ -7,6 +7,8 @@ import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
 
+import ComponenteDeExibicao from "../componentes/ExibePredict";
+
 //Função carregamento;
 const LoadingModal = ({ visible }) => (
   <Modal transparent visible={visible}>
@@ -20,17 +22,18 @@ const LoadingModal = ({ visible }) => (
 const CAMERA = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento
-
+  
   // Camera
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
   const [respostaAPI, setRespostaAPI] = useState(null);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
-    console.log("capturedImage atualizado:", capturedImage);
-  }, [capturedImage]); // Execute sempre que capturedImage for atualizadoc
+    console.log("Result atualizado:", result);
+  }, [result]); // Execute sempre que capturedImage for atualizadoc
 
   // Verificar as permissões da câmera ao carregar o componente;
   useEffect(() => {
@@ -58,17 +61,17 @@ const CAMERA = () => {
   const takePicture = async () => {
     if (cameraRef) {
       const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
-      console.log('Image URI: ', image);
+      //console.log('Image URI: ', image);
       setCapturedImage(image.uri);
-      console.log('URI da imagem tirada foto: ', capturedImage);
+      //console.log('URI da imagem tirada foto: ', capturedImage);
       try {
         const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter ImagemCam para Base64
         if (img_cam_base64) {
           setImageBase64(img_cam_base64); // Atualiza o estado da imagem em base64
           await chamarAPI(); // Chama a API
           // O código abaixo será executado apenas se a chamada da API for bem-sucedida
-          await manipularDadosAPI();
-          navigation.navigate('DIAGSAUDAVEL', { capturedImage: image.uri });
+          // await manipularDadosAPI();
+          navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage: image.uri, respostaAPI });
         }
       } catch (error) {
         console.error('Erro ao converter imagem:', error);
@@ -80,7 +83,7 @@ const CAMERA = () => {
   const selecionarImagemHandler = async () => {
     try {
       const img_armaz = await selecionarImagem(); // Função SelecionarImagem de ChamadaAPI;
-      console.log('URI da imagem selecionada: ', img_armaz);
+      console.log('Img selecionada - CAMERA: ', img_armaz);
       setCapturedImage(img_armaz);
 
       // Condição (Selecionar Imagem);
@@ -89,8 +92,9 @@ const CAMERA = () => {
         setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64;
         showLoading(); // Mostra a tela de carregamento;
         await chamarAPI(); // Chama a API;
-        await manipularDadosAPI(); // Exibe o resultado;
-        navigation.navigate('DIAGSAUDAVEL', { capturedImage: img_armaz }); // Navega para outro componente;
+        //await manipularDadosAPI(); // Exibe o resultado;
+        //console.log('Valor Result - CAMERA: ', result);
+        navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage: img_armaz, respostaAPI }); // Navega para outro componente;
       } else {
         Alert.alert('Nenhuma imagem selecionada', 'Por favor, selecione uma imagem.'); // Alerta de seleção de imagem;
       }
@@ -112,9 +116,9 @@ const CAMERA = () => {
         },
       };
       //console.log(imageBase64);
-      const res = await axios.post('http://192.168.1.104:5000/predict', imageBase64, config); //Endereço API;
-      setRespostaAPI(res.data); //Atualiza o estado da resposta enviada pela API;
-      console.log(res.data);
+      const res = await axios.post('http://192.168.1.103:5000/predict', imageBase64, config); //Endereço API;
+      setRespostaAPI(res.data.predictions); //Atualiza o estado da resposta enviada pela API;
+      console.log(res.data.predictions);
 
     } catch (error) {
       if (error.response) {
@@ -129,38 +133,39 @@ const CAMERA = () => {
     }
   };
 
+/*
   manipularDadosAPI = () => {
-    try{
-      if (respostaAPI){
-        const previsao = respostaAPI.prediction;
-
-        //Resultados filtrados por classe;
-        let saudavel = previsao[0][0];
-        let podridaoParda = previsao[0][1];
-        let brocaVagem = previsao[0][2];
-
-        let maiorNumero;
-        let result;
-        
-        //Condição para Exibir Resultados;
-        if ((saudavel > podridaoParda) && (saudavel > brocaVagem)){
-          maiorNumero = saudavel;
-          result = (maiorNumero * 100).toFixed(1)+ '%';
-          console.log('O fruto apresenta ', result,'de ser SAUDÁVEL.')
-
-        } else if ((podridaoParda > saudavel) && (podridaoParda > brocaVagem)) {
-          maiorNumero = podridaoParda;
-          result = (maiorNumero * 100).toFixed(1)+ '%';
-          console.log('O fruto apresenta ', result,'de ser PODRIDÃO PARDA.')
-        } else {
-          maiorNumero = brocaVagem;
-          result = (maiorNumero * 100).toFixed(1) + '%';
-          console.log('O fruto apresenta ', result,'de estar com BROCA DA VAGEM.')
-        }
+    try {
+      if (!respostaAPI) {
+        console.error('Resposta da API é nula ou indefinida.');
+        return;
       }
-    }catch (error) {
-      console.error('Erro de reposta da API:', error.respostaAPI);
+  
+      if (!previsao || previsao.length === 0) {
+        console.error('Previsão da API é inválida.');
+        return;
+      }
+  
+      const [saudavel, podridaoParda, brocaVagem] = previsao; //Desestruturação do array - Atribuição dos valores do array as variáveis em [];
+      const resultados = ['SAUDÁVEL', 'PODRIDÃO PARDA', 'BROCA DA VAGEM'];
+      const maiorNumero = Math.max(saudavel, podridaoParda, brocaVagem); //Atribui a {maiorNumero} o valor máximo das 3 previsões;
+      const indexMaior = [saudavel, podridaoParda, brocaVagem].indexOf(maiorNumero); //Obtém o índice do maior valor de previsão dentro do array [saudavel, podridaoParda, brocaVagem], que corresponde à classe com a previsão mais alta. Este índice será usado para recuperar o rótulo correspondente da lista resultados.
+      const numForm = (maiorNumero * 100).toFixed(1) + '%'; //Formata o valor;
+  
+      setResult(numForm);
+
+      console.log('O fruto apresenta', result, 'de ser', resultados[indexMaior] + '.');
+
+  
+    } catch (error) {
+      console.error('Erro ao manipular dados da API:', error);
     }
+  };
+*/
+
+  //TESTE
+  irDiag = () => {
+    navigation.navigate('DIAGSAUDAVEL_TST');
   };
 
   return (
@@ -203,7 +208,7 @@ const CAMERA = () => {
         </TouchableOpacity>
 
         {/*Botão Dicas Capt*/}
-        <TouchableOpacity onPress={manipularDadosAPI} style={styles.dicascaptura}>
+        <TouchableOpacity onPress={irDiag} style={styles.dicascaptura}>
           <Image
             style={styles.iconcaptura}
             contentFit="cover"
@@ -214,6 +219,8 @@ const CAMERA = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/*<ComponenteDeExibicao predictions={respostaAPI} />*/}
 
       {/* Tela de carregamento */}
       <LoadingModal visible={isLoading} />
