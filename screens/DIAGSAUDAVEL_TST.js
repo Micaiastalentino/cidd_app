@@ -77,7 +77,7 @@ const DIAGSAUDAVEL_TST = () => {
                 Análise Gráfica
               </Text>
               {/* Gráfico */}
-              <PieChart style={styles.grafico}
+              {/*<PieChart style={styles.grafico}
                 data={data}
                 width={400}
                 height={220}
@@ -90,7 +90,7 @@ const DIAGSAUDAVEL_TST = () => {
                 backgroundColor="transparent"
                 paddingLeft="15"
                 absolute
-              />
+              />*/}
             </View>
 
             {/* CUIDADOS E PRECAUÇÕES */} 
