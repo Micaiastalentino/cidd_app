@@ -9,13 +9,11 @@ import ComponenteDeExibicao from "../componentes/ExibePredict";
 
 import { useRoute } from "@react-navigation/native";
 
-//import {PredictionItem} from "../api/PredictionItem";
-
 const DIAGSAUDAVEL_TST = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
-  let {respostaAPI} = route.params;
+  const {respostaAPI} = route.params;
 
   console.log('Uri no DiagSaudavel: ', img_select);
   console.log('Valor Predict - DIAGSAUDAVEL: ', respostaAPI);
