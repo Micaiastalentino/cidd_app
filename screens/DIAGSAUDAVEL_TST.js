@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
+import { PieChart } from 'react-native-chart-kit';
+
 import ExibeImagem from "../componentes/ExibeImagem";
 
 import { useRoute } from "@react-navigation/native";
@@ -13,22 +15,31 @@ const DIAGSAUDAVEL_TST = () => {
   const route = useRoute();
   const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
   const {respostaAPI} = route.params; //Recebe o resultado da predição;
-
   // Calcula a classe com a maior confiança
   const maxConfidenceClass = Object.keys(respostaAPI).reduce((a, b) => respostaAPI[a] > respostaAPI[b] ? a : b);
   // Calcula o total de confiança para normalização
   const totalConfidence = Object.values(respostaAPI).reduce((acc, confidence) => acc + confidence, 0);
   // Calcula a porcentagem da classe com maior confiança
   const maxConfidencePercentage = (respostaAPI[maxConfidenceClass] / totalConfidence * 100).toFixed(2);
-
-  console.log('Uri no DiagSaudavel: ', img_select);
-  console.log('Predição - DIAGSAUDAVEL: ', respostaAPI);
-
   // Texto sobre o cacau com base na classe com maior confiança
   let textoSobreCacau = '';
   let textoCuidadosCacau = '';
   let classified = '';
   let imagem;
+
+  console.log('Uri no DiagSaudavel: ', img_select);
+  console.log('Predição - DIAGSAUDAVEL: ', respostaAPI);
+
+  // Extrair os dados para o gráfico de pizza
+  const data = Object.entries(respostaAPI).map(([classe, porcentagem]) => ({
+    name: classe,
+    percentagem: porcentagem,
+    //percentage: `${(porcentagem * 100).toFixed(2)}%`, // Formatando porcentagem
+    color: getColorForClass(classe), // Função que retorna uma cor para cada classe
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  }));
+
   switch (maxConfidenceClass) {
     case 'Classe 0': //Saudável;
       classified = 'Fruto Saudável';
@@ -40,7 +51,7 @@ const DIAGSAUDAVEL_TST = () => {
       classified = 'Podridão Parda';
       textoSobreCacau = 'O cacau capturado apresenta sintomas típicos da doença Podridão Parda, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A podridão parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.';
       textoCuidadosCacau = 'Remova os frutos afetados assim que forem detectados e destrua-os para evitar a propagação da doença. Mantenha o local limpo, remova restos de plantas e mantenha a área ao redor das árvores de cacau livre de ervas daninhas para reduzir a umidade e minimizar as condições favoráveis ao fungo. Inspecione regularmente as plantas em busca de sintomas da doença para detectar e tratar precocemente os focos de infecção.';
-      imagem = require("../assets/desenho-cacau-doente.png");
+      imagem = require("../assets/desenho-cacau-doentek1.png");
       break;
     case 'Classe 2': //Broca da Vagem;
       classified = 'Broca da Vagem';
@@ -65,6 +76,21 @@ const DIAGSAUDAVEL_TST = () => {
               <Text style={[styles.textAnaliseGrafica]}>
                 Análise Gráfica
               </Text>
+              {/* Gráfico */}
+              <PieChart style={styles.grafico}
+                data={data}
+                width={400}
+                height={220}
+                chartConfig={{
+                  backgroundColor: '#FFFFFF',
+                  decimalPlaces: 2,
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                }}
+                accessor="percentage"
+                backgroundColor="transparent"
+                paddingLeft="15"
+                absolute
+              />
             </View>
 
             {/* CUIDADOS E PRECAUÇÕES */} 
@@ -150,7 +176,27 @@ const DIAGSAUDAVEL_TST = () => {
   );
 };
 
+// Função para retornar uma cor com base na classe
+const getColorForClass = (classe) => {
+  switch (classe) {
+    case 'Classe 0':
+      return '#00FF00'; // Verde para saudável
+    case 'Classe 1':
+      return '#FF0000'; // Vermelho para podridão parda
+    case 'Classe 2':
+      return '#0000FF'; // Azul para broca da vagem
+    default:
+      return '#000000'; // Preto como padrão
+  }
+};
+
 const styles = StyleSheet.create({
+  grafico: {
+    left: '-10%',
+    marginTop: '10%',
+
+
+  },  
   containerscrol: {
     flex: 1,
     backgroundColor: "white"
