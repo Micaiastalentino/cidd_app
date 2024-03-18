@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 import ExibeImagem from "../componentes/ExibeImagem";
-import ComponenteDeExibicao from "../componentes/ExibePredict";
 
 import { useRoute } from "@react-navigation/native";
 
@@ -13,14 +12,49 @@ const DIAGSAUDAVEL_TST = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
-  const {respostaAPI} = route.params;
+  const {respostaAPI} = route.params; //Recebe o resultado da predição;
+
+  // Calcula a classe com a maior confiança
+  const maxConfidenceClass = Object.keys(respostaAPI).reduce((a, b) => respostaAPI[a] > respostaAPI[b] ? a : b);
+  // Calcula o total de confiança para normalização
+  const totalConfidence = Object.values(respostaAPI).reduce((acc, confidence) => acc + confidence, 0);
+  // Calcula a porcentagem da classe com maior confiança
+  const maxConfidencePercentage = (respostaAPI[maxConfidenceClass] / totalConfidence * 100).toFixed(2);
 
   console.log('Uri no DiagSaudavel: ', img_select);
-  console.log('Valor Predict - DIAGSAUDAVEL: ', respostaAPI);
+  console.log('Predição - DIAGSAUDAVEL: ', respostaAPI);
+
+  // Texto sobre o cacau com base na classe com maior confiança
+  let textoSobreCacau = '';
+  let textoCuidadosCacau = '';
+  let classified = '';
+  let imagem;
+  switch (maxConfidenceClass) {
+    case 'Classe 0': //Saudável;
+      classified = 'Fruto Saudável';
+      textoSobreCacau = 'O cacau capturado apresenta uma casca saudável e brilhante e consistente, livre de manchas ou deformidades. Sua cor varia conforme o estágio de maturação, indo de verde a tons amarelo/vermelho intensos. A forma simétrica e uniforme indica um desenvolvimento adequado, enquanto a textura da casca, firme e sem rugosidades excessivas, sugere frescor e saúde.';
+      textoCuidadosCacau = 'O fruto diagnosticado apresenta um resultado satisfatório, nesse sentido, a planta está sendo preservada utilizando boas práticas agrícolas, como irrigação adequada, controle de pragas e doenças, e manejo adequado do solo, contribuindo para a saúde geral dos seus frutos.';
+      imagem = require("../assets/desenho-cacau-saudavek1.png");
+      break;
+    case 'Classe 1': //Podridão Parda;
+      classified = 'Podridão Parda';
+      textoSobreCacau = 'O cacau capturado apresenta sintomas típicos da doença Podridão Parda, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A podridão parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.';
+      textoCuidadosCacau = 'Remova os frutos afetados assim que forem detectados e destrua-os para evitar a propagação da doença. Mantenha o local limpo, remova restos de plantas e mantenha a área ao redor das árvores de cacau livre de ervas daninhas para reduzir a umidade e minimizar as condições favoráveis ao fungo. Inspecione regularmente as plantas em busca de sintomas da doença para detectar e tratar precocemente os focos de infecção.';
+      imagem = require("../assets/desenho-cacau-doente.png");
+      break;
+    case 'Classe 2': //Broca da Vagem;
+      classified = 'Broca da Vagem';
+      textoSobreCacau = 'O fruto apresenta sintomas da doença Broca da Vagem (Ceratoma cacaofunesta) que incluem a presença de pequenos orifícios na casca do fruto, indicando a entrada da praga. Além disso, pode haver a presença de excrementos e teias produzidas pelas larvas da broca. As larvas se alimentam do interior da vagem, causando danos significativos à qualidade e ao rendimento da produção de cacau.';
+      textoCuidadosCacau = 'Inspecione frequentemente as vagens para detectar sinais de infestação, como pequenos orifícios e excrementos. Colher os frutos maduros assim que estiverem prontos, evitando deixá-los na árvore por muito tempo, pois isso pode aumentar o risco de infestação. Manter uma cobertura adequada de sombra sobre as árvores de cacau, pois a luz direta pode reduzir a incidência da broca da vagem. Estas medidas podem ajudar no combate a doença Broca da Vagem.';
+      imagem = require("../assets/desenho-cacau-doente-vagemk1.png");
+      break;
+    default:
+      textoSobreCacau = 'Informações gerais sobre o cacau';
+      textoCuidadosCacau = 'Cuidados gerais com o cacau';
+  }
 
   return (
     <ScrollView style={styles.containerscrol}>
-      <ComponenteDeExibicao predictions={respostaAPI} />
       <View style={styles.contPrincipal}>
         <View style={styles.diagnstico}>
           <View style={[styles.detalhesDaAnlise, styles.diagnsticoChildPosition]}>
@@ -34,22 +68,19 @@ const DIAGSAUDAVEL_TST = () => {
             </View>
 
             {/* CUIDADOS E PRECAUÇÕES */} 
-            {/* 
+            
             <View style={[styles.linha4, styles.linhaBorder]} />
+            <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
+              {textoCuidadosCacau}
+            </Text>
             <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
               Cuidados e Precauções
             </Text>
-            */}
 
             {/* SOBRE O CACAU */}
             <View style={[styles.SobreTodoViewCacau, styles.imagemCapturadaPosition]}>
               <Text style={[styles.textSobreoCacau, styles.tipoFontSobreCacau]}>
-                O cacau capturado apresenta uma casca saudável e brilhante e
-                consistente, livre de manchas ou deformidades. Sua cor varia
-                conforme o estágio de maturação, indo de verde a tons
-                amarelo/vermelho intensos. A forma simétrica e uniforme indica um
-                desenvolvimento adequado, enquanto a textura da casca, firme e sem
-                rugosidades excessivas, sugere frescor e saúde.
+                {textoSobreCacau}
               </Text>
               <View style={[styles.linha03, styles.linhaBorder]} />
               <Text style={[styles.titSobreCacau, styles.cacauFlexBox]}>
@@ -101,11 +132,11 @@ const DIAGSAUDAVEL_TST = () => {
               <Image
                 style={[styles.desenhoCacauSaudavek, styles.dashboardIconLayout]}
                 contentFit="cover"
-                source={require("../assets/desenho-cacau-saudavek1.png")}
+                source={imagem}
               />
-              <Text style={[styles.saudvel2, styles.saudvelTypo]}>Saudável</Text>
+              <Text style={[styles.saudvel2, styles.saudvelTypo]}>{classified}</Text>
               <Text style={[styles.resultTextoPorcentagem]}>
-                TESTE
+                {`(${maxConfidencePercentage}% de precisão)`}
               </Text>
             </View>
             <Text style={[styles.resultAnalise]}>
@@ -198,9 +229,9 @@ const styles = StyleSheet.create({
   },
   
   saudvel1Typo: {
-    marginLeft: 4,
+    marginLeft: 0,
     fontSize: FontSize.size_8xs,
-    textAlign: "left",
+    textAlign: "center",
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
   },
@@ -377,13 +408,15 @@ const styles = StyleSheet.create({
     right: "0.05%",
     left: "65.46%",
   },
+
   saudvel2: {
     height: "52%",
     width: "65.32%",
-    fontSize: 24,
-    color: Color.colorLimegreen,
-    left: "7%",
+    fontSize: 20,
+    color: '#006400',
+    left: "0%",
     position: "absolute",
+    textAlign: "center",
   },
 
   dePreciso: {
@@ -416,12 +449,12 @@ const styles = StyleSheet.create({
 
   resultTextoPorcentagem: {
     width: "99.37%",
-    left: "0.33%",
+    right: "-2%",
     top: "60%",
-    fontSize: FontSize.size_base,
+    fontSize: 13,
+    fontFamily: FontFamily.montserratMedium,
+    fontWeight: "bold",
     color: Color.colorSienna,
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
   },
 
   resultadoDaAnlise: {

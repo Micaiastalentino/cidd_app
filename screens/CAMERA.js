@@ -58,7 +58,7 @@ const CAMERA = () => {
     setIsLoading(true);
   };
 
-  // Tirar uma foto;
+  // Tirar uma foto
   const takePicture = async () => {
     if (cameraRef) {
       const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
@@ -115,7 +115,6 @@ const CAMERA = () => {
       //console.log(imageBase64);
       const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço API;
       setRespostaAPI(res.data.predictions); //Atualiza o estado da resposta enviada pela API;
-      console.log('Predição: ', respostaAPI);
 
     } catch (error) {
       if (error.response) {
