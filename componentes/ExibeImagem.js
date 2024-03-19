@@ -1,4 +1,5 @@
 import { View, Image, StyleSheet } from 'react-native';
+import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 const ExibeImagem = ({ capturedImage }) => {
 
@@ -19,8 +20,8 @@ const style = StyleSheet.create ({
     height: 320,
     left: 20,
     zIndex: 0,
-    borderColor: 'black',
-    borderWidth: 8,
+    borderColor: Color.colorDarkgray,
+    borderWidth: 1,
     borderRadius: 15,
   },
 });

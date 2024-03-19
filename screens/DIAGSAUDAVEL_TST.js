@@ -4,9 +4,9 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
-import { PieChart } from 'react-native-chart-kit';
-
 import ExibeImagem from "../componentes/ExibeImagem";
+
+import ExibeGrafico from '../componentes/ExibeGrafico'; // Importe o novo componente
 
 import { useRoute } from "@react-navigation/native";
 
@@ -30,15 +30,18 @@ const DIAGSAUDAVEL_TST = () => {
   console.log('Uri no DiagSaudavel: ', img_select);
   console.log('Predição - DIAGSAUDAVEL: ', respostaAPI);
 
+  //const percentageFormatted = (porcentagem * 100).toFixed(2) + '%';
+
   // Extrair os dados para o gráfico de pizza
   const data = Object.entries(respostaAPI).map(([classe, porcentagem]) => ({
     name: classe,
     percentagem: porcentagem,
-    //percentage: `${(porcentagem * 100).toFixed(2)}%`, // Formatando porcentagem
     color: getColorForClass(classe), // Função que retorna uma cor para cada classe
     legendFontColor: '#7F7F7F',
     legendFontSize: 15,
   }));
+
+  console.log(data);
 
   switch (maxConfidenceClass) {
     case 'Classe 0': //Saudável;
@@ -77,20 +80,7 @@ const DIAGSAUDAVEL_TST = () => {
                 Análise Gráfica
               </Text>
               {/* Gráfico */}
-              {/*<PieChart style={styles.grafico}
-                data={data}
-                width={400}
-                height={220}
-                chartConfig={{
-                  backgroundColor: '#FFFFFF',
-                  decimalPlaces: 2,
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                }}
-                accessor="percentage"
-                backgroundColor="transparent"
-                paddingLeft="15"
-                absolute
-              />*/}
+              <ExibeGrafico data={data}/>
             </View>
 
             {/* CUIDADOS E PRECAUÇÕES */} 
@@ -184,19 +174,13 @@ const getColorForClass = (classe) => {
     case 'Classe 1':
       return '#FF0000'; // Vermelho para podridão parda
     case 'Classe 2':
-      return '#0000FF'; // Azul para broca da vagem
+      return '#FFA500'; // Azul para broca da vagem
     default:
       return '#000000'; // Preto como padrão
   }
 };
 
 const styles = StyleSheet.create({
-  grafico: {
-    left: '-10%',
-    marginTop: '10%',
-
-
-  },  
   containerscrol: {
     flex: 1,
     backgroundColor: "white"
