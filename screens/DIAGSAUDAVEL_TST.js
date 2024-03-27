@@ -1,26 +1,21 @@
-import * as React from "react";
+import React, {useState} from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-
 import ExibeImagem from "../componentes/ExibeImagem";
-
-import ExibeGrafico from '../componentes/ExibeGrafico'; // Importe o novo componente
-
 import { useRoute } from "@react-navigation/native";
+import { PieChart } from 'react-native-svg-charts';
 
 const DIAGSAUDAVEL_TST = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
   const {respostaAPI} = route.params; //Recebe o resultado da predição;
-  // Calcula a classe com a maior confiança
+  // Calcula a classe com a maior confiança;
   const maxConfidenceClass = Object.keys(respostaAPI).reduce((a, b) => respostaAPI[a] > respostaAPI[b] ? a : b);
-  // Calcula o total de confiança para normalização
-  const totalConfidence = Object.values(respostaAPI).reduce((acc, confidence) => acc + confidence, 0);
-  // Calcula a porcentagem da classe com maior confiança
-  const maxConfidencePercentage = (respostaAPI[maxConfidenceClass] / totalConfidence * 100).toFixed(2);
+  // Calcula a porcentagem das classes;
+  const maxConfidencePercentage = (respostaAPI[maxConfidenceClass] * 100).toFixed(2);
   // Texto sobre o cacau com base na classe com maior confiança
   let textoSobreCacau = '';
   let textoCuidadosCacau = '';
@@ -30,19 +25,31 @@ const DIAGSAUDAVEL_TST = () => {
   console.log('Uri no DiagSaudavel: ', img_select);
   console.log('Predição - DIAGSAUDAVEL: ', respostaAPI);
 
-  //const percentageFormatted = (porcentagem * 100).toFixed(2) + '%';
+  // Mapeamento dos valores de classe para os nomes desejados
+  const nomePersonalizado = {
+    'Classe 0': 'Saudável',
+    'Classe 1': 'Podridão Parda',
+    'Classe 2': 'Vassoura-de-Bruxa',
+  };
 
   // Extrair os dados para o gráfico de pizza
   const data = Object.entries(respostaAPI).map(([classe, porcentagem]) => ({
-    name: classe,
-    percentagem: porcentagem,
+    name: nomePersonalizado[classe] || classe,
+    percentagem: parseFloat((porcentagem * 100).toFixed(2)), // Converter para número e limitar a 2 casas decimais
     color: getColorForClass(classe), // Função que retorna uma cor para cada classe
     legendFontColor: '#7F7F7F',
     legendFontSize: 15,
   }));
+  //Dados enviados para o Gráfico
+  const pieData = data.map((item, index) => ({
+    value: item.percentagem,
+    svg: {
+      fill: item.color,
+    },
+    key: `pie-${index}`,
+  }));
 
-  console.log(data);
-
+  //Variáveis dinâmicas
   switch (maxConfidenceClass) {
     case 'Classe 0': //Saudável;
       classified = 'Fruto Saudável';
@@ -56,83 +63,77 @@ const DIAGSAUDAVEL_TST = () => {
       textoCuidadosCacau = 'Remova os frutos afetados assim que forem detectados e destrua-os para evitar a propagação da doença. Mantenha o local limpo, remova restos de plantas e mantenha a área ao redor das árvores de cacau livre de ervas daninhas para reduzir a umidade e minimizar as condições favoráveis ao fungo. Inspecione regularmente as plantas em busca de sintomas da doença para detectar e tratar precocemente os focos de infecção.';
       imagem = require("../assets/desenho-cacau-doentek1.png");
       break;
-    case 'Classe 2': //Broca da Vagem;
-      classified = 'Broca da Vagem';
-      textoSobreCacau = 'O fruto apresenta sintomas da doença Broca da Vagem (Ceratoma cacaofunesta) que incluem a presença de pequenos orifícios na casca do fruto, indicando a entrada da praga. Além disso, pode haver a presença de excrementos e teias produzidas pelas larvas da broca. As larvas se alimentam do interior da vagem, causando danos significativos à qualidade e ao rendimento da produção de cacau.';
-      textoCuidadosCacau = 'Inspecione frequentemente as vagens para detectar sinais de infestação, como pequenos orifícios e excrementos. Colher os frutos maduros assim que estiverem prontos, evitando deixá-los na árvore por muito tempo, pois isso pode aumentar o risco de infestação. Manter uma cobertura adequada de sombra sobre as árvores de cacau, pois a luz direta pode reduzir a incidência da broca da vagem. Estas medidas podem ajudar no combate a doença Broca da Vagem.';
+    case 'Classe 2': //Vassoura-de-Bruxa;
+      classified = 'Vassoura-de-Bruxa';
+      textoSobreCacau = '';
+      textoCuidadosCacau = '';
       imagem = require("../assets/desenho-cacau-doente-vagemk1.png");
       break;
     default:
       textoSobreCacau = 'Informações gerais sobre o cacau';
       textoCuidadosCacau = 'Cuidados gerais com o cacau';
   }
-
   return (
-    <ScrollView style={styles.containerscrol}>
+    <ScrollView style={styles.containerScrol}>
       <View style={styles.contPrincipal}>
-        <View style={styles.diagnstico}>
+        <View style={styles.contSecundario}>
           <View style={[styles.detalhesDaAnlise, styles.diagnsticoChildPosition]}>
             
             {/* ANALISE GRÁFICA */}
             <View style={styles.viewAnaliseGrafica}>
-              <View style={[styles.linha03, styles.linhaBorder]} />
-              <Text style={[styles.textAnaliseGrafica]}>
+              <View style={[styles.linha44, styles.linhaBorder]} />
+              <Text style={[styles.textAnaliseGrafica, styles.tipoTituloPadrao]}>
                 Análise Gráfica
               </Text>
               {/* Gráfico */}
-              <ExibeGrafico data={data}/>
+              <View style={styles.contGrafico}>
+                <PieChart
+                  style={styles.grafico}
+                  data={pieData}
+                  outerRadius={'95%'}
+                />
+                {/* LEGENDAS */}
+                <View style={styles.legendContainerGfc}>
+                  {data.map((item, index) => (
+                    <TouchableOpacity
+                      key={`legend-${index}`}
+                      onPress={() => console.log(`${item.name}: ${item.percentagem}%`)}
+                      style={styles.legendItemGfc}
+                    >
+                      <View style={[styles.legendColorGfc, { backgroundColor: item.color }]} />
+                      <Text style={styles.legendTextGfc}>{`${item.name}: ${item.percentagem}%`}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
             </View>
 
             {/* CUIDADOS E PRECAUÇÕES */} 
-            
             <View style={[styles.linha4, styles.linhaBorder]} />
-            <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
+            <Text style={[styles.textCuidadosEPrec, styles.tipoFont]}>
               {textoCuidadosCacau}
             </Text>
-            <Text style={[styles.cuidadosEPrecaues, styles.imagemCapturadaTypo]}>
+            <Text style={[styles.titCuidadosEPrec, styles.tipoTituloPadrao]}>
               Cuidados e Precauções
             </Text>
 
             {/* SOBRE O CACAU */}
-            <View style={[styles.SobreTodoViewCacau, styles.imagemCapturadaPosition]}>
-              <Text style={[styles.textSobreoCacau, styles.tipoFontSobreCacau]}>
-                {textoSobreCacau}
-              </Text>
-              <View style={[styles.linha03, styles.linhaBorder]} />
-              <Text style={[styles.titSobreCacau, styles.cacauFlexBox]}>
-                Sobre o cacau
-              </Text>
-            </View>
-            
-            {/* LEGENDAS */} 
-            {/* 
-            <View style={styles.legenda}>
-              <View style={styles.legenda1Position}>
-                <View style={styles.rectangleParent}>
-                  <View style={styles.frameChild} />
-                  <Text style={[styles.saudvel1, styles.saudvel1Typo]}>
-                    Saudável
-                  </Text>
-                </View>
-                <View style={styles.rectangleGroup}>
-                  <View style={styles.frameItem} />
-                  <Text style={[styles.podridoParda, styles.saudvel1Typo]}>
-                    Podridão Parda
-                  </Text>
-                </View>
-              </View>
-            </View>
-            */}
-
+            <View style={[styles.linha3, styles.linhaBorder]} />
+            <Text style={[styles.textSobreoCacau, styles.tipoFont]}>
+              {textoSobreCacau}
+            </Text>
+            <Text style={[styles.titSobreCacau, styles.tipoTituloPadrao]}>
+              Sobre o Cacau
+            </Text>
             {/* Exibe a imagem capturada*/}  
-            <View style={styles.cacau}>
+            <View style={[styles.linha, styles.linhaBorder]} />
+            <Text style={[styles.titImagemCapturada, styles.tipoTituloPadrao]}>
+              Imagem Capturada
+            </Text>
+            <TouchableOpacity style={styles.imgCapturada}>
               {/* Componente ExibeImagem */}
               <ExibeImagem capturedImage={img_select} /> 
-            </View>
-            <View style={[styles.linha2, styles.linhaBorder]} />
-            <Text style={[styles.imagemCapturada, styles.imagemCapturadaPosition]}>
-              Imagem capturada
-            </Text>
+            </TouchableOpacity>
           </View>
           
           {/*EDITADA*/}
@@ -142,21 +143,22 @@ const DIAGSAUDAVEL_TST = () => {
               contentFit="cover"
               source={require("../assets/rectangle-2.png")}
             />
-
-            {/* RESULTADO DA ANALISE; */}
-            <View style={styles.resultadoTxI}>
+            {/* RESULTADO DA ANALISE */}
+            <View style={styles.contResultado}>
               <Image
-                style={[styles.desenhoCacauSaudavek, styles.dashboardIconLayout]}
+                style={[styles.iconImgCacau, styles.dashboardIconLayout]}
                 contentFit="cover"
                 source={imagem}
               />
-              <Text style={[styles.saudvel2, styles.saudvelTypo]}>{classified}</Text>
+              <Text style={[styles.compClassified, styles.tituloClassified]}>
+                {classified}
+              </Text>
               <Text style={[styles.resultTextoPorcentagem]}>
                 {`(${maxConfidencePercentage}% de precisão)`}
               </Text>
             </View>
             <Text style={[styles.resultAnalise]}>
-              Resultado da análise:
+              Resultado da Análise:
             </Text>
 
           </View>
@@ -181,51 +183,71 @@ const getColorForClass = (classe) => {
 };
 
 const styles = StyleSheet.create({
-  containerscrol: {
+
+  containerScrol: {
     flex: 1,
-    backgroundColor: "white"
   },
   
-  diagnstico: {
-    top: 49,
-    left: 14,
-    height: 1080,
-    width: 200,
+  contSecundario: {
+    top: '3%',
+    marginStart: "2%",
+    width: "50%",
     position: "absolute",
   },
   
   contPrincipal: {
     backgroundColor: Color.colorWhite,
-    height: 1800,
-    width: "100%",
+    height: 1650, //ALTURA DA TELA
+    width: "100%", //LARGURA DA TELA
+    //backgroundColor: 'black',
   },
+
+  //GRAFICO ;
+  contGrafico: {
+    flexDirection: 'col',
+    alignItems: 'center',
+    width: "100%",
+    height: "20%",
+    marginTop: '10%'
+  },
+  grafico: {
+    aspectRatio: 1, // Ajuste para centralizar o gráfico
+  },
+  legendContainerGfc:{
+    marginTop: 20,
+  },
+  legendItemGfc: {
+    flexDirection: 'row',
+    alignItems: 'left',
+    marginBottom: 10,
+    marginTop: '1%',
+    marginLeft: '-40%',
+  },
+  legendColorGfc: {
+    width: 20,
+    height: 20,
+    borderRadius: 5,
+    marginRight: 5,
+  },
+  legendTextGfc: {
+    fontSize: 14,
+  },
+/////////////////////
+  
 
   detalhesDaAnlise: {
     height: 1600,
+    //backgroundColor: 'black',
   },
 
   diagnsticoChildPosition: {
+    flex: 1,
     top: 127,
-    left: 0,
     width: "185%",
     borderRadius: Border.br_3xs,
     borderWidth: 1, // largura da borda
     borderColor: Color.colorDarkgray, // cor da borda
     position: "absolute",
-  },
-  dashboardIconLayout: {
-    maxHeight: "100%",
-    maxWidth: "100%",
-    bottom: "0%",
-    top: "0%",
-    height: "100%",
-    overflow: "hidden",
-    position: "absolute",
-  },
-  saudvelTypo: {
-    textAlign: "left",
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
   },
   textTypo: {
     height: "29.63%",
@@ -235,6 +257,26 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_4xs,
     position: "absolute",
   },
+
+  /// TITULO CUIDADOS E PRECAUÇÕES
+  titCuidadosEPrec: {
+    height: "100%",
+    width: "100%",
+    top: "76%",
+    color: Color.colorSienna,
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    position: "absolute",
+    fontSize: 16,
+  },
+  //TEXTO CUIDADOS E PRECAUÇÕES
+  textCuidadosEPrec: {
+    top: "78%",
+    width: "100%",
+    textAlign: "justify",
+    position: "absolute",
+  },
+  //BORDA DAs LINHAs
   linhaBorder: {
     height: 1,
     borderTopWidth: 1,
@@ -242,211 +284,130 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     position: "absolute",
   },
-  imagemCapturadaTypo: {
-    height: "1.91%",
-    alignItems: "center",
-    display: "flex",
-    color: Color.colorSienna,
-    lineHeight: 13,
-    fontSize: FontSize.size_3xs,
-    textAlign: "left",
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
+  //LINHAS
+  linha: {
+    top: '2.5%',
+    width: '100%',
   },
-  imagemCapturadaPosition: {
-    left: "6.02%",
-    position: "absolute",
+  linha3: {
+    top: '27.4%',
+    width: '100%',
   },
-  
-  saudvel1Typo: {
-    marginLeft: 0,
-    fontSize: FontSize.size_8xs,
-    textAlign: "center",
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-  },
-  cacauSaudvelIconPosition: {
-    zIndex: 1,
-    position: "absolute",
-  },
-
-  legenda1Position: {
-    top: 0,
-    left: 0,
-    position: "absolute",
-  },
-
-  linha03: {
-    width: 335,
-    top: 20,
-    left: 0,
-  },
-  
-  textAnaliseGrafica: {
-    height: "15%",
-    alignItems: "center",
-    color: Color.colorSienna,
-    display: "flex",
-    textAlign: "left",
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    top: "0%",
-    position: "absolute",
-    lineHeight: 14,
-    fontSize: 14,
-    left: "0.48%",
-    width: "99.52%",
-  },
-
-  //View Analise Grafica;
-  viewAnaliseGrafica: {
-    top: 660,
-    width: 291,
-    height: 196,
-    left: 20,
-    position: "absolute",
-  },
-
   linha4: {
-    top: 820,
-    left: 25,
-    width: 266,
+    top: '77.7%',
+    width: '100%',
   },
-  cuidadosEPrecaues: {
-    width: "87.11%",
-    top: "84.89%",
-    left: "8.07%",
+  linha44: {
+    top: '1.5%',
+    width: '100%',
+  },
+  ///TITULO ANALISE GRAFICA
+  textAnaliseGrafica: {
+    width: "100%",
+    height: "100%",
+    color: Color.colorSienna,
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    fontSize: 16,
     position: "absolute",
   },
-
-  //Sobre o cacau;
-  tipoFontSobreCacau: {
+  viewAnaliseGrafica: {
+    top: "44%",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  },
+  //PADRAO DE FONTE TITULO
+  tipoTituloPadrao:{
+    marginLeft: "2%",
+  },
+  //PADRÃO DE FONTE TEXTOS
+  tipoFont: {
     fontFamily: FontFamily.montserratMedium,
     fontWeight: "500",
     color: Color.colorSienna,
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 14,
+    lineHeight: 19,
     position: "absolute",
+    flexDirection: "row",
+    padding: 10,
   },
+  ///SOBRE O CACAU TEXTO
   textSobreoCacau: {
-    height: "120%",
-    top: "20.71%",
+    width: '100%',
+    height: "100%",
+    marginTop: '118%',
     textAlign: "justify",
-    alignItems: "center",
-    display: "flex",
-    left: "0.5%",
-    width: "103%",
-    fontWeight: "500",
   },
+  ///TITULO SOBRE O CACAU
   titSobreCacau: {
-    height: "12.86%",
-    alignItems: "center",
     color: Color.colorSienna,
-    display: "flex",
-    textAlign: "left",
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
-    top: "0%",
     position: "absolute",
-    lineHeight: 13,
-    fontSize: 14,
-    left: "0.48%",
-    width: "99.52%",
-  },
-  //View Sobre o Cacau;
-  SobreTodoViewCacau: {
-    height: "14.89%",
-    width: "87.53%",
-    top: "25%",
-    right: "6.45%",
-    bottom: "43.3%",
-  },
-
-  frameChild: {
-    backgroundColor: Color.colorLimegreen,
-    height: 10,
-    width: 10,
-  },
-  saudvel1: {
-    color: Color.colorLimegreen,
-  },
-  rectangleParent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  frameItem: {
-    backgroundColor: Color.colorMediumslateblue_100,
-    height: 9,
-    width: 10,
-  },
-  podridoParda: {
-    color: Color.colorMediumslateblue_100,
-  },
-  rectangleGroup: {
-    marginTop: 3,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  legenda: {
-    top: 746,
-    left: 28,
-    width: 55,
-    height: 22,
-    position: "absolute",
-  },
-  cacauSaudvelIcon: {
-    left: 29,
-    width: 213,
-    height: 276,
-    top: 22,
-    borderRadius: Border.br_3xs,
-  },
-  cacau: {
-    top: 54,
-    left: 30,
-    flexDirection: "row",
-    position: "absolute",
-  },
-  linha2: {
-    top: 38,
-    width: 335,
-    left: 20,
-  },
-  imagemCapturada: {
+    fontSize: 16,
     width: "100%",
     height: "100%",
-    top: "1%",
-    alignItems: "center",
-    color: Color.colorSienna,
-    fontSize: 14,
-    textAlign: "left",
+    marginTop: "110%",
+  },
+  //IMAGEM CAPTURADA
+  imgCapturada: {
+    marginTop: '7%',
+    alignItems: 'center',
+  },
+  // TEXTO IMAGEM CAPTURADA
+  titImagemCapturada: {
+    width: "100%",
+    marginTop: "4%",
     fontFamily: FontFamily.montserratBold,
+    color: Color.colorSienna,
     fontWeight: "700",
+    fontSize: 16,
   },
 
   resultadoDaAnliseChild: {
-    height: 110,
+    flex: 1,
+    height: "100%",
+    width: "100%",
     borderRadius: Border.br_3xs,
     borderWidth: 1, // largura da borda
     borderColor: Color.colorDarkgray, // cor da borda
-    width: "92.5%",
     position: "absolute",
   },
-  
-  desenhoCacauSaudavek: {
-    width: "34.5%",
-    right: "0.05%",
-    left: "65.46%",
-  },
-
-  saudvel2: {
-    height: "52%",
-    width: "65.32%",
-    fontSize: 20,
+  //TITULO CLASSIFICAÇÃO
+  tituloClassified: {
+    width: "100%",
     color: '#006400',
-    left: "0%",
+    position: "relative",
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    fontSize: 22,
+  },
+  //TEXTO PORCENTAGEM;
+  resultTextoPorcentagem: {
+    width: "100%",
+    fontSize: 13,
+    fontFamily: FontFamily.montserratMedium,
+    color: Color.colorSienna,
+    fontWeight: "bold",
+  },
+  //CONTAINER DO RESULTADO;
+  contResultado: {
+    width: "100%",
+    height: "100%",
     position: "absolute",
-    textAlign: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    left: '10%',
+
+  },
+  //ICON CACAU IMAGEM;
+  iconImgCacau: {
+    width: "30%",
+    height: "70%",
+    overflow: 'scroll',
+    position: 'absolute',
+    right: '15%',
   },
 
   dePreciso: {
@@ -458,38 +419,20 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 
-  resultadoTxI: {
-    height: "50.86%",
-    width: "66.36%",
-    top: "20%",
-    right: "17.83%",
-    left: "15.81%",
-    position: "absolute",
-  },
-
   resultAnalise: {
-    width: "99.37%",
-    left: "0.33%",
-    top: "-25%",
-    fontSize: FontSize.size_base,
+    width: "100%",
+    height: "100%",
+    marginTop: "-7.2%",
+    fontSize: 16,
     color: Color.colorSienna,
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
   },
 
-  resultTextoPorcentagem: {
-    width: "99.37%",
-    right: "-2%",
-    top: "60%",
-    fontSize: 13,
-    fontFamily: FontFamily.montserratMedium,
-    fontWeight: "bold",
-    color: Color.colorSienna,
-  },
 
   resultadoDaAnlise: {
-    height: 116,
-    width: 400,
+    height: 120,
+    width: "185.5%",
   },
 });
 

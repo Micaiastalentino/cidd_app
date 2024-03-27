@@ -19,7 +19,6 @@ import CAPTURA from "./screens/CAPTURA";
 import PERFIL from "./screens/PERFIL";
 import CONFIGURACOES from "./screens/CONFIGURACOES";
 import HOME from "./screens/HOME";
-import DIAGSAUDAVEL from "./screens/DIAGSAUDAVELL";
 import CADASTRESE from "./screens/CADASTRESE";
 import CAMERA from "./screens/CAMERA";
 import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";

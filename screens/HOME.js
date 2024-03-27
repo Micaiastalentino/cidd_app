@@ -1,14 +1,27 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView, Share, Platform, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
 import CAMERA from "./CAMERA";
 import { Feather } from '@expo/vector-icons';
+//import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 const HOME = () => {
   const navigation = useNavigation();
+
+  const shareContent = () => {
+    console.log("Pressionado");
+  
+    if (Platform.OS === 'android') {
+      Share.share({
+        message: 'Confira este link: https://www.appcidd.com.br',
+      });
+    } else {
+      // Implemente a lógica de compartilhamento para outras plataformas (iOS, por exemplo)
+    }
+  };
 
   return (
     <View style={styles.home}>
@@ -76,32 +89,33 @@ const HOME = () => {
         </View>
       </View>
 
-
-      <Text style={[styles.compartilharLink, styles.classificaoFlexBox]}>
-        Compartilhar link
-      </Text>
-
       <Text style={[styles.tiposDeClassificao, styles.classificaoFlexBox]}>
         Tipos de Classificação
       </Text>
-      
+
+      <View style={[styles.ret_verde_01, styles.homeInnerLayout]}>
+        <Image
+          style={styles.iconetiposclassificao}
+          contentFit="cover"
+          source={require("../assets/iconetiposclassificao.png")}
+        />
+      </View>
       <Image
         style={[styles.ret_verde_02, styles.homeInnerLayout]}
         contentFit="cover"
         source={require("../assets/rectangle-12.png")}
       />
-      <Image
-        style={[styles.iconecompartilhamento, styles.barraDgncLayout]}
-        contentFit="cover"
-        source={require("../assets/iconecompartilhamento.png")}
-      />
-      <View style={[styles.ret_verde_01, styles.homeInnerLayout]} />
-      <Image
-        style={styles.iconetiposclassificao}
-        contentFit="cover"
-        source={require("../assets/iconetiposclassificao.png")}
-      />
 
+      <TouchableOpacity onPress={shareContent}>
+        <Text style={[styles.compartilharLink, styles.classificaoFlexBox]}>
+          Compartilhar link
+        </Text>
+        <Image
+          style={[styles.iconecompartilhamento, styles.barraDgncLayout]}
+          contentFit="cover"
+          source={require("../assets/iconecompartilhamento.png")}
+        />
+      </TouchableOpacity>
       <Text style={[styles.classificaoDeDonas, styles.classificaoFlexBox]}>
         CACAU INTELIGENTE:
         DIAGNÓSTICO DE DOÊNÇAS
@@ -116,8 +130,8 @@ const styles = StyleSheet.create({
   homeItemPosition: {
     borderBottomLeftRadius: Border.br_11xl,
     borderBottomRightRadius: Border.br_11xl,
-    width: 450,
-    height: 700,
+    width: "100%",
+    height: "100%",
     position: "absolute",
   },
 
@@ -162,7 +176,6 @@ const styles = StyleSheet.create({
 
   backgroundCacauIcon: {
     width: "100%",
-    height: "100%",
   },
 
   homeChild: {
@@ -235,14 +248,6 @@ const styles = StyleSheet.create({
     top:"70.5%",
     position: "absolute",
   },
-  
-  barraDgnc: {
-    backgroundColor: Color.colorSienna,
-    width: "100%",
-    left: 0,
-    top: 0,
-    marginTop: 40,
-  },
   appcaCauTxtContainer: {
     width: "50%",
   },
@@ -250,7 +255,6 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.montserratBold,
     width: "30%",
     marginLeft: 100,
-    display: "flex",
     color: Color.colorWhite,
     fontWeight: "700",
     fontSize: FontSize.size_base,
@@ -301,7 +305,7 @@ const styles = StyleSheet.create({
   tiposDeClassificao: {
     top: 450,
     left: 53,
-    width: 105,
+    width: 100,
     height: 34,
     fontFamily: FontFamily.poppinsRegular,
     lineHeight: 16,
