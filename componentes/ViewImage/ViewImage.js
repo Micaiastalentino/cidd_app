@@ -1,23 +1,17 @@
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Color } from "../GlobalStyles";
+import { Color } from "../../GlobalStyles";
 
-const ExibeImagem = ({ capturedImage }) => {
-  const handleImagePress = () => {
-    // Lógica para lidar com a interação da imagem
-    console.log('Imagem pressionada!');
-  };
-
+const ViewImage = ({ capturedImage }) => {
   return (
     <View>
       {/* Exibindo a imagem usando a URI passada como propriedade */}
-      <TouchableOpacity onPress={handleImagePress}>
-        <Image style={style.img} source={{ uri: capturedImage }}/>
+      <TouchableOpacity>
+        <Image style={style.img} source={{ uri: capturedImage }} testID="image-component"/>
       </TouchableOpacity>
     </View>
   );
 };
-
 const style = StyleSheet.create ({
   img: {
     width: 270,
@@ -28,4 +22,4 @@ const style = StyleSheet.create ({
   },
 });
 
-export default ExibeImagem;
+export default ViewImage;

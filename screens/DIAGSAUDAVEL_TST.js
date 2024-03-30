@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import ExibeImagem from "../componentes/ExibeImagem";
+import ViewImage from "../componentes/ViewImage";
 import { useRoute } from "@react-navigation/native";
 import { PieChart } from 'react-native-svg-charts';
 
@@ -32,7 +32,7 @@ const DIAGSAUDAVEL_TST = () => {
     'Classe 2': 'Vassoura-de-Bruxa',
   };
 
-  // Extrair os dados para o gráfico de pizza
+  //Extrair os dados para o gráfico de pizza;
   const data = Object.entries(respostaAPI).map(([classe, porcentagem]) => ({
     name: nomePersonalizado[classe] || classe,
     percentagem: parseFloat((porcentagem * 100).toFixed(2)), // Converter para número e limitar a 2 casas decimais
@@ -40,7 +40,7 @@ const DIAGSAUDAVEL_TST = () => {
     legendFontColor: '#7F7F7F',
     legendFontSize: 15,
   }));
-  //Dados enviados para o Gráfico
+  //Dados enviados para o Gráfico;
   const pieData = data.map((item, index) => ({
     value: item.percentagem,
     svg: {
@@ -49,7 +49,7 @@ const DIAGSAUDAVEL_TST = () => {
     key: `pie-${index}`,
   }));
 
-  //Variáveis dinâmicas
+  //Variáveis dinâmicas;
   switch (maxConfidenceClass) {
     case 'Classe 0': //Saudável;
       classified = 'Fruto Saudável';

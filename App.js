@@ -1,18 +1,10 @@
 import * as React from "react";
-
 import { NavigationContainer } from "@react-navigation/native";
-
 import { useNavigation } from "@react-navigation/native";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import { Entypo } from '@expo/vector-icons';
-
-
 import { Image } from "expo-image";
-
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
-
 import { useFonts } from "expo-font";
 import LOGIN from "./screens/LOGIN";
 import CAPTURA from "./screens/CAPTURA";
