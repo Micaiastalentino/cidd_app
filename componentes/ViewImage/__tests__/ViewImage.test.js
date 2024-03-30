@@ -7,7 +7,7 @@ describe('ViewImage component', () => {
   test('renders correctly', () => {
     const { getByTestId } = render(
       <ViewImage 
-        capturedImage="C:/Users/micai/Downloads/Development/cidd_app/img/imgtest.png" 
+        capturedImage="C:/Users/micai/Downloads/Development/Cacau-Prototype/img-cacau" 
       />
     );
     const imageComponent = getByTestId('image-component');
