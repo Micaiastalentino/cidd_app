@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     height: 320,
     borderWidth: 1,
     borderRadius: 15,
-    borderColor: Color.colorDarkgray, // Use Color.colorDarkgray do seu estilo global
+    borderColor: Color.colorDarkgray,
   },
 });
 
