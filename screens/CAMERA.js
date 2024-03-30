@@ -2,7 +2,7 @@ import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Ale
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
-import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI";
+import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI"; //Componente
 import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
@@ -128,42 +128,6 @@ const CAMERA = () => {
       console.error('Erro geral ao chamar a API:', error);
     }
   };
-
-/*
-  manipularDadosAPI = () => {
-    try {
-      if (!respostaAPI) {
-        console.error('Resposta da API é nula ou indefinida.');
-        return;
-      }
-  
-      if (!previsao || previsao.length === 0) {
-        console.error('Previsão da API é inválida.');
-        return;
-      }
-  
-      const [saudavel, podridaoParda, brocaVagem] = previsao; //Desestruturação do array - Atribuição dos valores do array as variáveis em [];
-      const resultados = ['SAUDÁVEL', 'PODRIDÃO PARDA', 'BROCA DA VAGEM'];
-      const maiorNumero = Math.max(saudavel, podridaoParda, brocaVagem); //Atribui a {maiorNumero} o valor máximo das 3 previsões;
-      const indexMaior = [saudavel, podridaoParda, brocaVagem].indexOf(maiorNumero); //Obtém o índice do maior valor de previsão dentro do array [saudavel, podridaoParda, brocaVagem], que corresponde à classe com a previsão mais alta. Este índice será usado para recuperar o rótulo correspondente da lista resultados.
-      const numForm = (maiorNumero * 100).toFixed(1) + '%'; //Formata o valor;
-  
-      setResult(numForm);
-
-      console.log('O fruto apresenta', result, 'de ser', resultados[indexMaior] + '.');
-
-  
-    } catch (error) {
-      console.error('Erro ao manipular dados da API:', error);
-    }
-  };
-*/
-
-  //TESTE
-  irDiag = () => {
-    navigation.navigate('DIAGSAUDAVEL_TST');
-  };
-
   return (
     <View style={styles.container}>
       {/*Exibe a Câmera*/}
@@ -204,7 +168,7 @@ const CAMERA = () => {
         </TouchableOpacity>
 
         {/*Botão Dicas Capt*/}
-        <TouchableOpacity onPress={irDiag} style={styles.dicascaptura}>
+        <TouchableOpacity style={styles.dicascaptura}>
           <Image
             style={styles.iconcaptura}
             contentFit="cover"
@@ -244,7 +208,6 @@ const styles = StyleSheet.create({
 
   tirarfoto:{
     marginTop: 2,
-
   },
 
 

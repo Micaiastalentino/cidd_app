@@ -6,9 +6,7 @@ const ViewImage = ({ capturedImage }) => {
   return (
     <View>
       {/* Exibindo a imagem usando a URI passada como propriedade */}
-      <TouchableOpacity>
-        <Image style={style.img} source={{ uri: capturedImage }} testID="image-component"/>
-      </TouchableOpacity>
+      <Image style={style.img} source={{ uri: capturedImage }} testID="image-component"/>
     </View>
   );
 };
@@ -16,9 +14,9 @@ const style = StyleSheet.create ({
   img: {
     width: 270,
     height: 320,
-    borderColor: Color.colorDarkgray,
     borderWidth: 1,
     borderRadius: 15,
+    borderColor: Color.colorDarkgray,
   },
 });
 

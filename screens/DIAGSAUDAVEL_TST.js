@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import ViewImage from "../componentes/ViewImage";
+import ViewImage from "../componentes/ViewImage/ViewImage"; //Componente
 import { useRoute } from "@react-navigation/native";
 import { PieChart } from 'react-native-svg-charts';
 
@@ -132,7 +132,7 @@ const DIAGSAUDAVEL_TST = () => {
             </Text>
             <TouchableOpacity style={styles.imgCapturada}>
               {/* Componente ExibeImagem */}
-              <ExibeImagem capturedImage={img_select} /> 
+              <ViewImage capturedImage={img_select} /> 
             </TouchableOpacity>
           </View>
           
