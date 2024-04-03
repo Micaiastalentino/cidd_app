@@ -13,7 +13,7 @@ const CONFIGURACOES = () => {
         <Image
           style={styles.iconLayout2}
           contentFit="cover"
-          source={require("../assets/logo-app.png")}
+          source={require("../assets/images/logo-app.png")}
         />
         <Text style={[styles.sobreOAplicativo, styles.avalieEComenteTypo]}>
           Sobre o aplicativo
@@ -23,7 +23,7 @@ const CONFIGURACOES = () => {
         <Image
           style={styles.mailIcon}
           contentFit="cover"
-          source={require("../assets/mail.png")}
+          source={require("../assets/images/mail.png")}
         />
         <Text style={[styles.sobreOAplicativo, styles.avalieEComenteTypo]}>
           Contate-nos
@@ -33,7 +33,7 @@ const CONFIGURACOES = () => {
         <Image
           style={styles.errorIcon}
           contentFit="cover"
-          source={require("../assets/error.png")}
+          source={require("../assets/images/error.png")}
         />
         <Text style={[styles.sobreOAplicativo, styles.avalieEComenteTypo]}>
           Dicas para tirar fotos
@@ -51,7 +51,7 @@ const CONFIGURACOES = () => {
         <Image
           style={[styles.fiRrStarIcon, styles.iconLayout]}
           contentFit="cover"
-          source={require("../assets/firrstar.png")}
+          source={require("../assets/images/firrstar.png")}
         />
         <Text style={[styles.avalieEComente, styles.avalieEComenteTypo]}>
           Avalie e comente
@@ -61,7 +61,7 @@ const CONFIGURACOES = () => {
         <Image
           style={[styles.errorIcon1, styles.iconLayout]}
           contentFit="cover"
-          source={require("../assets/error1.png")}
+          source={require("../assets/images/error1.png")}
         />
         <Text style={[styles.informeUmProblema, styles.avalieEComenteTypo]}>
           Informe um problema
@@ -71,7 +71,7 @@ const CONFIGURACOES = () => {
         <Image
           style={[styles.instagramIcon, styles.iconLayout2]}
           contentFit="cover"
-          source={require("../assets/instagram.png")}
+          source={require("../assets/images/instagram.png")}
         />
         <Text style={[styles.sobreOAplicativo, styles.avalieEComenteTypo]}>
           Siga-nos no Instagram
@@ -81,7 +81,7 @@ const CONFIGURACOES = () => {
         <Image
           style={styles.iconLayout2}
           contentFit="cover"
-          source={require("../assets/compartilhar1.png")}
+          source={require("../assets/images/compartilhar1.png")}
         />
         <Text style={[styles.sobreOAplicativo, styles.avalieEComenteTypo]}>
           Partilhar link de download
@@ -105,7 +105,7 @@ const CONFIGURACOES = () => {
             <Image
               style={[styles.icon, styles.iconLayout1]}
               contentFit="cover"
-              source={require("../assets/fibrangleright.png")}
+              source={require("../assets/images/fibrangleright.png")}
             />
           </Pressable>
           <Text style={[styles.configuraes1, styles.configuraes1Typo]}>

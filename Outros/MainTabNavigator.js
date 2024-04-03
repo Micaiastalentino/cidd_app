@@ -4,11 +4,11 @@ import { Feather } from '@expo/vector-icons';
 import { Image, Text, View } from 'react-native';
 
 // Importe as telas para as quais você deseja navegar
-import CAPTURA from "./screens/CAPTURA";
-import PERFIL from "./screens/PERFIL";
-import CONFIGURACOES from "./screens/CONFIGURACOES";
-import HOME from "./screens/HOME";
-import CAMERA from "./screens/CAMERA";
+import CAPTURA from "../screens/CAPTURA";
+import PERFIL from "../screens/PERFIL";
+import CONFIGURACOES from "../screens/CONFIGURACOES";
+import HOME from "../screens/HOME";
+import CAMERA from "../screens/CAMERA";
 
 const Tab = createBottomTabNavigator();
 

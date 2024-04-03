@@ -16,7 +16,7 @@ const CAPTURA = () => {
           <Image
             style={[styles.fiRsMenuDotsVerticalIcon, styles.menuIconLayout]}
             contentFit="cover"
-            source={require("../assets/firsmenudotsvertical1.png")}
+            source={require("../assets/images/firsmenudotsvertical1.png")}
           />
         </View>
         <View style={styles.iconcacauParent}>
@@ -24,7 +24,7 @@ const CAPTURA = () => {
             <Image
               style={[styles.iconcacauChild, styles.childLayout]}
               contentFit="cover"
-              source={require("../assets/ellipse-2.png")}
+              source={require("../assets/images/ellipse-2.png")}
             />
             <Image
               style={[
@@ -32,7 +32,7 @@ const CAPTURA = () => {
                 styles.desenhoCacauDoentePosition,
               ]}
               contentFit="cover"
-              source={require("../assets/desenho-cacau-doente.png")}
+              source={require("../assets/images/desenho-cacau-doente.png")}
             />
           </View>
           <View style={styles.txtParent}>
@@ -73,18 +73,18 @@ const CAPTURA = () => {
           <Image
             style={[styles.fiRsMenuDotsVerticalIcon1, styles.menuIconLayout]}
             contentFit="cover"
-            source={require("../assets/firsmenudotsvertical1.png")}
+            source={require("../assets/images/firsmenudotsvertical1.png")}
           />
           <View style={styles.cacauicon}>
             <Image
               style={styles.desenhoCacauSaudavek}
               contentFit="cover"
-              source={require("../assets/desenho-cacau-saudavek.png")}
+              source={require("../assets/images/desenho-cacau-saudavek.png")}
             />
             <Image
               style={[styles.cacauiconChild, styles.childLayout]}
               contentFit="cover"
-              source={require("../assets/ellipse-21.png")}
+              source={require("../assets/images/ellipse-21.png")}
             />
           </View>
           <View style={styles.txtGroup}>
@@ -134,7 +134,7 @@ const CAPTURA = () => {
             <Image
               style={styles.icon}
               contentFit="cover"
-              source={require("../assets/fibrangleright.png")}
+              source={require("../assets/images/fibrangleright.png")}
             />
           </Pressable>
           <Text style={styles.capturas}>CAPTURAS</Text>

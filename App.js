@@ -87,7 +87,7 @@ const App = () => {
                       width: 26,
                     }}
                     contentFit="cover"
-                    source={require("./assets/app.png")} 
+                    source={require("./assets/images/app.png")} 
                   />
                 ),
               })}

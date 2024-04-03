@@ -17,7 +17,7 @@ const LOGIN = () => {
         {/* Logo Cacau */}
         <Image style={styles.logo}
           contentFit="cover"
-          source={require("../assets/logo-app.png")}
+          source={require("../assets/images/logo-app.png")}
         />
 
         {/* Titulo e Subtitulo */}
@@ -91,12 +91,12 @@ const LOGIN = () => {
         <Image
           style={[styles.googleIcon, styles.iconLayout]}
           contentFit="cover"
-          source={require("../assets/google-icon.png")}
+          source={require("../assets/images/google-icon.png")}
         />
         <Image
           style={[styles.facebookIcon, styles.iconLayout]}
           contentFit="cover"
-          source={require("../assets/facebook-icon.png")}
+          source={require("../assets/images/facebook-icon.png")}
         />
       </View>
     </ScrollView>

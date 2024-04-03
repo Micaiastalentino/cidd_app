@@ -2,7 +2,7 @@ import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Ale
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
-import { selecionarImagem, convertImageToBase64 } from "../api/ChamadaAPI"; //Componente
+import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker"; //Componente
 import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
@@ -163,7 +163,7 @@ const CAMERA = () => {
           <Image
             style={styles.botaoicontirarfoto}
             contentFit="cover"
-            source={require("../assets/bototirarfoto.png")}
+            source={require("../assets/images/bototirarfoto.png")}
           />
         </TouchableOpacity>
 
@@ -172,7 +172,7 @@ const CAMERA = () => {
           <Image
             style={styles.iconcaptura}
             contentFit="cover"
-            source={require("../assets/firrbulb.png")}
+            source={require("../assets/images/firrbulb.png")}
           />
           <Text style={[styles.TextdicasDeCaptura]}>
             Dicas de Captura

@@ -31,12 +31,12 @@ const HOME = () => {
       <Image
         style={[styles.background]}
         contentFit="cover"
-        source={require("../assets/background-cacau.png")}
+        source={require("../assets/images/background-cacau.png")}
       />
       <Image
         style={styles.ret_background}
         contentFit="cover"
-        source={require("../assets/rectangle-13.png")}
+        source={require("../assets/images/rectangle-13.png")}
       />
 
       {/*MENU BARRA INFERIOR*/}
@@ -79,7 +79,7 @@ const HOME = () => {
         <Image
           style={styles.iconTipoClassi}
           contentFit="cover"
-          source={require("../assets/iconetiposclassificao.png")}
+          source={require("../assets/images/iconetiposclassificao.png")}
         />
       </TouchableOpacity>
 
@@ -92,7 +92,7 @@ const HOME = () => {
         <Image
           style={[styles.iconeComp]}
           contentFit="cover"
-          source={require("../assets/iconecompartilhamento.png")}
+          source={require("../assets/images/iconecompartilhamento.png")}
         />
       </TouchableOpacity>
 

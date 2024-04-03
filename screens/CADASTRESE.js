@@ -69,7 +69,7 @@ const CADASTRESE = () => {
           <Image
             style={[styles.googleJpeg, styles.googleJpegPosition]}
             contentFit="cover"
-            source={require("../assets/google--jpeg.png")}
+            source={require("../assets/images/google--jpeg.png")}
           />
         </View>
         

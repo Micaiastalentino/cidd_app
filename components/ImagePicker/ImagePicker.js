@@ -1,7 +1,4 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
 
 //Função Exportável Selecionar Imagem;
 export async function selecionarImagem() {

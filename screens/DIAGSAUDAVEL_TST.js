@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import ViewImage from "../componentes/ViewImage/ViewImage"; //Componente
+import ViewImage from "../components/ViewImage/ViewImage"; //Componente
 import { useRoute } from "@react-navigation/native";
 import { PieChart } from 'react-native-svg-charts';
 
@@ -55,19 +55,19 @@ const DIAGSAUDAVEL_TST = () => {
       classified = 'Fruto Saudável';
       textoSobreCacau = 'O cacau capturado apresenta uma casca saudável e brilhante e consistente, livre de manchas ou deformidades. Sua cor varia conforme o estágio de maturação, indo de verde a tons amarelo/vermelho intensos. A forma simétrica e uniforme indica um desenvolvimento adequado, enquanto a textura da casca, firme e sem rugosidades excessivas, sugere frescor e saúde.';
       textoCuidadosCacau = 'O fruto diagnosticado apresenta um resultado satisfatório, nesse sentido, a planta está sendo preservada utilizando boas práticas agrícolas, como irrigação adequada, controle de pragas e doenças, e manejo adequado do solo, contribuindo para a saúde geral dos seus frutos.';
-      imagem = require("../assets/desenho-cacau-saudavek1.png");
+      imagem = require("../assets/images/desenho-cacau-saudavek1.png");
       break;
     case 'Classe 1': //Podridão Parda;
       classified = 'Podridão Parda';
       textoSobreCacau = 'O cacau capturado apresenta sintomas típicos da doença Podridão Parda, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A podridão parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.';
       textoCuidadosCacau = 'Remova os frutos afetados assim que forem detectados e destrua-os para evitar a propagação da doença. Mantenha o local limpo, remova restos de plantas e mantenha a área ao redor das árvores de cacau livre de ervas daninhas para reduzir a umidade e minimizar as condições favoráveis ao fungo. Inspecione regularmente as plantas em busca de sintomas da doença para detectar e tratar precocemente os focos de infecção.';
-      imagem = require("../assets/desenho-cacau-doentek1.png");
+      imagem = require("../assets/images/desenho-cacau-doentek1.png");
       break;
     case 'Classe 2': //Vassoura-de-Bruxa;
       classified = 'Vassoura-de-Bruxa';
       textoSobreCacau = '';
       textoCuidadosCacau = '';
-      imagem = require("../assets/desenho-cacau-doente-vagemk1.png");
+      imagem = require("../assets/images/desenho-cacau-doente-vagemk1.png");
       break;
     default:
       textoSobreCacau = 'Informações gerais sobre o cacau';
@@ -141,7 +141,7 @@ const DIAGSAUDAVEL_TST = () => {
             <Image
               style={styles.resultadoDaAnliseChild} //RETANGULO MENOR
               contentFit="cover"
-              source={require("../assets/rectangle-2.png")}
+              source={require("../assets/images/rectangle-2.png")}
             />
             {/* RESULTADO DA ANALISE */}
             <View style={styles.contResultado}>

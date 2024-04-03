@@ -31,7 +31,7 @@ const PERFIL = () => {
           <Image
             style={styles.groupIcon}
             contentFit="cover"
-            source={require("../assets/group.png")}
+            source={require("../assets/images/group.png")}
           />
         </View>
         <View style={[styles.nome, styles.nomePosition]}>
@@ -56,7 +56,7 @@ const PERFIL = () => {
           <Image
             style={styles.usericon}
             contentFit="cover"
-            source={require("../assets/usericon.png")}
+            source={require("../assets/images/usericon.png")}
           />
           <Text style={[styles.mudarFoto, styles.mudarFotoTypo]}>
             Mudar foto
@@ -73,7 +73,7 @@ const PERFIL = () => {
             <Image
               style={styles.icon}
               contentFit="cover"
-              source={require("../assets/fibrangleright.png")}
+              source={require("../assets/images/fibrangleright.png")}
             />
           </Pressable>
           <Text style={styles.meuPerfil}>MEU PERFIL</Text>
