@@ -5,15 +5,17 @@ import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
 import CAMERA from "./CAMERA";
 import { Feather } from '@expo/vector-icons';
-//import { TouchableOpacity } from "react-native-gesture-handler";
+import LOGIN from "./LOGIN";
+import CAPTURA from "./CAPTURA";
 
 
 const HOME = () => {
   const navigation = useNavigation();
+  const [selectedIcon, setSelectedIcon] = React.useState('home');
 
+  //FUNÇÃO COMPARTILHAMENTO;
   const shareContent = () => {
     console.log("Pressionado");
-  
     if (Platform.OS === 'android') {
       Share.share({
         message: 'Confira este link: https://www.appcidd.com.br',
@@ -24,324 +26,229 @@ const HOME = () => {
   };
 
   return (
-    <View style={styles.home}>
+    <View style={styles.containerPrincipal}>
+      {/*BACKGROUND DE FUNDO*/}
       <Image
-        style={[styles.backgroundCacauIcon, styles.homeItemPosition]}
+        style={[styles.background]}
         contentFit="cover"
         source={require("../assets/background-cacau.png")}
       />
       <Image
-        style={styles.homeChild}
+        style={styles.ret_background}
         contentFit="cover"
         source={require("../assets/rectangle-13.png")}
       />
-      <View style={styles.barrainferior}>
-        <View>
-          {/*Menu barra inferior Layout*/}
-          <View style={styles.menuList}>
-            <View style={styles.menu11}>
-              <Feather style={[styles.lihomeIcon, styles.iconLayout]} name="home" size={24}/> 
-              <Text style={[styles.incio, styles.infoSpaceBlock]}>Início</Text>
+
+      {/*MENU BARRA INFERIOR*/}
+      <View style={styles.contMenu}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => setSelectedIcon('home')}>
+          <Feather name="home" size={30} color={selectedIcon === 'home' ? "#1cca81" : 'black'} /> 
+          <Text style={styles.home}>Início</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.menuItem, styles.info]} onPress={() => navigation.navigate(LOGIN)}>
+          <Feather name="info" size={30} color={Color.colorSienna}/>
+          <Text style={styles.fontMenu}>Info</Text>
+        </TouchableOpacity>
+        
+        <View style={styles.menuItem}>
+          <Pressable  onPress={() => navigation.navigate(CAMERA)}>
+            <View style={styles.bordaCam}>
+              <Feather name="camera" size={34} color={'white'}/>
             </View>
-            <View style={styles.menu11}>
-              <Image
-                style={[styles.lihomeIcon, styles.iconLayout]}
-                contentFit="cover"
-                source={require("../assets/firsinfo1.png")}
-              />
-              <Text style={[styles.info, styles.infoTypo]}>Info</Text>
-            </View>
-            <Pressable
-              style={styles.menu3}
-              onPress={() => navigation.navigate(CAMERA)} //CAMERA
-            >
-              <View style={styles.container}>
-                <Image
-                  style={styles.fiRsCameraIcon}
-                  contentFit="cover"
-                  source={require("../assets/firscamera1.png")}
-                />
-              </View>
-            </Pressable>
-            <Pressable
-              style={styles.menu11}
-              onPress={() => navigation.navigate()} //CAPTURA
-            >
-              <Image
-                style={[styles.lihomeIcon, styles.iconLayout]}
-                contentFit="cover"
-                source={require("../assets/liclock.png")}
-              />
-              <Text style={[styles.info, styles.infoTypo]}>Capturas</Text>
-            </Pressable>
-            <Pressable
-              style={styles.menu11}
-              onPress={() => navigation.navigate()} //PERFIL
-            >
-              <Image
-                style={[styles.lihomeIcon, styles.iconLayout]}
-                contentFit="cover"
-                source={require("../assets/liuser.png")}
-              />
-              <Text style={[styles.info, styles.infoTypo]}>Perfil</Text>
-            </Pressable>
-          </View>
+          </Pressable>
         </View>
+
+        <Pressable style={styles.menuItem} onPress={() => navigation.navigate(CAPTURA)}>
+          <Feather name="clock" size={30} color={Color.colorSienna}/>
+          <Text style={styles.fontMenu}>Capturas</Text>
+        </Pressable>
+
+        <Pressable style={styles.menuItem} onPress={() => navigation.navigate()}>
+          <Feather name="user" size={30} color={Color.colorSienna}/>
+          <Text style={styles.fontMenu}>Perfil</Text>
+        </Pressable>
       </View>
 
-      <Text style={[styles.tiposDeClassificao, styles.classificaoFlexBox]}>
-        Tipos de Classificação
-      </Text>
 
-      <View style={[styles.ret_verde_01, styles.homeInnerLayout]}>
+      <TouchableOpacity>
+        <View style={[styles.ret_verde_01, styles.tamanhoRet]}></View>
+        <Text style={[styles.txtTipoClassi, styles.alinhamento]}>
+          Tipos de Classificação
+        </Text>
         <Image
-          style={styles.iconetiposclassificao}
+          style={styles.iconTipoClassi}
           contentFit="cover"
           source={require("../assets/iconetiposclassificao.png")}
         />
-      </View>
-      <Image
-        style={[styles.ret_verde_02, styles.homeInnerLayout]}
-        contentFit="cover"
-        source={require("../assets/rectangle-12.png")}
-      />
+      </TouchableOpacity>
+
 
       <TouchableOpacity onPress={shareContent}>
-        <Text style={[styles.compartilharLink, styles.classificaoFlexBox]}>
+        <View style={[styles.ret_verde_02, styles.tamanhoRet]}></View>
+        <Text style={[styles.compartilharLink, styles.alinhamento]}>
           Compartilhar link
         </Text>
         <Image
-          style={[styles.iconecompartilhamento, styles.barraDgncLayout]}
+          style={[styles.iconeComp]}
           contentFit="cover"
           source={require("../assets/iconecompartilhamento.png")}
         />
       </TouchableOpacity>
-      <Text style={[styles.classificaoDeDonas, styles.classificaoFlexBox]}>
-        CACAU INTELIGENTE:
-        DIAGNÓSTICO DE DOÊNÇAS
-      </Text>
 
+      <View style={styles.txtTituloPosi}>
+        <Text style={[styles.txtTituloProjeto]}>
+          CACAU INTELIGENTE: DIAGNÓSTICO DE DOENÇAS
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  //IMG SOBREPOSTA CACAU;
-  homeItemPosition: {
-    borderBottomLeftRadius: Border.br_11xl,
-    borderBottomRightRadius: Border.br_11xl,
+  //CONTAINER ()
+  containerPrincipal: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  //BACKGROUND CACAU;
+  background: {
     width: "100%",
     height: "100%",
     position: "absolute",
   },
-
-  //ICONES;
+  //RETANGULO TRANSPARENTE BACKGROUND;
+  ret_background: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  },
+  //ICONES BARRA INFERIOR;
   iconLayout: {
     height: 24,
     width: 24,
   },
-
-  infoSpaceBlock: {
-    marginTop: 6,
-    textAlign: "left",
-  },
-
-  infoTypo: {
-    fontFamily: FontFamily.poppinsRegular,
-    lineHeight: 16,
-    fontSize: FontSize.size_xs,
-  },
-
-  barraDgncLayout: {
-    height: 45,
-    position: "absolute",
-  },
-
-  classificaoFlexBox: {
-    textAlign: "center",
-    display: "flex",
-    color: Color.colorWhite,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-  },
-
-  homeInnerLayout: {
-    height: 72,
-    width: 74,
-    borderRadius: Border.br_11xl,
-    top: 365,
-    position: "absolute",
-  },
-
-  backgroundCacauIcon: {
+  //BARRA INFERIOR CONF.
+  contMenu: {
+    backgroundColor: Color.colorWhite,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    paddingVertical: 10,
+    justifyContent: 'space-around',
+    height: 65,
     width: "100%",
+    position: 'absolute', // Alterado para 'absolute'
+    bottom: 0,
+    left: 0,
+    right: 0,
+    
   },
-
-  homeChild: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
+  menuItem: {
+    alignItems: 'center',
   },
-  lihomeIcon: {
-    color: Color.colorRosybrown,
-    overflow: "hidden",
+  info:{
+    left: 10,
   },
-  incio: {
+  home:{
     fontWeight: "500",
     fontFamily: FontFamily.poppinsMedium,
-    color: Color.colorRosybrown,
+    color: "#1cca81",
     lineHeight: 16,
     fontSize: FontSize.size_xs,
-    textAlign: "left",
   },
-  menu11: {
-    alignItems: "center",
-    color: Color.colorRosybrown,
-    flex: 1,
-  },
-  info: {
-    color: Color.colorRosybrown,
-    marginTop: 6,
-    textAlign: "left",
-  },
-  fiRsCameraIcon: {
-    borderRadius: 2,
-    width: 31,
-    height: 30,
-    overflow: "hidden",
+  fontMenu:{
+    fontWeight: "500",
+    fontFamily: FontFamily.poppinsMedium,
+    color: Color.colorSienna,
+    lineHeight: 16,
+    fontSize: FontSize.size_xs,
   },
 
   //BORDA CAMERA;
-  container: {
+  bordaCam: {
+    flexDirection:'row',
     borderRadius: 100,
     backgroundColor: "#1cca81",
-    borderStyle: "solid",
     borderColor: Color.colorWhite,
     borderWidth: 4,
-    width: 67,
-    height: 67,
-    padding: 14,
-    flexDirection: "row",
-  },
-
-  menu3: {
-    width: 83,
+    width: 70,
     height: 70,
-    paddingBottom: Padding.p_12xl,
-    alignItems: "center",
-  },
-  menuList: {
-    backgroundColor: Color.colorWhite,
-    alignItems: "flex-end",
-    paddingHorizontal: 0,
-    paddingVertical: 10,
-    justifyContent: "center",
-    flexDirection: "row",
-    marginTop: 150,
-    height: 65,
-    width: "131.7%",
+    padding: 14,
+    left: '20%',
   },
 
-  //BARRA INFERIOR
-  barrainferior: {
-    top:"70.5%",
+  //Tipos de Classificação
+  iconTipoClassi: {
+    top: "60%",
+    left: 83,
+    width: 53,
+    height: 54,
     position: "absolute",
   },
-  appcaCauTxtContainer: {
-    width: "50%",
+  ret_verde_01: {
+    left: 70,
+    top: "50%",
+    backgroundColor: "#1cca81",
   },
-  appcaCau: {
-    fontFamily: FontFamily.montserratBold,
-    width: "30%",
-    marginLeft: 100,
-    color: Color.colorWhite,
-    fontWeight: "700",
-    fontSize: FontSize.size_base,
-    textAlign: "center",
-    height: 24,
-    alignItems: "center",
+  txtTipoClassi: {
+    left: "16%",
+    top: "60%",
+    width: 100,
+    lineHeight: 16,
+    fontFamily: FontFamily.poppinsRegular,
+    fontSize: FontSize.size_xs,
   },
-  icon: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
-  },
-  configuracoes_app: {
-    width: 20,
-    height: 20,
-    marginLeft: 120,
-  },
-  iconAppParent: {
-    top: 50,
-    left: 12,
-    flexDirection: "row",
-    position: "absolute",
-  },
-  
+
+  //Compartilhar Link
   compartilharLink: {
-    top: 450,
+    top: '-40%',
     left: 245,
     width: 90,
     fontFamily: FontFamily.poppinsRegular,
     lineHeight: 16,
     fontSize: FontSize.size_xs,
   },
-
-
-  ret_verde_01: {
-    left: 70,
-    backgroundColor: "#1cca81",
-  },
-
-  iconetiposclassificao: {
-    top: 375,
-    left: 81,
-    width: 53,
-    height: 54,
-    position: "absolute",
-  },
-
-  tiposDeClassificao: {
-    top: 450,
-    left: 53,
-    width: 100,
-    height: 34,
-    fontFamily: FontFamily.poppinsRegular,
-    lineHeight: 16,
-    fontSize: FontSize.size_xs,
-  },
-
-  iconecompartilhamento: {
-    top: 378,
-    left: 263,
+  iconeComp: {
+    top: -38,
+    left: 265,
     width: 45,
-    overflow: "hidden",
+    height: 45,
+    position: 'absolute',
   },
-
   ret_verde_02: {
     left: 250,
+    top: -55,
+    backgroundColor: "#1cca81",
   },
-
-  classificaoDeDonas: {
-    top: 200,
-    left: "15%",
+  ////////
+  alinhamento: {
+    textAlign: "center",
+    color: Color.colorWhite,
+  },
+  tamanhoRet: {
+    height: 80,
+    width: 80,
+    position: 'relative',
+    borderRadius: Border.br_11xl,
+  },
+  //TITULO CIDD;
+  txtTituloProjeto: {
+    flexDirection: 'row',
+    textAlign: 'center',
     lineHeight: 25,
     fontFamily: FontFamily.robotoBold,
-    width: 280,
-    height: 100,
     fontWeight: "700",
     fontSize: FontSize.size_base,
-    alignItems: "center",
-    textAlign: "center",
+    color: Color.colorWhite,    
   },
+  txtTituloPosi:{
+    width: "70%",
+    height: "8%",
+    top: "-50%",
+    marginLeft: "15%",
+    position: 'relative'
+  }
 
-  //CONTAINER
-  home: {
-    backgroundColor: "white",
-    height:"100%",
-    width: "100%",
-  },
 });
 
 export default HOME;

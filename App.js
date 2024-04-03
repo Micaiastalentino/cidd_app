@@ -37,17 +37,17 @@ const App = () => {
     <>
       <NavigationContainer>
         {hideSplashScreen ? (
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/*<Stack.Screen
+          <Stack.Navigator screenOptions={{ headerShown: true }}>
+            <Stack.Screen
               name="LOGIN"
               component={LOGIN}
               options={{ headerShown: false }}
-            />*
+            />
             <Stack.Screen
               name="CAPTURA"
               component={CAPTURA}
               options={{ headerShown: false }}
-            />
+            />{/*
             <Stack.Screen
               name="PERFIL"
               component={PERFIL}
