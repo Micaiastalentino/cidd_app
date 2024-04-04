@@ -14,6 +14,7 @@ import HOME from "./screens/HOME";
 import CADASTRESE from "./screens/CADASTRESE";
 import CAMERA from "./screens/CAMERA";
 import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
+import ViewDicas from "./components/ViewDicas/ViewDicas";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,10 +39,15 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: true }}>
-            <Stack.Screen
+            {/*}<Stack.Screen
               name="LOGIN"
               component={LOGIN}
               options={{ headerShown: false }}
+            />*/}
+            <Stack.Screen
+              name="ViewDicas"
+              component={ViewDicas}
+              options={{ headerShown: true }}
             />
             <Stack.Screen
               name="CAPTURA"

@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
+import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
@@ -6,6 +6,8 @@ import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicke
 import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
+import CustomModal from "../components/ViewDicas/ViewDicas";
+import PERFIL from "./PERFIL";
 
 //Função carregamento;
 const LoadingModal = ({ visible }) => (
@@ -20,7 +22,8 @@ const LoadingModal = ({ visible }) => (
 const CAMERA = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento
-  
+  const [modalVisible, setModalVisible] = useState(false);
+
   // Camera
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
@@ -168,7 +171,7 @@ const CAMERA = () => {
         </TouchableOpacity>
 
         {/*Botão Dicas Capt*/}
-        <TouchableOpacity style={styles.dicascaptura}>
+        <TouchableOpacity style={styles.dicascaptura} onPress={() => setModalVisible(true)}>
           <Image
             style={styles.iconcaptura}
             contentFit="cover"
@@ -177,9 +180,13 @@ const CAMERA = () => {
           <Text style={[styles.TextdicasDeCaptura]}>
             Dicas de Captura
           </Text>
+          <CustomModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalText="Entendido!"
+          />
         </TouchableOpacity>
       </View>
-
       {/* Tela de carregamento */}
       <LoadingModal visible={isLoading} />
     </View>
@@ -194,6 +201,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   
+  modal:{
+    margin: 10,
+  },
+
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
@@ -231,7 +242,6 @@ const styles = StyleSheet.create({
   botaotirarfoto: {
     width: 74,
     height: 74,
-    marginLeft: 37,
   },
   
   iconcaptura: {
@@ -250,19 +260,31 @@ const styles = StyleSheet.create({
 
   dicascaptura: {
     width: 97,
-    marginLeft: 45,
     alignItems: "center",
   },
 
   //BARRA MENU
   barramenu: {
-    top: "85%",
+    backgroundColor: Color.colorWhite,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    paddingVertical: 10,
+    justifyContent: 'space-around',
+    height: '10%',
+    width: "100%",
+    position: 'absolute', // Alterado para 'absolute'
+    bottom: 30,
+    left: 0,
+    right: 0,
+    
+    /*top: "85%",
     left: "4.5%",
     height: 60,
     minHeight: 60,
+    bottom: 0,
     alignItems: "center",
     flexDirection: "row",
-    position: "absolute",
+    position: "absolute",*/
   },
 });
 

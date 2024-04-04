@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState} from "react";
 import { Image } from "expo-image";
 import { StyleSheet, Text, View, Pressable, ScrollView, Share, Platform, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -7,12 +7,13 @@ import CAMERA from "./CAMERA";
 import { Feather } from '@expo/vector-icons';
 import LOGIN from "./LOGIN";
 import CAPTURA from "./CAPTURA";
+import CustomModal from "../components/ViewDicas/ViewDicas"
 
 
 const HOME = () => {
   const navigation = useNavigation();
   const [selectedIcon, setSelectedIcon] = React.useState('home');
-
+  const [modalVisible, setModalVisible] = useState(false);
   //FUNÇÃO COMPARTILHAMENTO;
   const shareContent = () => {
     console.log("Pressionado");
@@ -46,9 +47,14 @@ const HOME = () => {
           <Text style={styles.home}>Início</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.menuItem, styles.info]} onPress={() => navigation.navigate(LOGIN)}>
+        <TouchableOpacity style={[styles.menuItem, styles.info]}  onPress={() => setModalVisible(true)}>
           <Feather name="info" size={30} color={Color.colorSienna}/>
           <Text style={styles.fontMenu}>Info</Text>
+          <CustomModal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalText="Entendido!"
+          />
         </TouchableOpacity>
         
         <View style={styles.menuItem}>
