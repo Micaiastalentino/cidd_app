@@ -59,7 +59,7 @@ const CustomModal = ({ modalVisible, setModalVisible, modalText }) => {
                       source={require("../../assets/images/errado02.png")}
                     />
                     <View style={styles.parentSpaceBlock}>
-                      <Text style={[styles.vriosFrutos, styles.buttonFlexBox]}>
+                      <Text style={[styles.vriosFrutos, styles.pertoDeMais1Typo]}>
                         Vários frutos
                       </Text>
                       <Image
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   pertoDeMais1Typo: {
-    height: 15,
+    height: 25,
     justifyContent: "center",
     display: "flex",
     fontFamily: FontFamily.montserratLight,
@@ -127,11 +127,11 @@ const styles = StyleSheet.create({
     borderColor: "#797777",
     borderWidth: 1,
     width: "80%",
-    height: "80%",
+    height: "75%",
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 40,
-    marginTop: 50,
+    marginTop: 90,
   },
 
   txtFoto: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     width: 111,
   },
   pertoDeMais1: {
-    width: 89,
+    width: 100,
   },
   iconerrado: {
     width: 26,
@@ -178,8 +178,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   vriosFrutos: {
-    height: 14,
-    width: 111,
+    height: 20,
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     textAlign: "center",

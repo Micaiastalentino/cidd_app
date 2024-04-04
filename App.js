@@ -39,37 +39,7 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: true }}>
-            {/*}<Stack.Screen
-              name="LOGIN"
-              component={LOGIN}
-              options={{ headerShown: false }}
-            />*/}
-            <Stack.Screen
-              name="ViewDicas"
-              component={ViewDicas}
-              options={{ headerShown: true }}
-            />
-            <Stack.Screen
-              name="CAPTURA"
-              component={CAPTURA}
-              options={{ headerShown: false }}
-            />{/*
-            <Stack.Screen
-              name="PERFIL"
-              component={PERFIL}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CONFIGURACOES"
-              component={CONFIGURACOES}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="CADASTRESE"
-              component={CADASTRESE}
-              options={{ headerShown: false }}
-            />*/}
-            <Stack.Screen
+                        <Stack.Screen
               name="HOME"
               component={HOME}
               options={({ navigation }) => ({ //NAVIGATION COMO PARÂMETRO PARA ACESSAR FUN. NAVIGATE;
@@ -98,6 +68,36 @@ const App = () => {
                 ),
               })}
             />
+            <Stack.Screen
+              name="LOGIN"
+              component={LOGIN}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ViewDicas"
+              component={ViewDicas}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="CAPTURA"
+              component={CAPTURA}
+              options={{ headerShown: false }}
+            />{/*
+            <Stack.Screen
+              name="PERFIL"
+              component={PERFIL}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CONFIGURACOES"
+              component={CONFIGURACOES}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CADASTRESE"
+              component={CADASTRESE}
+              options={{ headerShown: false }}
+            />*/}
             <Stack.Screen
               name="DIAGSAUDAVEL_TST"
               component={DIAGSAUDAVEL_TST}
