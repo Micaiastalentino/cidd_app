@@ -40,7 +40,7 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: true }}>
-                        <Stack.Screen
+            <Stack.Screen
               name="HOME"
               component={HOME}
               options={({ navigation }) => ({ //NAVIGATION COMO PARÂMETRO PARA ACESSAR FUN. NAVIGATE;
@@ -104,7 +104,7 @@ const App = () => {
               component={TIPOCLASS}
               options={{ 
                 headerShown: true,
-                headerTitle: "DIAGNÓSTICO",
+                headerTitle: "TIPOS DE CLASSIFICAÇÃO",
                 headerTitleAlign: "center",
                 headerTintColor: "white",
                 headerStyle: {
