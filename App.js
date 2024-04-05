@@ -14,6 +14,7 @@ import HOME from "./screens/HOME";
 import CADASTRESE from "./screens/CADASTRESE";
 import CAMERA from "./screens/CAMERA";
 import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
+import TIPOCLASS from "./screens/TIPOSCLASS";
 import ViewDicas from "./components/ViewDicas/ViewDicas";
 
 const Stack = createNativeStackNavigator();
@@ -98,6 +99,20 @@ const App = () => {
               component={CADASTRESE}
               options={{ headerShown: false }}
             />*/}
+            <Stack.Screen
+              name="TIPOCLASS"
+              component={TIPOCLASS}
+              options={{ 
+                headerShown: true,
+                headerTitle: "DIAGNÓSTICO",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
+            />
+
             <Stack.Screen
               name="DIAGSAUDAVEL_TST"
               component={DIAGSAUDAVEL_TST}

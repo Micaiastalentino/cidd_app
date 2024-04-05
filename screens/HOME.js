@@ -3,10 +3,11 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View, Pressable, ScrollView, Share, Platform, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
-import CAMERA from "./CAMERA";
 import { Feather } from '@expo/vector-icons';
+import CAMERA from "./CAMERA";
 import LOGIN from "./LOGIN";
 import CAPTURA from "./CAPTURA";
+import TIPOCLASS from "./TIPOSCLASS";
 import CustomModal from "../components/ViewDicas/ViewDicas"
 
 
@@ -76,9 +77,7 @@ const HOME = () => {
         </Pressable>
       </View>
 
-
-      <TouchableOpacity>
-        <View style={[styles.ret_verde_01, styles.tamanhoRet]}></View>
+      <TouchableOpacity style={[styles.ret_verde_01, styles.tamanhoRet]} onPress={() => navigation.navigate(TIPOCLASS)}>
         <Text style={[styles.txtTipoClassi, styles.alinhamento]}>
           Tipos de Classificação
         </Text>
@@ -89,9 +88,7 @@ const HOME = () => {
         />
       </TouchableOpacity>
 
-
-      <TouchableOpacity onPress={shareContent}>
-        <View style={[styles.ret_verde_02, styles.tamanhoRet]}></View>
+      <TouchableOpacity style={[styles.ret_verde_02, styles.tamanhoRet]} onPress={shareContent}>
         <Text style={[styles.compartilharLink, styles.alinhamento]}>
           Compartilhar link
         </Text>
@@ -185,20 +182,20 @@ const styles = StyleSheet.create({
 
   //Tipos de Classificação
   iconTipoClassi: {
-    top: "60%",
-    left: 83,
+    top: 15,
+    left: 14,
     width: 53,
     height: 54,
     position: "absolute",
   },
   ret_verde_01: {
     left: 70,
-    top: "50%",
+    top: 30,
     backgroundColor: "#1cca81",
   },
   txtTipoClassi: {
-    left: "16%",
-    top: "60%",
+    left: -8,
+    top: 85,
     width: 100,
     lineHeight: 16,
     fontFamily: FontFamily.poppinsRegular,
@@ -207,23 +204,23 @@ const styles = StyleSheet.create({
 
   //Compartilhar Link
   compartilharLink: {
-    top: '-40%',
-    left: 245,
+    top: 85,
+    left: -5,
     width: 90,
     fontFamily: FontFamily.poppinsRegular,
     lineHeight: 16,
     fontSize: FontSize.size_xs,
   },
   iconeComp: {
-    top: -38,
-    left: 265,
+    top: -17,
+    left: 17,
     width: 45,
     height: 45,
-    position: 'absolute',
+    position: 'relative',
   },
   ret_verde_02: {
     left: 250,
-    top: -55,
+    top: -50,
     backgroundColor: "#1cca81",
   },
   ////////
