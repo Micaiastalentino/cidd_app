@@ -61,13 +61,13 @@ const DIAGSAUDAVEL_TST = () => {
     case 'Classe 1': //Podridão Parda;
       classified = 'Podridão Parda';
       textoSobreCacau = 'O cacau capturado apresenta sintomas típicos da doença Podridão Parda, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A podridão parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.';
-      textoCuidadosCacau = 'Remova os frutos afetados assim que forem detectados e destrua-os para evitar a propagação da doença. Mantenha o local limpo, remova restos de plantas e mantenha a área ao redor das árvores de cacau livre de ervas daninhas para reduzir a umidade e minimizar as condições favoráveis ao fungo. Inspecione regularmente as plantas em busca de sintomas da doença para detectar e tratar precocemente os focos de infecção.';
+      textoCuidadosCacau = 'O monitoramento dos sintomas deve ser constante, especialmente em cultivos sombreados, onde a incidência da doença pode ser maior. É essencial remover imediatamente os frutos infectados para evitar a disseminação da doença. Além disso, é importante ficar atento às cascas após a quebra do cacau. Uma prática recomendada é tratar o casqueiro com cal e cobri-lo com lona, visando prevenir a proliferação do fungo presente na casca do fruto e, consequentemente, reduzir os riscos de infecção.';
       imagem = require("../assets/images/desenho-cacau-doentek1.png");
       break;
     case 'Classe 2': //Vassoura-de-Bruxa;
       classified = 'Vassoura-de-Bruxa';
-      textoSobreCacau = '';
-      textoCuidadosCacau = '';
+      textoSobreCacau = 'O cacau capturado parece estar infectado pela doença vassoura-de-bruxa apresentando diversos sintomas característicos. Inicialmente, as folhas e galhos ficam secos, assemelhando-se a uma vassoura velha, o que dá nome à doença. Além disso, podem ocorrer lesões necróticas nos frutos, apodrecimento e eventual morte dos cacaueiros. A superfície do fruto pode desenvolver pequenas lesões de cor castanha, seguidas por uma camada esbranquiçada semelhante a pó. Com o tempo, essas lesões podem se espalhar, cobrindo toda a superfície do fruto, emitindo um odor característico de peixe.';
+      textoCuidadosCacau = 'O monitoramento precisa ser constante, sempre atento aos sintomas. Assim que a doença for identificada, é importante iniciar imediatamente o controle cultural. O fungo Trichoderma stromaticum pode ser usado no controle dessa doença devido à sua capacidade antagonista contra o fungo causador da Vassoura-de-Bruxa. É recomentado, remover prontamente os galhos e folhas infectados para evitar a propagação da doença.';
       imagem = require("../assets/images/desenho-cacau-doente-vagemk1.png");
       break;
     default:
@@ -76,16 +76,55 @@ const DIAGSAUDAVEL_TST = () => {
   }
   return (
     <ScrollView style={styles.containerScrol}>
-      <View style={styles.contPrincipal}>
-        <View style={styles.contSecundario}>
-          <View style={[styles.detalhesDaAnlise, styles.diagnsticoChildPosition]}>
-            
-            {/* ANALISE GRÁFICA */}
-            <View style={styles.viewAnaliseGrafica}>
-              <View style={[styles.linha44, styles.linhaBorder]} />
-              <Text style={[styles.textAnaliseGrafica, styles.tipoTituloPadrao]}>
+      <View style={styles.contPrim}>
+        <View style={styles.retResult}>
+          {/* RESULTADO DA ANALISE */}
+          <View style={styles.conteiner}>
+            <Text style={[styles.title]}>
+              Resultado da Análise:
+            </Text>
+            <Text style={[styles.resultTextoPorcentagem]}>
+              {`(${maxConfidencePercentage}% de precisão)`}
+            </Text>
+            <Image
+              style={[styles.iconImgCacau]}
+              contentFit="cover"
+              source={imagem}
+            />
+            <Text style={[styles.tituloClassified]}>
+              {classified}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.contSec}>
+            <View style={styles.conteiner}>
+              {/* Exibe a imagem capturada*/} 
+              <Text style={[styles.title]}>
+                Imagem Capturada
+              </Text>
+              <View style={[styles.linha, styles.linhaBorder]} />
+              <TouchableOpacity style={styles.imgCapturada}>
+                {/* Componente ExibeImagem */}
+                <ViewImage capturedImage={img_select} /> 
+              </TouchableOpacity>
+            </View>
+
+            {/* SOBRE O CACAU */}
+            <View style={styles.conteiner}>
+              <Text style={[styles.title]}>
+                Sobre o Cacau
+              </Text>
+              <View style={[styles.linha, styles.linhaBorder]} />
+              <Text style={[styles.text]}>
+                {textoSobreCacau}
+              </Text>
+            </View>
+
+            <View style={styles.conteiner}>
+              <Text style={[styles.title]}>
                 Análise Gráfica
               </Text>
+              <View style={[styles.linha, styles.linhaBorder]} />
               {/* Gráfico */}
               <View style={styles.contGrafico}>
                 <PieChart
@@ -109,68 +148,23 @@ const DIAGSAUDAVEL_TST = () => {
               </View>
             </View>
 
-            {/* CUIDADOS E PRECAUÇÕES */} 
-            <View style={[styles.linha4, styles.linhaBorder]} />
-            <Text style={[styles.textCuidadosEPrec, styles.tipoFont]}>
-              {textoCuidadosCacau}
-            </Text>
-            <Text style={[styles.titCuidadosEPrec, styles.tipoTituloPadrao]}>
-              Cuidados e Precauções
-            </Text>
-            
-            <TouchableOpacity style={[styles.ret]}  onPress={() => navigation.navigate(TIPOCLASS)}>
-              <Text style={[styles.titSaibamais, styles.tipoTituloPadrao]}>
-                Saiba mais!
+            {/* CUIDADOS E PRECAUÇÕES */}
+            <View style={styles.conteiner}>
+              <Text style={[styles.title]}>
+                Cuidados e Precauções
               </Text>
-            </TouchableOpacity>
-
-            {/* SOBRE O CACAU */}
-            <View style={[styles.linha3, styles.linhaBorder]} />
-            <Text style={[styles.textSobreoCacau, styles.tipoFont]}>
-              {textoSobreCacau}
-            </Text>
-            <Text style={[styles.titSobreCacau, styles.tipoTituloPadrao]}>
-              Sobre o Cacau
-            </Text>
-            {/* Exibe a imagem capturada*/}  
-            <View style={[styles.linha, styles.linhaBorder]} />
-            <Text style={[styles.titImagemCapturada, styles.tipoTituloPadrao]}>
-              Imagem Capturada
-            </Text>
-            <TouchableOpacity style={styles.imgCapturada}>
-              {/* Componente ExibeImagem */}
-              <ViewImage capturedImage={img_select} /> 
-            </TouchableOpacity>
-          </View>
-          
-          {/*EDITADA*/}
-          <View style={[styles.resultadoDaAnlise, styles.legenda1Position]}>
-            <Image
-              style={styles.resultadoDaAnliseChild} //RETANGULO MENOR
-              contentFit="cover"
-              source={require("../assets/images/rectangle-2.png")}
-            />
-            {/* RESULTADO DA ANALISE */}
-            <View style={styles.contResultado}>
-              <Image
-                style={[styles.iconImgCacau, styles.dashboardIconLayout]}
-                contentFit="cover"
-                source={imagem}
-              />
-              <Text style={[styles.compClassified, styles.tituloClassified]}>
-                {classified}
+              <View style={[styles.linha, styles.linhaBorder]} />
+              <Text style={[styles.text]}>
+                {textoCuidadosCacau}
               </Text>
-              <Text style={[styles.resultTextoPorcentagem]}>
-                {`(${maxConfidencePercentage}% de precisão)`}
-              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate(TIPOCLASS)}>
+                <Text style={[styles.titSaibamais]}>
+                  Saiba mais!
+                </Text>
+              </TouchableOpacity>
             </View>
-            <Text style={[styles.resultAnalise]}>
-              Resultado da Análise:
-            </Text>
-
           </View>
         </View>
-      </View>
     </ScrollView>
   );
 };
@@ -190,32 +184,42 @@ const getColorForClass = (classe) => {
 };
 
 const styles = StyleSheet.create({
-
   containerScrol: {
     flex: 1,
   },
-  
-  contSecundario: {
-    top: 40,
-    marginStart: "2%",
-    width: "50%",
-    position: "absolute",
+  contPrim: {
+    padding: 15,
+    backgroundColor: 'white',
+    height: "auto", //ALTURA DA TELA
+    //backgroundColor: 'yellow',
   },
-  
-  contPrincipal: {
+  retResult:{
     backgroundColor: Color.colorWhite,
-    height: 1750, //ALTURA DA TELA
-    width: "100%", //LARGURA DA TELA
-    //backgroundColor: 'black',
+    borderRadius: Border.br_3xs,
+    borderWidth: 1, // LARGURA DA BORDA
+    borderColor: Color.colorDarkgray, // COR DA BORDA
+    height: 150, //ALTURA DA TELA
+    padding: 10
   },
-
+  contSec: {
+    backgroundColor: Color.colorWhite,
+    borderRadius: Border.br_3xs,
+    borderWidth: 1, // LARGURA DA BORDA
+    borderColor: Color.colorDarkgray, // COR DA BORDA
+    height: 1490, //ALTURA DA TELA
+    padding: 15,
+    marginTop: 15,
+    //backgroundColor: 'yellow',
+  },
+  conteiner:{
+    marginBottom: 20,
+    //backgroundColor: 'yellow',
+  },
   //GRAFICO ;
   contGrafico: {
-    flexDirection: 'col',
     alignItems: 'center',
-    width: "100%",
-    height: "20%",
-    marginTop: '10%'
+    height: "60%",
+    marginBottom: -520
   },
   grafico: {
     aspectRatio: 1, // Ajuste para centralizar o gráfico
@@ -227,39 +231,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'left',
     marginBottom: 10,
-    marginTop: '1%',
     marginLeft: '-40%',
   },
   legendColorGfc: {
     width: 20,
-    height: 20,
     borderRadius: 5,
     marginRight: 5,
   },
   legendTextGfc: {
     fontSize: 14,
   },
-/////////////////////
-  detalhesDaAnlise: {
-    height: 1680,
-    //backgroundColor: 'black',
-  },
-  diagnsticoChildPosition: {
-    flex: 1,
-    top: 130,
-    width: "185%",
-    borderRadius: Border.br_3xs,
-    borderWidth: 1, // largura da borda
-    borderColor: Color.colorDarkgray, // cor da borda
-    position: "absolute",
-  },
-  textTypo: {
-    height: "29.63%",
-    textAlign: "left",
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    fontSize: FontSize.size_4xs,
-    position: "absolute",
+
+  //TEXTOS
+  text: {
+    fontFamily: FontFamily.montserratMedium,
+    fontSize: 14,
+    textAlign: 'justify',
+    color: Color.colorSienna,
+    lineHeight: 20,
   },
 
   // TITULO SAIBA MAIS!
@@ -269,192 +258,44 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textDecorationLine: 'underline',
     fontSize: 16,
+    textAlign: 'left',
   },
-  ret:{
-    marginTop: 1550,
-    left: 170,
-    width: "auto",
-    position: 'absolute',
-    backgroundColor: 'black'
+  linha: {
+    width: '100%',
+    marginBottom: 10,
   },
-  
-  /// TITULO CUIDADOS E PRECAUÇÕES
-  titCuidadosEPrec: {
-    height: "100%",
-    width: "100%",
-    top: "76%",
-    color: Color.colorSienna,
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    position: "absolute",
-    fontSize: 16,
-  },
-  //TEXTO CUIDADOS E PRECAUÇÕES
-  textCuidadosEPrec: {
-    top: "78%",
-    width: "100%",
-    textAlign: "justify",
-    backgroundColor: 'yellow'
-  },
-  //BORDA DAs LINHAs
   linhaBorder: {
     height: 1,
     borderTopWidth: 1,
     borderColor: Color.colorDarkgray,
     borderStyle: "solid",
-    position: "absolute",
-  },
-  //LINHAS
-  linha: {
-    top: '2.5%',
-    width: '100%',
-  },
-  linha3: {
-    top: '27.4%',
-    width: '100%',
-  },
-  linha4: {
-    top: '77.7%',
-    width: '100%',
-  },
-  linha44: {
-    top: '1.5%',
-    width: '100%',
-  },
-  ///TITULO ANALISE GRAFICA
-  textAnaliseGrafica: {
-    width: "100%",
-    height: "100%",
-    color: Color.colorSienna,
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    fontSize: 16,
-    position: "absolute",
-  },
-  viewAnaliseGrafica: {
-    top: "44%",
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-  },
-  //PADRAO DE FONTE TITULO
-  tipoTituloPadrao:{
-    marginLeft: "2%",
-  },
-  //PADRÃO DE FONTE TEXTOS
-  tipoFont: {
-    fontFamily: FontFamily.montserratMedium,
-    fontWeight: "500",
-    color: Color.colorSienna,
-    fontSize: 14,
-    lineHeight: 19,
-    position: "absolute",
-    flexDirection: "row",
-    padding: 10,
-  },
-  ///SOBRE O CACAU TEXTO
-  textSobreoCacau: {
-    width: '100%',
-    height: "100%",
-    marginTop: '118%',
-    textAlign: "justify",
-  },
-  ///TITULO SOBRE O CACAU
-  titSobreCacau: {
-    color: Color.colorSienna,
-    fontFamily: FontFamily.montserratBold,
-    fontWeight: "700",
-    position: "absolute",
-    fontSize: 16,
-    width: "100%",
-    height: "100%",
-    marginTop: "110%",
-  },
-  //IMAGEM CAPTURADA
-  imgCapturada: {
-    marginTop: '20%',
-    left: '15%',
-    alignItems: 'center',
-    position: 'absolute',
-  },
-  // TEXTO IMAGEM CAPTURADA
-  titImagemCapturada: {
-    width: "100%",
-    marginTop: "4%",
-    fontFamily: FontFamily.montserratBold,
-    color: Color.colorSienna,
-    fontWeight: "700",
-    fontSize: 16,
   },
 
-  resultadoDaAnliseChild: {
-    flex: 1,
-    height: "100%",
-    width: "100%",
-    borderRadius: Border.br_3xs,
-    borderWidth: 1, // largura da borda
-    borderColor: Color.colorDarkgray, // cor da borda
-    position: "absolute",
-  },
   //TITULO CLASSIFICAÇÃO
   tituloClassified: {
-    width: "100%",
     color: '#006400',
-    position: "relative",
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
     fontSize: 22,
   },
   //TEXTO PORCENTAGEM;
   resultTextoPorcentagem: {
-    width: "100%",
-    fontSize: 13,
     fontFamily: FontFamily.montserratMedium,
     color: Color.colorSienna,
     fontWeight: "bold",
-  },
-  //CONTAINER DO RESULTADO;
-  contResultado: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    flexDirection: 'column',
-    justifyContent: 'center',
-    left: '10%',
-
+    fontSize: 13,
   },
   //ICON CACAU IMAGEM;
   iconImgCacau: {
-    width: "30%",
-    height: "70%",
+    width: 80,
+    height: 50,
     overflow: 'scroll',
-    position: 'absolute',
-    right: '15%',
   },
-
-  dePreciso: {
-    height: "29",
-    width: "50.57%",
-    top: "66.1%",
-    left: "1.95%",
-    textAlign: "center",
-    color: 'red',
-  },
-
-  resultAnalise: {
-    width: "100%",
-    height: "100%",
-    marginTop: "-7.2%",
-    fontSize: 16,
+  title: {
     color: Color.colorSienna,
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
-  },
-
-
-  resultadoDaAnlise: {
-    height: 120,
-    width: "185.5%",
+    fontSize: 16,
   },
 });
 
