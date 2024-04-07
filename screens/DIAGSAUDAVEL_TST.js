@@ -6,7 +6,6 @@ import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import ViewImage from "../components/ViewImage/ViewImage"; //Componente
 import { useRoute } from "@react-navigation/native";
 import { PieChart } from 'react-native-svg-charts';
-import TIPOCLASS from "./TIPOSCLASS";
 
 const DIAGSAUDAVEL_TST = () => {
   const navigation = useNavigation();
@@ -22,6 +21,7 @@ const DIAGSAUDAVEL_TST = () => {
   let textoCuidadosCacau = '';
   let classified = '';
   let imagem;
+  let valor=-1;
 
   console.log('Uri no DiagSaudavel: ', img_select);
   console.log('Predição - DIAGSAUDAVEL: ', respostaAPI);
@@ -49,26 +49,28 @@ const DIAGSAUDAVEL_TST = () => {
     },
     key: `pie-${index}`,
   }));
-
+ // o fruto capturado parece estar classificado como saudável, com uma confiança de 90.54%."
   //Variáveis dinâmicas;
   switch (maxConfidenceClass) {
     case 'Classe 0': //Saudável;
       classified = 'Fruto Saudável';
-      textoSobreCacau = 'O cacau capturado apresenta uma casca saudável e brilhante e consistente, livre de manchas ou deformidades. Sua cor varia conforme o estágio de maturação, indo de verde a tons amarelo/vermelho intensos. A forma simétrica e uniforme indica um desenvolvimento adequado, enquanto a textura da casca, firme e sem rugosidades excessivas, sugere frescor e saúde.';
-      textoCuidadosCacau = 'O fruto diagnosticado apresenta um resultado satisfatório, nesse sentido, a planta está sendo preservada utilizando boas práticas agrícolas, como irrigação adequada, controle de pragas e doenças, e manejo adequado do solo, contribuindo para a saúde geral dos seus frutos.';
+      textoSobreCacau = `O fruto capturado parece estar classificado como saudável, com uma confiança de ${maxConfidencePercentage}%, demonstrando um resultado satisfatório na adoção de práticas agrícolas que visam sua preservação, implementação de uma irrigação adequada e controle eficiente de pragas e doenças, além de um manejo cuidadoso do solo sendo estes aspectos fundamentais nesse processo. Essas medidas não apenas garantem a qualidade individual dos frutos, mas também fortalecem a saúde global da planta, resultando em uma colheita sustentável e de alta qualidade.`;
+      textoCuidadosCacau = 'O fruto diagnosticado apresenta um resultado satisfatório, indicando que a planta está sendo preservada por meio da implementação de boas práticas agrícolas, tais como irrigação adequada, controle eficaz de pragas e doenças, além de um manejo cuidadoso do solo. Essas medidas contribuem significativamente para a saúde geral dos frutos, assegurando uma produção de alta qualidade.';
       imagem = require("../assets/images/desenho-cacau-saudavek1.png");
       break;
     case 'Classe 1': //Podridão Parda;
       classified = 'Podridão Parda';
-      textoSobreCacau = 'O cacau capturado apresenta sintomas típicos da doença Podridão Parda, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A podridão parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.';
+      textoSobreCacau = `O fruto capturado parece estar classificado com a doença Podridão Parda, com uma confiança de ${maxConfidencePercentage}%, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A Podridão Parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.`;
       textoCuidadosCacau = 'O monitoramento dos sintomas deve ser constante, especialmente em cultivos sombreados, onde a incidência da doença pode ser maior. É essencial remover imediatamente os frutos infectados para evitar a disseminação da doença. Além disso, é importante ficar atento às cascas após a quebra do cacau. Uma prática recomendada é tratar o casqueiro com cal e cobri-lo com lona, visando prevenir a proliferação do fungo presente na casca do fruto e, consequentemente, reduzir os riscos de infecção.';
       imagem = require("../assets/images/desenho-cacau-doentek1.png");
+      valor = 1;
       break;
     case 'Classe 2': //Vassoura-de-Bruxa;
       classified = 'Vassoura-de-Bruxa';
-      textoSobreCacau = 'O cacau capturado parece estar infectado pela doença vassoura-de-bruxa apresentando diversos sintomas característicos. Inicialmente, as folhas e galhos ficam secos, assemelhando-se a uma vassoura velha, o que dá nome à doença. Além disso, podem ocorrer lesões necróticas nos frutos, apodrecimento e eventual morte dos cacaueiros. A superfície do fruto pode desenvolver pequenas lesões de cor castanha, seguidas por uma camada esbranquiçada semelhante a pó. Com o tempo, essas lesões podem se espalhar, cobrindo toda a superfície do fruto, emitindo um odor característico de peixe.';
+      textoSobreCacau = `O fruto capturado parece estar classificado com a doença Vassoura-de-Bruxa, com uma confiança de ${maxConfidencePercentage}%, apresentando diversos sintomas característicos. Inicialmente, as folhas e galhos ficam secos, assemelhando-se a uma vassoura velha, o que dá nome à doença. Além disso, podem ocorrer lesões necróticas nos frutos, apodrecimento e eventual morte dos cacaueiros. A superfície do fruto pode desenvolver pequenas lesões de cor castanha, seguidas por uma camada esbranquiçada semelhante a pó. Com o tempo, essas lesões podem se espalhar, cobrindo toda a superfície do fruto, emitindo um odor característico de peixe.`;
       textoCuidadosCacau = 'O monitoramento precisa ser constante, sempre atento aos sintomas. Assim que a doença for identificada, é importante iniciar imediatamente o controle cultural. O fungo Trichoderma stromaticum pode ser usado no controle dessa doença devido à sua capacidade antagonista contra o fungo causador da Vassoura-de-Bruxa. É recomentado, remover prontamente os galhos e folhas infectados para evitar a propagação da doença.';
       imagem = require("../assets/images/desenho-cacau-doente-vagemk1.png");
+      valor = 2;
       break;
     default:
       textoSobreCacau = 'Informações gerais sobre o cacau';
@@ -77,23 +79,25 @@ const DIAGSAUDAVEL_TST = () => {
   return (
     <ScrollView style={styles.containerScrol}>
       <View style={styles.contPrim}>
+        {/* RESULTADO DA ANALISE */}
+        <Text style={[styles.title]}>
+          Resultado da Análise:
+        </Text>
         <View style={styles.retResult}>
-          {/* RESULTADO DA ANALISE */}
-          <View style={styles.conteiner}>
-            <Text style={[styles.title]}>
-              Resultado da Análise:
-            </Text>
-            <Text style={[styles.resultTextoPorcentagem]}>
-              {`(${maxConfidencePercentage}% de precisão)`}
-            </Text>
+          <View style={styles.conteinerResult}>
+            <View style={styles.alinhResult}>
+              <Text style={[styles.tituloClassified]}>
+                {classified}
+              </Text>
+              <Text style={[styles.resultTextoPorcentagem]}>
+                {`(${maxConfidencePercentage}% de precisão)`}
+              </Text>
+            </View>
             <Image
               style={[styles.iconImgCacau]}
               contentFit="cover"
               source={imagem}
             />
-            <Text style={[styles.tituloClassified]}>
-              {classified}
-            </Text>
           </View>
         </View>
         <View style={styles.contSec}>
@@ -103,7 +107,7 @@ const DIAGSAUDAVEL_TST = () => {
                 Imagem Capturada
               </Text>
               <View style={[styles.linha, styles.linhaBorder]} />
-              <TouchableOpacity style={styles.imgCapturada}>
+              <TouchableOpacity>
                 {/* Componente ExibeImagem */}
                 <ViewImage capturedImage={img_select} /> 
               </TouchableOpacity>
@@ -157,11 +161,16 @@ const DIAGSAUDAVEL_TST = () => {
               <Text style={[styles.text]}>
                 {textoCuidadosCacau}
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate(TIPOCLASS)}>
-                <Text style={[styles.titSaibamais]}>
-                  Saiba mais!
-                </Text>
-              </TouchableOpacity>
+              {/* CONDIÇÃO PARA NAVEGAÇÃO TELA DE HISTÓRICO DAS DOENÇAS; */}
+              {valor == 1 || valor == 2 ? (
+                <TouchableOpacity onPress={() => (
+                  navigation.navigate('HISTORICO_CLASS', {valor})
+                )}>
+                  <Text style={styles.titSaibamais}>
+                    Saiba mais!
+                  </Text>
+                </TouchableOpacity>
+              ): null}
             </View>
           </View>
         </View>
@@ -193,27 +202,37 @@ const styles = StyleSheet.create({
     height: "auto", //ALTURA DA TELA
     //backgroundColor: 'yellow',
   },
-  retResult:{
-    backgroundColor: Color.colorWhite,
-    borderRadius: Border.br_3xs,
-    borderWidth: 1, // LARGURA DA BORDA
-    borderColor: Color.colorDarkgray, // COR DA BORDA
-    height: 150, //ALTURA DA TELA
-    padding: 10
-  },
   contSec: {
     backgroundColor: Color.colorWhite,
     borderRadius: Border.br_3xs,
     borderWidth: 1, // LARGURA DA BORDA
     borderColor: Color.colorDarkgray, // COR DA BORDA
-    height: 1490, //ALTURA DA TELA
+    height: 1550, //ALTURA DA TELA
     padding: 15,
     marginTop: 15,
     //backgroundColor: 'yellow',
   },
   conteiner:{
-    marginBottom: 20,
+    marginBottom: 30,
     //backgroundColor: 'yellow',
+  },
+  conteinerResult:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    //backgroundColor: 'yellow',
+  },
+  retResult:{
+    backgroundColor: Color.colorWhite,
+    borderRadius: Border.br_3xs,
+    borderWidth: 1, // LARGURA DA BORDA
+    borderColor: Color.colorDarkgray, // COR DA BORDA
+    height: 130, //ALTURA DA TELA
+    padding: 10,
+    alignItems: 'center'
+  },
+  alinhResult:{
+    alignItems: 'left'
   },
   //GRAFICO ;
   contGrafico: {
@@ -249,6 +268,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     color: Color.colorSienna,
     lineHeight: 20,
+    fontWeight: "500",
   },
 
   // TITULO SAIBA MAIS!
@@ -270,7 +290,6 @@ const styles = StyleSheet.create({
     borderColor: Color.colorDarkgray,
     borderStyle: "solid",
   },
-
   //TITULO CLASSIFICAÇÃO
   tituloClassified: {
     color: '#006400',
@@ -287,8 +306,8 @@ const styles = StyleSheet.create({
   },
   //ICON CACAU IMAGEM;
   iconImgCacau: {
-    width: 80,
-    height: 50,
+    width: 120,
+    height: 80,
     overflow: 'scroll',
   },
   title: {

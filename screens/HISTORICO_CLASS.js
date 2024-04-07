@@ -11,7 +11,6 @@ const HISTORICO_CLASS = ({route}) => {
   // Texto sobre o cacau
   let textoHistorico = '';
   let textoCaract = '';
-  let textFungos = '';
   let imagem;
 
   //Variáveis dinâmicas;
@@ -26,6 +25,7 @@ const HISTORICO_CLASS = ({route}) => {
       textoCaract = 'A vassoura-de-bruxa é uma doença causada pelo fungo Moniliophthora perniciosa, que provoca deformação, apodrecimento e morte de cacaueiros e cupuaçuzeiros. Os sintomas da enfermidade são folhas e galhos secos, que deixam as plantas semelhantes a uma vassoura velha, daí o nome popular da praga. O fungo altera o equilíbrio hormonal da planta, levando ao crescimento excessivo dos tecidos infectados de forma semelhante a um câncer. Por essa razão, a vassoura-de-bruxa debilita e leva à queda na produtividade dos cacaueiros.\n\nDoença do cacaueiro - Vassoura-de-Bruxa\nCulturas: Cacau;\nTipo de patógeno: fungo;\nNome comum: Vassoura-de-Bruxa;\nAgente causal: Moniliophthora perniciosa.\n'
       imagem = require('../assets/images/vassoura-de-bruxa.png')
       break;
+    default:
   }
   return (
     <ScrollView style={styles.containerScroll}>
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     color: Color.colorSienna,
     lineHeight: 20,
+    fontWeight: "500",
   },
   fungus: {
     fontFamily: FontFamily.montserratMedium,

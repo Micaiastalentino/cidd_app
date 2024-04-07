@@ -36,7 +36,15 @@ const App = () => {
     return null;
   }
 
-  const valor = 'PODRIDÃO PARDA';
+  const getTitle = (valor) => {
+    //TITULO DINÂMICO - TELA HISTORICO_CLASS
+    switch (valor) {
+        case 1:
+        return "PODRIDÃO PARDA";
+        case 2:
+        return "VASSOURA-DE-BRUXA";
+    }
+  };
 
   return (
     <>
@@ -117,15 +125,15 @@ const App = () => {
             <Stack.Screen
               name="HISTORICO_CLASS"
               component={HISTORICO_CLASS}
-              options={{ 
+              options={({ route }) => ({
                 headerShown: true,
-                headerTitle: valor,
+                headerTitle: getTitle(route.params.valor), // FUNÇÃO CALCULA TITULO BASEADO NO VALOR DE ENTRADA;
                 headerTitleAlign: "center",
                 headerTintColor: "white",
                 headerStyle: {
                   backgroundColor: "#6f4330",
                 },
-              }}
+              })}
             />
             <Stack.Screen
               name="DIAGSAUDAVEL_TST"

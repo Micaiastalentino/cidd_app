@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/core";
-import HISTORICO_CLASS from "./HISTORICO_CLASS";
 
 const TIPOCLASS = () => {
     const navigation = useNavigation();
@@ -18,6 +17,7 @@ const TIPOCLASS = () => {
                     <Text style={styles.txtClass}>
                         Classificação
                     </Text>
+                    <View style={[styles.linha, styles.linhaBorder]} />
                 </View>
                 <View style={styles.contmargintxt}>
                     <Text style={styles.txtResumo}>
@@ -51,26 +51,34 @@ const styles = StyleSheet.create ({
     },
     container:{
         backgroundColor: Color.colorcolorWhitesmoke_100,
-        height: 780, //ALTURA DA TELA
+        height: 720, //ALTURA DA TELA
         width: "100%", //LARGURA DA TELA
     },
     contmargintxt:{
-        margin: 20
+        margin: 15
+    },
+    linha: {
+        width: '100%',
+    },
+    linhaBorder: {
+        height: 1,
+        borderTopWidth: 1,
+        borderColor: Color.colorDarkgray,
+        borderStyle: "solid",
     },
     txtClass:{
-        fontSize: 18,
-        fontWeight: "700",
-        color: Color.colorSienna,
         fontFamily: FontFamily.montserratBold,
-        position: 'absolute'
+        fontSize: 16,
+        color: Color.colorSienna,
+        marginBottom: 5,
     },
     txtResumo:{
         fontSize: 14,
-        lineHeight: 19,
+        lineHeight: 20,
+        marginTop: -15,
         fontWeight: "500",
         color: Color.colorSienna,
         fontFamily: FontFamily.montserratMedium,
-        flexDirection: "row",
         textAlign: "justify",
     },
     txtNClass:{
@@ -78,12 +86,10 @@ const styles = StyleSheet.create ({
         fontWeight: "700",
         color: "#316230",
         fontFamily: FontFamily.montserratBold,
-        position: 'absolute'
     },
 
     contRet:{
-        flexDirection: 'column',
-        margin: 10,
+        margin: 5,
         alignItems: 'center',
 
     },
@@ -93,14 +99,14 @@ const styles = StyleSheet.create ({
         backgroundColor: Color.colorWhite,
         alignItems: 'center',
         borderRadius: 20,
-        marginBottom: 20, // espaçamento entre os retângulos
+        marginBottom: 15, // espaçamento entre os retângulos
         justifyContent: 'center', // centralizar o texto verticalmente
     },
     ret2:{
         width: "90%",
         height:"23%",
         backgroundColor: Color.colorWhite,
-        marginBottom: 20,
+        marginBottom: 15,
         alignItems: 'center',
         borderRadius: 20,
         justifyContent: 'center',
