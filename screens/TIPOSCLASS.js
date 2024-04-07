@@ -1,8 +1,16 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/core";
+import HISTORICO_CLASS from "./HISTORICO_CLASS";
 
 const TIPOCLASS = () => {
+    const navigation = useNavigation();
+
+    const historico_tp = (valor) => {
+        navigation.navigate('HISTORICO_CLASS', {valor});  
+    };
+
     return (
         <ScrollView style={styles.containerScrol}>
             <View style={styles.container}>
@@ -15,21 +23,21 @@ const TIPOCLASS = () => {
                     <Text style={styles.txtResumo}>
                         Este inovador aplicativo, alimentado por inteligência artificial, 
                         oferece uma classificação precisa dos frutos do cacau, distinguindo
-                        entre saudáveis, afetados pela doença de podridão parda e aqueles 
-                        impactados pela temida doença vassoura-de-bruxa. Uma ferramenta 
+                        entre saudáveis, afetados pela doença Podridão Parda e aqueles 
+                        impactados pela temida doença Vassoura-de-Bruxa. Uma ferramenta 
                         avançada que capacita os produtores a tomarem decisões informadas 
                         para preservar a qualidade e a saúde de suas plantações de cacau. 
                     </Text>
                 </View>
                 <View style={styles.contRet}>
-                    <TouchableOpacity  style={styles.ret1}>
-                        <Text style={styles.txtNClass}> Fruto Saudável</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.ret2}>
+                    <TouchableOpacity style={styles.ret1} onPress={() => historico_tp(1)}>
                         <Text style={styles.txtNClass}>Podridão Parda</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.ret3}>
+                    <TouchableOpacity style={styles.ret2} onPress={() => historico_tp(2)}>
                         <Text style={styles.txtNClass}>Vassoura-de-Bruxa</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity  style={styles.ret3}>
+                        <Text style={styles.txtNClass}> Fruto Saudável</Text>
                     </TouchableOpacity>
                 </View>
             </View>

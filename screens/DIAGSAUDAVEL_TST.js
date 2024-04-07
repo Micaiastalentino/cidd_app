@@ -6,6 +6,7 @@ import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import ViewImage from "../components/ViewImage/ViewImage"; //Componente
 import { useRoute } from "@react-navigation/native";
 import { PieChart } from 'react-native-svg-charts';
+import TIPOCLASS from "./TIPOSCLASS";
 
 const DIAGSAUDAVEL_TST = () => {
   const navigation = useNavigation();
@@ -116,6 +117,12 @@ const DIAGSAUDAVEL_TST = () => {
             <Text style={[styles.titCuidadosEPrec, styles.tipoTituloPadrao]}>
               Cuidados e Precauções
             </Text>
+            
+            <TouchableOpacity style={[styles.ret]}  onPress={() => navigation.navigate(TIPOCLASS)}>
+              <Text style={[styles.titSaibamais, styles.tipoTituloPadrao]}>
+                Saiba mais!
+              </Text>
+            </TouchableOpacity>
 
             {/* SOBRE O CACAU */}
             <View style={[styles.linha3, styles.linhaBorder]} />
@@ -189,7 +196,7 @@ const styles = StyleSheet.create({
   },
   
   contSecundario: {
-    top: '3%',
+    top: 40,
     marginStart: "2%",
     width: "50%",
     position: "absolute",
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
   
   contPrincipal: {
     backgroundColor: Color.colorWhite,
-    height: 1650, //ALTURA DA TELA
+    height: 1750, //ALTURA DA TELA
     width: "100%", //LARGURA DA TELA
     //backgroundColor: 'black',
   },
@@ -233,16 +240,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 /////////////////////
-  
-
   detalhesDaAnlise: {
-    height: 1600,
+    height: 1680,
     //backgroundColor: 'black',
   },
-
   diagnsticoChildPosition: {
     flex: 1,
-    top: 127,
+    top: 130,
     width: "185%",
     borderRadius: Border.br_3xs,
     borderWidth: 1, // largura da borda
@@ -258,6 +262,22 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 
+  // TITULO SAIBA MAIS!
+  titSaibamais:{
+    color: "#2265E5",
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    textDecorationLine: 'underline',
+    fontSize: 16,
+  },
+  ret:{
+    marginTop: 1550,
+    left: 170,
+    width: "auto",
+    position: 'absolute',
+    backgroundColor: 'black'
+  },
+  
   /// TITULO CUIDADOS E PRECAUÇÕES
   titCuidadosEPrec: {
     height: "100%",
@@ -274,7 +294,7 @@ const styles = StyleSheet.create({
     top: "78%",
     width: "100%",
     textAlign: "justify",
-    position: "absolute",
+    backgroundColor: 'yellow'
   },
   //BORDA DAs LINHAs
   linhaBorder: {
@@ -352,8 +372,10 @@ const styles = StyleSheet.create({
   },
   //IMAGEM CAPTURADA
   imgCapturada: {
-    marginTop: '7%',
+    marginTop: '20%',
+    left: '15%',
     alignItems: 'center',
+    position: 'absolute',
   },
   // TEXTO IMAGEM CAPTURADA
   titImagemCapturada: {

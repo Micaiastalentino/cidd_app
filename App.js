@@ -16,6 +16,7 @@ import CAMERA from "./screens/CAMERA";
 import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
 import TIPOCLASS from "./screens/TIPOSCLASS";
 import ViewDicas from "./components/ViewDicas/ViewDicas";
+import HISTORICO_CLASS from "./screens/HISTORICO_CLASS";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,8 @@ const App = () => {
     return null;
   }
 
+  const valor = 'PODRIDÃO PARDA';
+
   return (
     <>
       <NavigationContainer>
@@ -52,8 +55,7 @@ const App = () => {
                   backgroundColor: "#6f4330",
                 },
                 headerRight: () => (
-                  <TouchableOpacity 
-                    /*onPress={() => navigation.navigate('CAMERA')}*/>
+                  <TouchableOpacity onPress={() => navigation.navigate('CONFIGURACOES')}>
                     <Entypo name="menu" size={33} color="white" />
                   </TouchableOpacity>
                 ),
@@ -90,11 +92,6 @@ const App = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="CONFIGURACOES"
-              component={CONFIGURACOES}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
               name="CADASTRESE"
               component={CADASTRESE}
               options={{ headerShown: false }}
@@ -112,7 +109,24 @@ const App = () => {
                 },
               }}
             />
-
+            <Stack.Screen
+              name="CONFIGURACOES"
+              component={CONFIGURACOES}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="HISTORICO_CLASS"
+              component={HISTORICO_CLASS}
+              options={{ 
+                headerShown: true,
+                headerTitle: valor,
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
+            />
             <Stack.Screen
               name="DIAGSAUDAVEL_TST"
               component={DIAGSAUDAVEL_TST}
