@@ -4,19 +4,21 @@ import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Entypo } from '@expo/vector-icons';
 import { Image } from "expo-image";
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
+import { StatusBar, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
-import LOGIN from "./screens/LOGIN";
-import CAPTURA from "./screens/CAPTURA";
-import PERFIL from "./screens/PERFIL";
-import CONFIGURACOES from "./screens/CONFIGURACOES";
+
 import HOME from "./screens/HOME";
-import CADASTRESE from "./screens/CADASTRESE";
 import CAMERA from "./screens/CAMERA";
-import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
 import TIPOCLASS from "./screens/TIPOSCLASS";
-import ViewDicas from "./components/ViewDicas/ViewDicas";
 import HISTORICO_CLASS from "./screens/HISTORICO_CLASS";
+import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
+import ViewDicas from "./components/ViewDicas/ViewDicas";
+
+import CAPTURA from "./screens/CAPTURA";
+import CONFIGURACOES from "./screens/CONFIGURACOES";
+import LOGIN from "./screens/LOGIN";
+import CADASTRESE from "./screens/CADASTRESE";
+import PERFIL from "./screens/PERFIL";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +50,10 @@ const App = () => {
 
   return (
     <>
+      <StatusBar
+        backgroundColor="#6f4330" // Define a cor barra de status no Android;
+        barStyle='default' // Define o estilo dos ícones da barra de status no Android;
+      />
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: true }}>
@@ -80,11 +86,6 @@ const App = () => {
               })}
             />
             <Stack.Screen
-              name="LOGIN"
-              component={LOGIN}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
               name="ViewDicas"
               component={ViewDicas}
               options={{ headerShown: true }}
@@ -93,17 +94,7 @@ const App = () => {
               name="CAPTURA"
               component={CAPTURA}
               options={{ headerShown: false }}
-            />{/*
-            <Stack.Screen
-              name="PERFIL"
-              component={PERFIL}
-              options={{ headerShown: false }}
             />
-            <Stack.Screen
-              name="CADASTRESE"
-              component={CADASTRESE}
-              options={{ headerShown: false }}
-            />*/}
             <Stack.Screen
               name="TIPOCLASS"
               component={TIPOCLASS}
@@ -116,11 +107,6 @@ const App = () => {
                   backgroundColor: "#6f4330",
                 },
               }}
-            />
-            <Stack.Screen
-              name="CONFIGURACOES"
-              component={CONFIGURACOES}
-              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="HISTORICO_CLASS"
@@ -160,6 +146,26 @@ const App = () => {
                   backgroundColor: "#6f4330",
                 },
               }}
+            />{/* 
+            <Stack.Screen
+              name="PERFIL"
+              component={PERFIL}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="LOGIN"
+              component={LOGIN}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CADASTRESE"
+              component={CADASTRESE}
+              options={{ headerShown: false }}
+            />*/}
+            <Stack.Screen
+              name="CONFIGURACOES"
+              component={CONFIGURACOES}
+              options={{ headerShown: false }}
             />
           </Stack.Navigator>
         ) : null}
