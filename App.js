@@ -19,6 +19,7 @@ import CONFIGURACOES from "./screens/CONFIGURACOES";
 import LOGIN from "./screens/LOGIN";
 import CADASTRESE from "./screens/CADASTRESE";
 import PERFIL from "./screens/PERFIL";
+import DET_CAPTURA from "./screens/DET_CAPTURA";
 
 const Stack = createNativeStackNavigator();
 
@@ -51,8 +52,8 @@ const App = () => {
   return (
     <>
       <StatusBar
-        backgroundColor="#6f4330" // Define a cor barra de status no Android;
-        barStyle='default' // Define o estilo dos ícones da barra de status no Android;
+        backgroundColor="#000000" // Define a cor barra de status no Android;
+        barStyle='light-content' // Define o estilo dos ícones da barra de status no Android;
       />
       <NavigationContainer>
         {hideSplashScreen ? (
@@ -64,13 +65,13 @@ const App = () => {
                 headerShown: true,
                 headerTitle: "CIDD",
                 headerTitleAlign: "center",
-                headerTintColor: "white",
+                headerTintColor: "#FFFFFF",
                 headerStyle: {
-                  backgroundColor: "#6f4330",
+                  backgroundColor: "#6f4325",
                 },
                 headerRight: () => (
                   <TouchableOpacity onPress={() => navigation.navigate('CONFIGURACOES')}>
-                    <Entypo name="menu" size={33} color="white" />
+                    <Entypo name="menu" size={33} color="#FFFFFF" />
                   </TouchableOpacity>
                 ),
                 headerLeft: () => (
@@ -93,7 +94,28 @@ const App = () => {
             <Stack.Screen
               name="CAPTURA"
               component={CAPTURA}
-              options={{ headerShown: false }}
+              options={{ 
+                headerShown: true,
+                headerTitle: "CAPTURAS",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
+            />
+            <Stack.Screen
+              name="DET_CAPTURA"
+              component={DET_CAPTURA}
+              options={{ 
+                headerShown: true,
+                headerTitle: "CAPTURA",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
             />
             <Stack.Screen
               name="TIPOCLASS"
@@ -165,7 +187,15 @@ const App = () => {
             <Stack.Screen
               name="CONFIGURACOES"
               component={CONFIGURACOES}
-              options={{ headerShown: false }}
+              options={{ 
+                headerShown: true,
+                headerTitle: 'CONFIGURAÇÕES',
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
             />
           </Stack.Navigator>
         ) : null}

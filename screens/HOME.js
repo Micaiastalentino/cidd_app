@@ -1,31 +1,22 @@
 import React, {useState} from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable, ScrollView, Share, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView, Platform, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
 import { Feather } from '@expo/vector-icons';
+
 import CAMERA from "./CAMERA";
-import LOGIN from "./LOGIN";
 import CAPTURA from "./CAPTURA";
 import TIPOCLASS from "./TIPOSCLASS";
-import CustomModal from "../components/ViewDicas/ViewDicas"
+import CustomModal from "../components/ViewDicas/ViewDicas";
+import shareContent from "../components/ShareContent/ShareContent";
+import LOGIN from "./LOGIN";
 
 
 const HOME = () => {
   const navigation = useNavigation();
   const [selectedIcon, setSelectedIcon] = React.useState('home');
   const [modalVisible, setModalVisible] = useState(false);
-  //FUNÇÃO COMPARTILHAMENTO;
-  const shareContent = () => {
-    console.log("Pressionado");
-    if (Platform.OS === 'android') {
-      Share.share({
-        message: 'Confira este link: https://www.appcidd.com.br',
-      });
-    } else {
-      // Implemente a lógica de compartilhamento para outras plataformas (iOS, por exemplo)
-    }
-  };
 
   return (
     <View style={styles.containerPrincipal}>
