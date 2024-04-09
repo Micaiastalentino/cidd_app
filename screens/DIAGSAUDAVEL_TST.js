@@ -51,8 +51,6 @@ const DIAGSAUDAVEL_TST = () => {
     }
   };
 
-  AsyncStorage.clear();
-
   // Calcula a classe com a maior confiança;
   const maxConfidenceClass = Object.keys(respostaAPI).reduce((a, b) => respostaAPI[a] > respostaAPI[b] ? a : b);
   // Calcula a porcentagem das classes;

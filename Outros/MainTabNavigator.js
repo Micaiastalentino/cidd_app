@@ -1,3 +1,184 @@
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Entypo } from '@expo/vector-icons';
+import { Color, FontFamily, Border } from "../GlobalStyles";
+
+const CAPTURA = () => {
+  const navigation = useNavigation();
+  const [historico, setHistorico] = useState([]);
+  const [mostrarBotaoLimpar, setMostrarBotaoLimpar] = useState(false);
+
+  useEffect(() => {
+    carregarHistorico();
+  }, []);
+
+  const carregarHistorico = async () => {
+    try {
+      const historicos = await AsyncStorage.getItem('historico_diagnosticos');
+      if (historicos) {
+        setHistorico(JSON.parse(historicos));
+      }
+    } catch (error) {
+      console.error('Erro ao carregar histórico:', error);
+    }
+  };
+
+  const limparHistorico = async () => {
+    try {
+      await AsyncStorage.clear();
+      atualizarHistorico([]);
+      setMostrarBotaoLimpar(false);
+      const routeName = navigation.dangerouslyGetState().routes[0].name;
+      navigation.replace(routeName || 'CAPTURA');
+    } catch (error) {
+      console.error('Erro ao limpar o histórico:', error);
+    }
+  };
+
+  const mostrarAlertaLimparHistorico = () => {
+    Alert.alert(
+      'Limpar Histórico',
+      'Tem certeza que deseja limpar todos os históricos?',
+      [
+        { text: 'Cancelar', onPress: () => console.log('Limpeza cancelada') },
+        { text: 'Limpar', onPress: limparHistorico },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const handleItemPress = (item) => {
+    navigation.navigate('DET_CAPTURA', { selectedItem: item });
+  };
+
+  const handleItemLongPress = (index) => {
+    const novoHistorico = [...historico];
+    novoHistorico.splice(index, 1);
+    atualizarHistorico(novoHistorico);
+  };
+
+  const atualizarHistorico = async (novoHistorico) => {
+    try {
+      if (novoHistorico && novoHistorico.length > 0) {
+        await AsyncStorage.setItem('historico_diagnosticos', JSON.stringify(novoHistorico));
+      } else {
+        await AsyncStorage.removeItem('historico_diagnosticos');
+      }
+      setHistorico(novoHistorico);
+      setMostrarBotaoLimpar(novoHistorico.length > 0);
+    } catch (error) {
+      console.error('Erro ao atualizar histórico:', error);
+    }
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      {mostrarBotaoLimpar && (
+        <TouchableOpacity onPress={mostrarAlertaLimparHistorico} style={styles.icone}>
+          <Entypo name="list" size={33} color="#000000" />
+        </TouchableOpacity>
+      )}
+      {historico.length === 0 ? (
+        <View style={styles.vazio}>
+          <Text style={styles.textovazio}>Nenhum histórico de captura!</Text>
+        </View>
+      ) : (
+        historico.map((item, index) => (
+          <TouchableOpacity 
+            key={index} 
+            style={styles.conRet} 
+            onPress={() => handleItemPress(item)}
+            onLongPress={() => handleItemLongPress(index)}
+          > 
+            <View style={styles.retResult}>
+              <View style={styles.conteinerResult}>
+                <View style={styles.alinhResult}>
+                  <Text>Data: {item.dataHora}</Text>
+                  <Text style={styles.tituloClassified}>{item.classifi}</Text> 
+                  <Text style={styles.resultTextoPorcentagem}>{item.classeMaiorPorcentagem}% de precisão</Text>
+                </View>
+                <Image
+                  resizeMode="cover"
+                  source={require(`../assets/images/desenho-cacau-${item.valores === 1 ? 'doentek1' : item.valores === 2 ? 'doente-vagemk1' : 'saudavek1'}.png`)}
+                  style={styles.iconImgCacau}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))
+      )}
+    </ScrollView>
+  );  
+};
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 20,
+  },
+  icone:{
+    position: 'absolute',
+  },
+  vazio:{
+    flex: 1,
+    flexDirection: 'column',
+    width: "100%",
+    height: 50,
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: Color.colorDarkgray,
+  },
+  textovazio:{
+    color: Color.colorSienna,
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    fontSize: 16,
+    alignItems: 'center',
+    marginTop: 9,
+  },
+  retResult:{
+    backgroundColor: Color.colorWhite,
+    borderRadius: Border.br_3xs,
+    borderWidth: 1,
+    borderColor: Color.colorDarkgray,
+    height: 130,
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  conteinerResult:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+  },
+  alinhResult:{
+    alignItems: 'left'
+  },
+  tituloClassified: {
+    color: '#006400',
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    fontSize: 18,
+  },
+  resultTextoPorcentagem: {
+    fontFamily: FontFamily.montserratMedium,
+    color: Color.colorSienna,
+    fontWeight: "bold",
+    fontSize: 13,
+  },
+  iconImgCacau: {
+    width: 120,
+    height: 80,
+  }
+});
+
+export default CAPTURA;
+
+{/*
 import React, {useState} from "react";
 import { Image } from "expo-image";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
@@ -79,7 +260,7 @@ const DIAGSAUDAVEL_TST = () => {
   return (
     <ScrollView style={styles.containerScrol}>
       <View style={styles.contPrim}>
-        {/* RESULTADO DA ANALISE */}
+
         <Text style={[styles.title]}>
           Resultado da Análise:
         </Text>
@@ -102,18 +283,18 @@ const DIAGSAUDAVEL_TST = () => {
         </View>
         <View style={styles.contSec}>
             <View style={styles.conteiner}>
-              {/* Exibe a imagem capturada*/} 
+
               <Text style={[styles.title]}>
                 Imagem Capturada
               </Text>
               <View style={[styles.linha, styles.linhaBorder]} />
               <TouchableOpacity>
-                {/* Componente ExibeImagem */}
+
                 <ViewImage capturedImage={img_select} /> 
               </TouchableOpacity>
             </View>
 
-            {/* SOBRE O CACAU */}
+
             <View style={styles.conteiner}>
               <Text style={[styles.title]}>
                 Sobre o Cacau
@@ -129,14 +310,14 @@ const DIAGSAUDAVEL_TST = () => {
                 Análise Gráfica
               </Text>
               <View style={[styles.linha, styles.linhaBorder]} />
-              {/* Gráfico */}
+
               <View style={styles.contGrafico}>
                 <PieChart
                   style={styles.grafico}
                   data={pieData}
                   outerRadius={'95%'}
                 />
-                {/* LEGENDAS */}
+
                 <View style={styles.legendContainerGfc}>
                   {data.map((item, index) => (
                     <TouchableOpacity
@@ -152,7 +333,7 @@ const DIAGSAUDAVEL_TST = () => {
               </View>
             </View>
 
-            {/* CUIDADOS E PRECAUÇÕES */}
+
             <View style={styles.conteiner}>
               <Text style={[styles.title]}>
                 Cuidados e Precauções
@@ -161,7 +342,7 @@ const DIAGSAUDAVEL_TST = () => {
               <Text style={[styles.text]}>
                 {textoCuidadosCacau}
               </Text>
-              {/* CONDIÇÃO PARA NAVEGAÇÃO TELA DE HISTÓRICO DAS DOENÇAS; */}
+
               {valor == 1 || valor == 2 ? (
                 <TouchableOpacity onPress={() => (
                   navigation.navigate('HISTORICO_CLASS', {valor})
@@ -318,7 +499,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DIAGSAUDAVEL_TST;
+export default DIAGSAUDAVEL_TST;/*}
 
 
 //CAPTURAS

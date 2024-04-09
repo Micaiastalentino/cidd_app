@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Entypo, Feather } from '@expo/vector-icons';
+import { Color, FontFamily, Border } from "../GlobalStyles";
+import HOME from "./HOME";
 
 const CAPTURA = () => {
   const navigation = useNavigation();
   const [historico, setHistorico] = useState([]);
-  let icon;
+  const [mostrarBotaoLimpar, setMostrarBotaoLimpar] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     carregarHistorico();
@@ -23,64 +26,219 @@ const CAPTURA = () => {
       console.error('Erro ao carregar histórico:', error);
     }
   };
+
+  const limparHistorico = async () => {
+    try {
+      await AsyncStorage.clear();
+      atualizarHistorico([]);
+      setMostrarBotaoLimpar(false);
+      //const routeName = navigation.getCurrentRoute().name;
+      navigation.replace(routeName || 'CAPTURA');
+    } catch (error) {
+      console.error('Erro ao limpar o histórico:', error);
+    }
+  };
+
+  const mostrarAlertaLimparHistorico = () => {
+    if (!historico || historico.length === 0) {
+      Alert.alert(
+        'Não existe histórico para excluir!',
+      );
+    } else {
+      Alert.alert(
+        'Excluir Históricos',
+        'Tem certeza que deseja excluir todos os históricos?',
+        [
+          { text: 'Cancelar', onPress: () => console.log('Limpeza cancelada') },
+          { text: 'Limpar', onPress: () => limparHistorico() },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
   const handleItemPress = (item) => {
     navigation.navigate('DET_CAPTURA', { selectedItem: item });
   };
-  
+
+  const handleItemLongPress = (index) => {
+    Alert.alert(
+      'Excluir',
+      'Tem certeza que deseja excluir este histórico?',
+      [
+        { text: 'Cancelar', onPress: () => console.log('Exclusão cancelada') },
+        { 
+          text: 'Limpar', 
+          onPress: () => {
+            const novoHistorico = [...historico];
+            novoHistorico.splice(index, 1);
+            atualizarHistorico(novoHistorico);
+          }
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const atualizarHistorico = async (novoHistorico) => {
+    try {
+      if (novoHistorico && novoHistorico.length > 0) {
+        await AsyncStorage.setItem('historico_diagnosticos', JSON.stringify(novoHistorico));
+      } else {
+        await AsyncStorage.removeItem('historico_diagnosticos');
+      }
+      setHistorico(novoHistorico);
+      setMostrarBotaoLimpar(novoHistorico.length > 0);
+    } catch (error) {
+      console.error('Erro ao atualizar histórico:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
-      {historico.map((item, index) => (
-        <TouchableOpacity 
-          key={index} 
-          style={styles.conRet} 
-          onPress={() => handleItemPress(item)} // Chama a função;
-        > 
-          <View style={styles.retResult}>
-            <View style={styles.conteinerResult}>
-              <View style={styles.alinhResult}>
-                <Text>Data: {item.dataHora}</Text>
-                <Text style={styles.tituloClassified}>{item.classifi}</Text> 
-                <Text style={styles.resultTextoPorcentagem}>{item.classeMaiorPorcentagem}% de precisão</Text>
-              </View>
-              {item.valores === 1 ?(
-                <Image
-                  resizeMode="cover"
-                  source={require("../assets/images/desenho-cacau-doentek1.png")}
-                  style={styles.iconImgCacau}
-                />
-              ) : item.valores === 2 ?(
-                <Image
-                  resizeMode="cover"
-                  source={require("../assets/images/desenho-cacau-doente-vagemk1.png")}
-                  style={styles.iconImgCacau}
-                />
-              ):
-                <Image
-                  resizeMode="cover"
-                  source={require("../assets/images/desenho-cacau-saudavek1.png")}
-                  style={styles.iconImgCacau}
-                />
-              }
-            </View>
-          </View>
+      <View style={styles.barra}>
+        <TouchableOpacity onPress={() => navigation.goBack()}  style={styles.iconeEsquerda}>
+          <Feather name="arrow-left" size={28} color="#FFFFFF" />
         </TouchableOpacity>
-      ))}
+        <Text style={styles.titulo}>CAPTURAS</Text>
+        <TouchableOpacity onPress={mostrarAlertaLimparHistorico} style={styles.iconeDireita}>
+          <Entypo name="trash" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.contPrim}>
+        {historico.length === 0 ? (
+          <View style={styles.vazio}>
+            <Text style={styles.textovazio}>Nenhum histórico de captura!</Text>
+          </View>
+        ) : (
+          historico.map((item, index) => (
+            <TouchableOpacity 
+              key={index} 
+              style={styles.conRet} 
+              onPress={() => handleItemPress(item)}
+              onLongPress={() => handleItemLongPress(index)}
+            > 
+              <View style={styles.retResult}>
+                <View style={styles.conteinerResult}>
+                  <View style={styles.alinhResult}>
+                    <Text>Data: {item.dataHora}</Text>
+                    <Text style={styles.tituloClassified}>{item.classifi}</Text> 
+                    <Text style={styles.resultTextoPorcentagem}>{item.classeMaiorPorcentagem}% de precisão</Text>
+                  </View>
+                  {item.valores === 1 ?(
+                    <Image
+                      resizeMode="cover"
+                      source={require("../assets/images/desenho-cacau-doentek1.png")}
+                      style={styles.iconImgCacau}
+                    />
+                  ) : item.valores === 2 ?(
+                    <Image
+                      resizeMode="cover"
+                      source={require("../assets/images/desenho-cacau-doente-vagemk1.png")}
+                      style={styles.iconImgCacau}
+                    />
+                  ):
+                    <Image
+                      resizeMode="cover"
+                      source={require("../assets/images/desenho-cacau-saudavek1.png")}
+                      style={styles.iconImgCacau}
+                    />
+                  }
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))
+        )}
+      </View>
     </ScrollView>
-  );
+  );  
 };
 
 const styles = StyleSheet.create({
   container:{
     flex: 1,
     backgroundColor: 'white',
+  },
+  contPrim:{
+    padding: 15,
+  },
+
+
+  //Modal
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // fundo semi-transparente
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
     padding: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#6f4325',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  //Barra
+  barra: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#6f4325",
+    height: 55,
+    paddingHorizontal: 10,
+  },
+  titulo: {
+    fontSize: 20,
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "600",
+  },
+  iconeEsquerda: {
+    marginRight: "auto", // Move o botão para a esquerda
+  },
+  iconeDireita: {
+    marginLeft: "auto", // Move o botão para a direita
+  },
+  vazio:{
+    flex: 1,
+    flexDirection: 'column',
+    width: "100%",
+    height: 50,
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: Color.colorDarkgray,
+  },
+  textovazio:{
+    color: Color.colorSienna,
+    fontFamily: FontFamily.montserratBold,
+    fontWeight: "700",
+    fontSize: 16,
+    alignItems: 'center',
+    marginTop: 9,
   },
   retResult:{
     backgroundColor: Color.colorWhite,
     borderRadius: Border.br_3xs,
-    borderWidth: 1, // LARGURA DA BORDA
-    borderColor: Color.colorDarkgray, // COR DA BORDA
-    height: 130, //ALTURA DA TELA
+    borderWidth: 1,
+    borderColor: Color.colorDarkgray,
+    height: 130,
     padding: 10,
     alignItems: 'center',
     marginBottom: 15,
@@ -89,19 +247,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    //backgroundColor: 'yellow',
   },
   alinhResult:{
     alignItems: 'left'
   },
-  //TITULO CLASSIFICAÇÃO
   tituloClassified: {
     color: '#006400',
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
     fontSize: 18,
   },
-  //TEXTO PORCENTAGEM;
   resultTextoPorcentagem: {
     fontFamily: FontFamily.montserratMedium,
     color: Color.colorSienna,
@@ -111,7 +266,6 @@ const styles = StyleSheet.create({
   iconImgCacau: {
     width: 120,
     height: 80,
-    overflow: 'scroll',
   }
 });
 

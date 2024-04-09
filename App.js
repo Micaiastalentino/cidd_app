@@ -20,10 +20,11 @@ import LOGIN from "./screens/LOGIN";
 import CADASTRESE from "./screens/CADASTRESE";
 import PERFIL from "./screens/PERFIL";
 import DET_CAPTURA from "./screens/DET_CAPTURA";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
-const App = () => {
+const App = ({navigation}) => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
 
   const [fontsLoaded, error] = useFonts({
@@ -95,13 +96,7 @@ const App = () => {
               name="CAPTURA"
               component={CAPTURA}
               options={{ 
-                headerShown: true,
-                headerTitle: "CAPTURAS",
-                headerTitleAlign: "center",
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#6f4330",
-                },
+                headerShown: false,
               }}
             />
             <Stack.Screen
