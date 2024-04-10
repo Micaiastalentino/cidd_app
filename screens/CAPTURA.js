@@ -4,13 +4,11 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Entypo, Feather } from '@expo/vector-icons';
 import { Color, FontFamily, Border } from "../GlobalStyles";
-import HOME from "./HOME";
 
 const CAPTURA = () => {
   const navigation = useNavigation();
   const [historico, setHistorico] = useState([]);
   const [mostrarBotaoLimpar, setMostrarBotaoLimpar] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     carregarHistorico();
@@ -28,17 +26,15 @@ const CAPTURA = () => {
   };
 
   const limparHistorico = async () => {
-    try {
-      await AsyncStorage.clear();
-      atualizarHistorico([]);
-      setMostrarBotaoLimpar(false);
-      //const routeName = navigation.getCurrentRoute().name;
+    await AsyncStorage.clear();
+    atualizarHistorico([]);
+    setMostrarBotaoLimpar(false);
+    if (navigation && navigation.state) {
+      const routeName = navigation.state.routeName;
       navigation.replace(routeName || 'CAPTURA');
-    } catch (error) {
-      console.error('Erro ao limpar o histórico:', error);
     }
-  };
-
+  }
+  
   const mostrarAlertaLimparHistorico = () => {
     if (!historico || historico.length === 0) {
       Alert.alert(

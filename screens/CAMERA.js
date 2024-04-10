@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker"; //Componente
@@ -8,6 +8,9 @@ import { Image } from "expo-image";
 import axios from 'axios';
 import CustomModal from "../components/ViewDicas/ViewDicas";
 import PERFIL from "./PERFIL";
+
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 //Função carregamento;
 const LoadingModal = ({ visible }) => (
@@ -31,6 +34,11 @@ const CAMERA = () => {
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
   const [respostaAPI, setRespostaAPI] = useState(null);
 
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+  const [isCameraReady, setIsCameraReady] = useState(false);
+
+
   //Verifica e navega para DIAGSAUDAVEL toda vez que repostaAPI é atualizada;
   useEffect(() => {
     console.log("API atualizada:", respostaAPI);
@@ -47,12 +55,12 @@ const CAMERA = () => {
     })();
   }, []);
 
+  // Se ainda não foi solicitada a permissão, aguarde...
   if (hasPermission === null) {
-    // Se ainda não foi solicitada a permissão, aguarde...
     return <View />;
   }
+  // Se a permissão foi negada, mostre uma mensagem.
   if (hasPermission === false) {
-    // Se a permissão foi negada, mostre uma mensagem.
     return <Text>Sem acesso à câmera</Text>;
   }
 
@@ -61,19 +69,17 @@ const CAMERA = () => {
     setIsLoading(true);
   };
 
-  // Tirar uma foto
+  // Tirar uma foto;
   const takePicture = async () => {
     if (cameraRef) {
-      const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO
+      const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO;
       setCapturedImage(image.uri);
       console.log('URI da imagem tirada foto: ', capturedImage);
       try {
-        const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter ImagemCam para Base64
+        const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter ImagemCam para Base64;
         if (img_cam_base64) {
           setImageBase64(img_cam_base64); // Atualiza o estado da imagem em base64;
-          await chamarAPI(); // Chama a API
-          // O código abaixo será executado apenas se a chamada da API for bem-sucedida;
-          //navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage: image.uri, respostaAPI });
+          await chamarAPI(); // Chama a API;
         }
       } catch (error) {
         console.error('Erro ao converter imagem:', error);
@@ -84,7 +90,7 @@ const CAMERA = () => {
   // Selecionar Foto;
   const selecionarImagemHandler = async () => {
     try {
-      const img_armaz = await selecionarImagem(); // Função SelecionarImagem de ChamadaAPI;
+      const img_armaz = await selecionarImagem(); // Componente SelecionarImagem;
       console.log('Img selecionada - CAMERA: ', img_armaz);
       setCapturedImage(img_armaz);
 
@@ -94,7 +100,6 @@ const CAMERA = () => {
         setImageBase64(img_armaz_base64); // Atualiza o estado da imagem em base64;
         showLoading(); // Mostra a tela de carregamento;
         await chamarAPI(); // Chama a API;
-        //navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage: img_armaz, respostaAPI }); // Navega para outro componente;
       } else {
         Alert.alert('Nenhuma imagem selecionada', 'Por favor, selecione uma imagem.'); // Alerta de seleção de imagem;
       }
@@ -131,11 +136,48 @@ const CAMERA = () => {
       console.error('Erro geral ao chamar a API:', error);
     }
   };
+
+  //Alternador Tipo de Camera;
+  const toggleCameraType = () => {
+    setType(
+      type === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back
+    );
+  };
+  //Alternador Modo Flash;
+  const toggleFlashMode = () => {
+    setFlashMode(
+      flashMode === Camera.Constants.FlashMode.off
+        ? Camera.Constants.FlashMode.on
+        : Camera.Constants.FlashMode.off
+    );
+  };
+
+  //Inicialização Camera;
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+  };
+  
   return (
     <View style={styles.container}>
-      {/*Exibe a Câmera*/}
-      <Camera style={styles.camera} type={Camera.Constants.Type.back} ref={(ref) => setCameraRef(ref)}/>
 
+      <Camera 
+        style={styles.camera}
+        type={type}
+        flashMode={flashMode}
+        ref={(ref) => setCameraRef(ref)}
+        onCameraReady={onCameraReady}
+      >
+        <View style={styles.cameraButtonContainer}>
+          <TouchableOpacity style={styles.cameraButton} onPress={toggleFlashMode}>
+            <MaterialIcons name={flashMode === Camera.Constants.FlashMode.off ? 'flash-off' : 'flash-on'} size={30} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cameraButton} onPress={toggleCameraType}>
+            <MaterialIcons name="flip-camera-ios" size={36} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Camera>
       <View style={styles.barramenu}>
         {/*Botão Selecionar Imagem*/}
         <TouchableOpacity style={[styles.circulo]}
@@ -187,20 +229,53 @@ const CAMERA = () => {
           />
         </TouchableOpacity>
       </View>
+
       {/* Tela de carregamento */}
       <LoadingModal visible={isLoading} />
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  //CAMERA
   container: {
     flex: 1,
-    backgroundColor: "white",
-    alignItems: 'center',
+    backgroundColor: 'black'
   },
-  
+
+  camera: {
+    flex: 0.75,
+    width: "100%",
+  },
+
+  cameraButtonContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 10
+  },
+
+  cameraButton: {
+    backgroundColor: 'transparent',
+    marginHorizontal: 5
+  },
+
+  //BARRA MENU
+  barramenu: {
+    backgroundColor: Color.colorWhite,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    justifyContent: 'space-around',
+    height: 180,
+    width: "100%",
+    position: 'absolute', // Alterado para 'absolute'
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+
   modal:{
     margin: 10,
   },
@@ -210,11 +285,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  camera: {
-    flex: 0.8,
-    width: "100%",
   },
 
   tirarfoto:{
@@ -261,30 +331,6 @@ const styles = StyleSheet.create({
   dicascaptura: {
     width: 97,
     alignItems: "center",
-  },
-
-  //BARRA MENU
-  barramenu: {
-    backgroundColor: Color.colorWhite,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    paddingVertical: 10,
-    justifyContent: 'space-around',
-    height: '10%',
-    width: "100%",
-    position: 'absolute', // Alterado para 'absolute'
-    bottom: 30,
-    left: 0,
-    right: 0,
-    
-    /*top: "85%",
-    left: "4.5%",
-    height: 60,
-    minHeight: 60,
-    bottom: 0,
-    alignItems: "center",
-    flexDirection: "row",
-    position: "absolute",*/
   },
 });
 
