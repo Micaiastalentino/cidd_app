@@ -156,10 +156,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   contPrim:{
+    flex: 1,
     padding: 15,
   },
-
-
   //Modal
   modalOverlay: {
     flex: 1,

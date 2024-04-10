@@ -1,26 +1,20 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Entypo } from '@expo/vector-icons';
-import { Image } from "expo-image";
 import { StatusBar, TouchableOpacity } from "react-native";
+import { Entypo } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
-
+import { Image } from "expo-image";
 import HOME from "./screens/HOME";
 import CAMERA from "./screens/CAMERA";
 import TIPOCLASS from "./screens/TIPOSCLASS";
 import HISTORICO_CLASS from "./screens/HISTORICO_CLASS";
 import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
-import ViewDicas from "./components/ViewDicas/ViewDicas";
-
 import CAPTURA from "./screens/CAPTURA";
 import CONFIGURACOES from "./screens/CONFIGURACOES";
-import LOGIN from "./screens/LOGIN";
-import CADASTRESE from "./screens/CADASTRESE";
 import PERFIL from "./screens/PERFIL";
 import DET_CAPTURA from "./screens/DET_CAPTURA";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ViewDicas from "./components/ViewDicas/ViewDicas";
 
 const Stack = createNativeStackNavigator();
 
@@ -163,12 +157,21 @@ const App = ({navigation}) => {
                   backgroundColor: "#6f4330",
                 },
               }}
-            />{/* 
+            />
             <Stack.Screen
               name="PERFIL"
               component={PERFIL}
-              options={{ headerShown: false }}
+              options={{ 
+                headerShown: true,
+                headerTitle: "PERFIL",
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#6f4330",
+                },
+              }}
             />
+            {/*
             <Stack.Screen
               name="LOGIN"
               component={LOGIN}

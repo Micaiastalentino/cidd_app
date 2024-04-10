@@ -8,14 +8,13 @@ import { Feather } from '@expo/vector-icons';
 import CAMERA from "./CAMERA";
 import CAPTURA from "./CAPTURA";
 import TIPOCLASS from "./TIPOSCLASS";
+import PERFIL from "./PERFIL";
 import CustomModal from "../components/ViewDicas/ViewDicas";
 import shareContent from "../components/ShareContent/ShareContent";
-import LOGIN from "./LOGIN";
 
 
 const HOME = () => {
   const navigation = useNavigation();
-  const [selectedIcon, setSelectedIcon] = React.useState('home');
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -34,8 +33,8 @@ const HOME = () => {
 
       {/*MENU BARRA INFERIOR*/}
       <View style={styles.contMenu}>
-        <TouchableOpacity style={styles.menuItem} onPress={() => setSelectedIcon('home')}>
-          <Feather name="home" size={30} color={selectedIcon === 'home' ? "#1cca81" : 'black'} /> 
+        <TouchableOpacity style={styles.menuItem}>
+          <Feather name="home" size={30} color={Color.colorSienna} /> 
           <Text style={styles.home}>Início</Text>
         </TouchableOpacity>
 
@@ -62,7 +61,7 @@ const HOME = () => {
           <Text style={styles.fontMenu}>Capturas</Text>
         </Pressable>
 
-        <Pressable style={styles.menuItem} onPress={() => navigation.navigate()}>
+        <Pressable style={styles.menuItem} onPress={() => navigation.navigate(PERFIL)}>
           <Feather name="user" size={30} color={Color.colorSienna}/>
           <Text style={styles.fontMenu}>Perfil</Text>
         </Pressable>
@@ -135,7 +134,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    
   },
   menuItem: {
     alignItems: 'center',
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
   home:{
     fontWeight: "500",
     fontFamily: FontFamily.poppinsMedium,
-    color: "#1cca81",
+    color: Color.colorSienna,
     lineHeight: 16,
     fontSize: FontSize.size_xs,
   },
