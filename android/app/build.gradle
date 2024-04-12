@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.frontendappcacau"
+    namespace "com.cidd_app"
     defaultConfig {
-        applicationId "com.frontendappcacau"
+        applicationId "com.cidd_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

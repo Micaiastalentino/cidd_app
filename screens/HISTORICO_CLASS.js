@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 const HISTORICO_CLASS = ({route}) => {
-  const navigation = useNavigation();
   const valor = route.params?.valor;
 
   // Texto sobre o cacau

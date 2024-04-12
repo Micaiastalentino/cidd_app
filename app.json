@@ -1,11 +1,21 @@
 {
   "expo": {
-    "name": "app-cacau",
-    "slug": "app-cacau",
+    "name": "cidd_app",
+    "slug": "cidd_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app.png",
     "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -24,15 +34,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     }
   },
-
   "android": {
-    "permissions": ["CAMERA", "CAMERA_ROLL"]
+    "permissions": [
+      "CAMERA",
+      "CAMERA_ROLL"
+    ]
   },
   "ios": {
     "permissions": {

@@ -1,16 +1,13 @@
-import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
 import React, { useState, useEffect } from 'react';
+import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
+import { MaterialIcons } from '@expo/vector-icons';
 import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker"; //Componente
+import CustomModal from "../components/ViewDicas/ViewDicas";
 import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
-import CustomModal from "../components/ViewDicas/ViewDicas";
-import PERFIL from "./PERFIL";
-
-import { MaterialIcons } from '@expo/vector-icons';
-
 
 //Função carregamento;
 const LoadingModal = ({ visible }) => (
@@ -22,22 +19,19 @@ const LoadingModal = ({ visible }) => (
   </Modal>
 );
 
+//Componente Câmera;
 const CAMERA = () => {
   const navigation = useNavigation();
-  const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento
+  const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento;
   const [modalVisible, setModalVisible] = useState(false);
-
-  // Camera
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
   const [respostaAPI, setRespostaAPI] = useState(null);
-
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
   const [isCameraReady, setIsCameraReady] = useState(false);
-
 
   //Verifica e navega para DIAGSAUDAVEL toda vez que repostaAPI é atualizada;
   useEffect(() => {

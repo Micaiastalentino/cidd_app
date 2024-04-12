@@ -1,14 +1,13 @@
-import { Share } from "react-native";
+import { Share, Platform } from 'react-native';
 
-//FUNÇÃO COMPARTILHAMENTO;
 const shareContent = () => {
     console.log("Pressionado");
     if (Platform.OS === 'android') {
         Share.share({
-        message: 'Confira este link: https://www.appcidd.com.br',
+            message: 'Em breve o aplicativo CIDD estará na PlayStore: https://play.google.com/store/apps/details?id=com.cidd',
         });
     } else {
-        // Implemente a lógica de compartilhamento para outras plataformas (iOS, por exemplo)
+        // Lógica de compartilhamento para outras plataformas;
     }
 };
 

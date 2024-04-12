@@ -1,13 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import CAPTURA from "./CAPTURA";
-import ViewImage from "../components/ViewImage/ViewImage"; //Componente
+import ViewImage from "../components/ViewImage/ViewImage"; //Componente;
 
 const DET_CAPTURA = ({ route }) => {
   const { selectedItem } = route.params;
   
-  // Agora você pode acessar os dados do item selecionado, por exemplo:
+  // Itens acessáveis;
   const {classifi, classeMaiorPorcentagem, textoSobreCacau, img_cam, iconeClass, textoCuidadosCacau, valores} = selectedItem;
 
   return (

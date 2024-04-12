@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, Pressable, ScrollView, Platform, TouchableOpaci
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
 import { Feather } from '@expo/vector-icons';
-
 import CAMERA from "./CAMERA";
 import CAPTURA from "./CAPTURA";
 import TIPOCLASS from "./TIPOSCLASS";

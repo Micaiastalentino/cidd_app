@@ -1,4 +1,4 @@
-package com.frontendappcacau;
+package com.cidd_app;
 
 import android.os.Build;
 import android.os.Bundle;

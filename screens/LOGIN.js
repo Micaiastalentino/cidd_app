@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Pressable, Platform, TextInput, ScrollView } fr
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Border, Color, FontFamily, FontSize } from "../GlobalStyles";
-
 import { CheckBox } from 'react-native-elements'; //Biblioteca CheckBox;
 
 const LOGIN = () => {
