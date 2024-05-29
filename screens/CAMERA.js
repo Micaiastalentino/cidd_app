@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker"; //Componente
-import CustomModal from "../components/ViewDicas/ViewDicas";
+import CustomModal from "../components/CustomModal/CustomModal";
 import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
@@ -115,7 +115,7 @@ const CAMERA = () => {
         },
       };
       //console.log(imageBase64);
-      const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço API;
+      const res = await axios.post('http://10.50.1.60:5000/predict', imageBase64, config); //Endereço API;
       setRespostaAPI(res.data.predictions); //Atualiza o estado da resposta enviada pela API;
 
     } catch (error) {

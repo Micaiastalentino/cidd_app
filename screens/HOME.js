@@ -8,7 +8,7 @@ import CAMERA from "./CAMERA";
 import CAPTURA from "./CAPTURA";
 import TIPOCLASS from "./TIPOSCLASS";
 import PERFIL from "./PERFIL";
-import CustomModal from "../components/ViewDicas/ViewDicas";
+import CustomModal from "../components/CustomModal/CustomModal";
 import shareContent from "../components/ShareContent/ShareContent";
 
 

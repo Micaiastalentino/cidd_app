@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import shareContent from "../components/ShareContent/ShareContent"
-import CustomModal from "../components/ViewDicas/ViewDicas";
+import CustomModal from "../components/CustomModal/CustomModal";
 
 const CONFIGURACOES = () => {
   const navigation = useNavigation();

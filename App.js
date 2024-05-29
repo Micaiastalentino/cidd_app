@@ -14,7 +14,7 @@ import CAPTURA from "./screens/CAPTURA";
 import CONFIGURACOES from "./screens/CONFIGURACOES";
 import PERFIL from "./screens/PERFIL";
 import DET_CAPTURA from "./screens/DET_CAPTURA";
-import ViewDicas from "./components/ViewDicas/ViewDicas";
+import ViewDicas from "./components/CustomModal/CustomModal";
 
 const Stack = createNativeStackNavigator();
 
