@@ -115,7 +115,7 @@ const CAMERA = () => {
         },
       };
       //console.log(imageBase64);
-      const res = await axios.post('http://10.50.1.60:5000/predict', imageBase64, config); //Endereço API;
+      const res = await axios.post('http://192.168.14.143:5000/predict', imageBase64, config); //Endereço API;
       setRespostaAPI(res.data.predictions); //Atualiza o estado da resposta enviada pela API;
 
     } catch (error) {
