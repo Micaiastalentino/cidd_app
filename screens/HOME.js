@@ -5,6 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
 import { Feather } from '@expo/vector-icons';
 import CAMERA from "./CAMERA";
+
+import CAM from "./CAM";
+
 import CAPTURA from "./CAPTURA";
 import TIPOCLASS from "./TIPOSCLASS";
 import PERFIL from "./PERFIL";

@@ -10,8 +10,8 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "cameraPermission": "Permitir que $(PRODUCT_NAME) acesse sua câmera",
+          "microphonePermission": "Permitir que $(PRODUCT_NAME) acesse seu microfone",
           "recordAudioAndroid": true
         }
       ]
@@ -28,7 +28,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Permitir que $(PRODUCT_NAME) acesse sua câmera",
+        "NSMicrophoneUsageDescription": "Permitir que $(PRODUCT_NAME) acesse seu microfone"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -42,21 +46,10 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
-  },
-  "android": {
-    "permissions": [
-      "CAMERA",
-      "CAMERA_ROLL"
-    ]
-  },
-  "ios": {
-    "permissions": {
-      "camera": {
-        "required": true,
-        "allowsCaptureIOS": true,
-        "allowsRecordingIOS": true,
-        "priority": "High"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ab5fffee-e771-4634-993d-b2955c32609a"
       }
     }
   }

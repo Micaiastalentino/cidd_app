@@ -124,19 +124,19 @@ const CAPTURA = () => {
                   {item.valores === 1 ?(
                     <Image
                       resizeMode="cover"
-                      source={require("../assets/images/desenho-cacau-doentek1.png")}
+                      source={require("../assets/images/desenho-cacau-doente-pparda.png")}
                       style={styles.iconImgCacau}
                     />
                   ) : item.valores === 2 ?(
                     <Image
                       resizeMode="cover"
-                      source={require("../assets/images/desenho-cacau-doente-vagemk1.png")}
+                      source={require("../assets/images/desenho-cacau-doente-vassoura.png")}
                       style={styles.iconImgCacau}
                     />
                   ):
                     <Image
                       resizeMode="cover"
-                      source={require("../assets/images/desenho-cacau-saudavek1.png")}
+                      source={require("../assets/images/desenho-cacau-saudavel.png")}
                       style={styles.iconImgCacau}
                     />
                   }

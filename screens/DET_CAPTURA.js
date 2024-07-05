@@ -29,19 +29,19 @@ const DET_CAPTURA = ({ route }) => {
             {valores === 1 ?(
               <Image
                 resizeMode="cover"
-                source={require("../assets/images/desenho-cacau-doentek1.png")}
+                source={require("../assets/images/desenho-cacau-doente-pparda.png")}
                 style={styles.iconImgCacau}
               />
             ) : valores === 2 ?(
               <Image
                 resizeMode="cover"
-                source={require("../assets/images/desenho-cacau-doente-vagemk1.png")}
+                source={require("../assets/images/desenho-cacau-doente-vassoura.png")}
                 style={styles.iconImgCacau}
               />
             ):
               <Image
                 resizeMode="cover"
-                source={require("../assets/images/desenho-cacau-saudavek1.png")}
+                source={require("../assets/images/desenho-cacau-saudavel.png")}
                 style={styles.iconImgCacau}
               />
             }
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
   },
   //ICON CACAU IMAGEM;
   iconImgCacau: {
-    width: 120,
-    height: 80,
+    width: 80,
+    height: 50,
   },
   title: {
     color: Color.colorSienna,

@@ -13,7 +13,7 @@ const DIAGSAUDAVEL_TST = () => {
   const route = useRoute();
   const img_select = route.params?.capturedImage; //Recebe a URI da imagem selecionada da galera ou capturada e atribui a var img_select;
   const {respostaAPI} = route.params; //Recebe o resultado da predição;
-  
+  console.log('Diagsaudavel: ', respostaAPI);
 
   //Salva o histórico da predição utilizando o AsyncStorage;
   const [historico, setHistorico] = useState([]);
@@ -59,7 +59,7 @@ const DIAGSAUDAVEL_TST = () => {
   let textoSobreCacau = '';
   let textoCuidadosCacau = '';
   let classified = '';
-  let imagem;
+  let img;
   let valor=-1;
 
   // Mapeamento dos valores de classe para os nomes desejados
@@ -98,15 +98,15 @@ const DIAGSAUDAVEL_TST = () => {
       classified = 'Podridão Parda';
       textoSobreCacau = `O fruto capturado parece estar diagnosticado com a doença Podridão Parda, com uma confiança de ${maxConfidencePercentage}%, apresentando manchas escuras e enrugadas na superfície, essas manchas eventualmente se expandem e se tornam marrons, com uma textura amolecida e podre. A Podridão Parda pode se espalhar rapidamente em condições favoráveis, como alta umidade e temperatura. Além de danificar os frutos, a doença pode reduzir a qualidade e o rendimento das colheitas de cacau.`;
       textoCuidadosCacau = 'O monitoramento dos sintomas deve ser constante, especialmente em cultivos sombreados, onde a incidência da doença pode ser maior. É essencial remover imediatamente os frutos infectados para evitar a disseminação da doença. Além disso, é importante ficar atento às cascas após a quebra do cacau. Uma prática recomendada é tratar o casqueiro com cal e cobri-lo com lona, visando prevenir a proliferação do fungo presente na casca do fruto e, consequentemente, reduzir os riscos de infecção.';
-      img = require("../assets/images/desenho-cacau-doentek1.png");
-      console.log(imagem);
+      img = require("../assets/images/desenho-cacau-doente-pparda.png");
+      //console.log(img);
       valor = 1;
       break;
     case 'Classe 2': //Vassoura-de-Bruxa;
       classified = 'Vassoura-de-Bruxa';
       textoSobreCacau = `O fruto capturado parece estar diagnosticado com a doença Vassoura-de-Bruxa, com uma confiança de ${maxConfidencePercentage}%, apresentando diversos sintomas característicos. Inicialmente, as folhas e galhos ficam secos, assemelhando-se a uma vassoura velha, o que dá nome à doença. Além disso, podem ocorrer lesões necróticas nos frutos, apodrecimento e eventual morte dos cacaueiros. A superfície do fruto pode desenvolver pequenas lesões de cor castanha, seguidas por uma camada esbranquiçada semelhante a pó. Com o tempo, essas lesões podem se espalhar, cobrindo toda a superfície do fruto, emitindo um odor característico de peixe.`;
       textoCuidadosCacau = 'O monitoramento precisa ser constante, sempre atento aos sintomas. Assim que a doença for identificada, é importante iniciar imediatamente o controle cultural. O fungo Trichoderma stromaticum pode ser usado no controle dessa doença devido à sua capacidade antagonista contra o fungo causador da Vassoura-de-Bruxa. É recomentado, remover prontamente os galhos e folhas infectados para evitar a propagação da doença.';
-      img = require("../assets/images/desenho-cacau-doente-vagemk1.png");
+      img = require("../assets/images/desenho-cacau-doente-vassoura.png");
       valor = 2;
       break;
     default:

@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert } from "react-native";
+import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, Padding } from "../GlobalStyles";
 import { MaterialIcons } from '@expo/vector-icons';
-import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker"; //Componente
-import CustomModal from "../components/CustomModal/CustomModal";
-import { Camera } from 'expo-camera';
 import { Image } from "expo-image";
 import axios from 'axios';
+
+import { Camera } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera'; //nova atualização
+
+import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker";//Componente
+import CustomModal from "../components/CustomModal/CustomModal";//Componente
+
+import { FlashMode } from 'expo-camera/build/legacy/Camera.types';
+
 
 //Função carregamento;
 const LoadingModal = ({ visible }) => (
@@ -29,8 +35,15 @@ const CAMERA = () => {
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
   const [respostaAPI, setRespostaAPI] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+
+  const [permission, requestPermission] = useCameraPermissions();
+
+  //const [type, setType] = useState(Camera.Constants.Type.back);
+  const [facing, setFacing] = useState('back'); //atualização
+
+  //const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+  const [flash, setFlash] = useState('off');
+
   const [isCameraReady, setIsCameraReady] = useState(false);
 
   //Verifica e navega para DIAGSAUDAVEL toda vez que repostaAPI é atualizada;
@@ -41,21 +54,19 @@ const CAMERA = () => {
     }
   }, [respostaAPI]); // Execute sempre que respostaAPI for atualizado;
 
-  // Verificar as permissões da câmera ao carregar o componente;
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-  // Se ainda não foi solicitada a permissão, aguarde...
-  if (hasPermission === null) {
+ if (!permission) {
+    // Camera permissions are still loading.
     return <View />;
   }
-  // Se a permissão foi negada, mostre uma mensagem.
-  if (hasPermission === false) {
-    return <Text>Sem acesso à câmera</Text>;
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
   }
 
   // Função para mostrar a tela de carregamento
@@ -114,10 +125,9 @@ const CAMERA = () => {
           'Content-Type': 'text/plain',
         },
       };
-      //console.log(imageBase64);
-      const res = await axios.post('http://192.168.14.143:5000/predict', imageBase64, config); //Endereço API;
-      setRespostaAPI(res.data.predictions); //Atualiza o estado da resposta enviada pela API;
-
+      //Rota API;
+      const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço API;
+      setRespostaAPI(res.data.predictions); //Atualiza RespostaAPI;
     } catch (error) {
       if (error.response) {
         console.error('Erro de resposta da API:', error.response.data);
@@ -131,22 +141,31 @@ const CAMERA = () => {
     }
   };
 
-  //Alternador Tipo de Camera;
+  /*/Alternador Tipo de Camera;
   const toggleCameraType = () => {
     setType(
       type === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
         : Camera.Constants.Type.back
     );
-  };
-  //Alternador Modo Flash;
+  };*/
+
+  /*/Alternador Modo Flash;
   const toggleFlashMode = () => {
     setFlashMode(
       flashMode === Camera.Constants.FlashMode.off
         ? Camera.Constants.FlashMode.on
         : Camera.Constants.FlashMode.off
     );
-  };
+  };*/
+
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
+
+  function toggleCameraFlash() {
+    setFlash(current => (current === 'off' ? 'on' : 'off'));
+  }
 
   //Inicialização Camera;
   const onCameraReady = () => {
@@ -156,22 +175,23 @@ const CAMERA = () => {
   return (
     <View style={styles.container}>
 
-      <Camera 
+      <CameraView 
         style={styles.camera}
-        type={type}
-        flashMode={flashMode}
+        facing={facing}
+        flash={flash}
         ref={(ref) => setCameraRef(ref)}
         onCameraReady={onCameraReady}
-      >
+      > 
         <View style={styles.cameraButtonContainer}>
-          <TouchableOpacity style={styles.cameraButton} onPress={toggleFlashMode}>
-            <MaterialIcons name={flashMode === Camera.Constants.FlashMode.off ? 'flash-off' : 'flash-on'} size={30} color="white" />
+          <TouchableOpacity style={styles.cameraButton} onPress={toggleCameraFlash}>
+            <MaterialIcons name={flash === FlashMode.off ? 'flash-off' : 'flash-on'} size={30} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cameraButton} onPress={toggleCameraType}>
+          <TouchableOpacity style={styles.cameraButton} onPress={toggleCameraFacing}>
             <MaterialIcons name="flip-camera-ios" size={36} color="white" />
           </TouchableOpacity>
         </View>
-      </Camera>
+      </CameraView>
+
       <View style={styles.barramenu}>
         {/*Botão Selecionar Imagem*/}
         <TouchableOpacity style={[styles.circulo]}

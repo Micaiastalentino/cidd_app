@@ -7,6 +7,9 @@ import { useFonts } from "expo-font";
 import { Image } from "expo-image";
 import HOME from "./screens/HOME";
 import CAMERA from "./screens/CAMERA";
+
+import CAM from "./screens/CAM";
+
 import TIPOCLASS from "./screens/TIPOSCLASS";
 import HISTORICO_CLASS from "./screens/HISTORICO_CLASS";
 import DIAGSAUDAVEL_TST from "./screens/DIAGSAUDAVEL_TST";
