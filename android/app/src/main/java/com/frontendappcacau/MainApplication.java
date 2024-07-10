@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.res.Configuration;
 import androidx.annotation.NonNull;
 
+import com.cidd_app.BuildConfig;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -61,9 +63,9 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    if (!BuildConfig.REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS) {
-      ReactFeatureFlags.unstable_useRuntimeSchedulerAlways = false;
-    }
+//    if (!BuildConfig.REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS) {
+//      ReactFeatureFlags.unstable_useRuntimeSchedulerAlways = false;
+//    }
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       DefaultNewArchitectureEntryPoint.load();

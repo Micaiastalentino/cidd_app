@@ -11,7 +11,7 @@ const PERFIL = () => {
     <View style={styles.container}>
       <View style={styles.vazio}>
         <Feather name="user" size={80} color={Color.colorSienna}/>
-        <Text style={styles.textovazio}>Em uma próxima versão do CIDD essa funcionalidade estará disponível!</Text>
+        <Text style={styles.textovazio}>Em construção...</Text>
       </View>
     </View>
   );

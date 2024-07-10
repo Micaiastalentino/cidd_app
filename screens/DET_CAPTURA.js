@@ -42,7 +42,7 @@ const DET_CAPTURA = ({ route }) => {
               <Image
                 resizeMode="cover"
                 source={require("../assets/images/desenho-cacau-saudavel.png")}
-                style={styles.iconImgCacau}
+                style={styles.iconImgCacauSaudavel}
               />
             }
           </View>
@@ -165,8 +165,13 @@ const styles = StyleSheet.create({
   },
   //ICON CACAU IMAGEM;
   iconImgCacau: {
-    width: 80,
-    height: 50,
+    width: 90,
+    height: 80,
+  },
+  iconImgCacauSaudavel: {
+    width: 100,
+    height: 80,
+    marginLeft: 10,
   },
   title: {
     color: Color.colorSienna,

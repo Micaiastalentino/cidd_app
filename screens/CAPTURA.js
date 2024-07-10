@@ -18,13 +18,15 @@ const CAPTURA = () => {
     try {
       const historicos = await AsyncStorage.getItem('historico_diagnosticos');
       if (historicos) {
-        setHistorico(JSON.parse(historicos));
+        let historicoArray = JSON.parse(historicos); // Converte o JSON de volta para array
+        historicoArray = historicoArray.reverse(); // Inverte o array para exibir o último item adicionado primeiro (modo pilha)
+        setHistorico(historicoArray); // Atualiza o estado local com o histórico invertido
       }
     } catch (error) {
       console.error('Erro ao carregar histórico:', error);
     }
   };
-
+  
   const limparHistorico = async () => {
     await AsyncStorage.clear();
     atualizarHistorico([]);
@@ -137,7 +139,7 @@ const CAPTURA = () => {
                     <Image
                       resizeMode="cover"
                       source={require("../assets/images/desenho-cacau-saudavel.png")}
-                      style={styles.iconImgCacau}
+                      style={styles.iconImgCacauSaudavel}
                     />
                   }
                 </View>
@@ -261,7 +263,12 @@ const styles = StyleSheet.create({
   iconImgCacau: {
     width: 120,
     height: 80,
-  }
+  },
+  iconImgCacauSaudavel: {
+    width: 100,
+    height: 80,
+    marginLeft: 10,
+  },
 });
 
 export default CAPTURA;

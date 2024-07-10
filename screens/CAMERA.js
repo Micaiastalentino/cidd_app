@@ -13,6 +13,7 @@ import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicke
 import CustomModal from "../components/CustomModal/CustomModal";//Componente
 
 import { FlashMode } from 'expo-camera/build/legacy/Camera.types';
+import ViewImage from '../components/ViewImage/ViewImage';
 
 
 //Função carregamento;
@@ -63,8 +64,8 @@ const CAMERA = () => {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={{ textAlign: 'center' }}>Precisamos da sua permissão para mostrar a câmera</Text>
+        <Button onPress={requestPermission} title="Permitir uso da câmera" />
       </View>
     );
   }
@@ -141,28 +142,11 @@ const CAMERA = () => {
     }
   };
 
-  /*/Alternador Tipo de Camera;
-  const toggleCameraType = () => {
-    setType(
-      type === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back
-    );
-  };*/
-
-  /*/Alternador Modo Flash;
-  const toggleFlashMode = () => {
-    setFlashMode(
-      flashMode === Camera.Constants.FlashMode.off
-        ? Camera.Constants.FlashMode.on
-        : Camera.Constants.FlashMode.off
-    );
-  };*/
-
+  //Altenador Câmera;
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
-
+  //Flash;
   function toggleCameraFlash() {
     setFlash(current => (current === 'off' ? 'on' : 'off'));
   }

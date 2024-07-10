@@ -17,7 +17,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -49,7 +49,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ab5fffee-e771-4634-993d-b2955c32609a"
+        "projectId": "7625a210-db54-45e5-96aa-f7cf7fca6d42"
       }
     }
   }
