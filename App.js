@@ -47,8 +47,8 @@ const App = ({navigation}) => {
   return (
     <>
       <StatusBar
-        backgroundColor="#000000" // Define a cor barra de status no Android;
-        barStyle='light-content' // Define o estilo dos ícones da barra de status no Android;
+        backgroundColor="#6f4325" // Define a cor barra de status no Android;
+        barStyle="default" // Define o estilo dos ícones da barra de status no Android;
       />
       <NavigationContainer>
         {hideSplashScreen ? (
