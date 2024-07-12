@@ -4,20 +4,13 @@
   },
   "build": {
     "apkcidd": {
-      "android": {
-        "buildType": "apk"
-      }
+      "developmentClient": true,
+      "distribution": "internal"
     },
     "preview": {
       "android": {
         "gradleCommand": ":app:assembleRelease"
       }
-    },
-    "preview1": {
-      "developmentClient": true
-    },
-    "preview2": {
-      "distribution": "internal"
     },
     "production": {}
   }
