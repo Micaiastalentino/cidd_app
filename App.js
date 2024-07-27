@@ -1,7 +1,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar, TouchableOpacity } from "react-native";
+import { StatusBar, TouchableOpacity, StyleSheet, View } from "react-native";
 import { Entypo } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
 import { Image } from "expo-image";
@@ -19,7 +19,7 @@ import ViewDicas from "./components/CustomModal/CustomModal";
 const Stack = createNativeStackNavigator();
 
 const App = ({navigation}) => {
-  const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
+  const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
 
   const [fontsLoaded, error] = useFonts({
     "Montserrat-Light": require("./assets/fonts/Montserrat-Light.ttf"),
@@ -29,6 +29,14 @@ const App = ({navigation}) => {
     "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setHideSplashScreen(true);
+    }, 2000); // Define o tempo da splash screen (4 segundos)
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!fontsLoaded && !error) {
     return null;
@@ -196,9 +204,31 @@ const App = ({navigation}) => {
               }}
             />
           </Stack.Navigator>
-        ) : null}
+        ) : (
+          <View style={styles.container}>
+            <Image
+              style={styles.image}
+              source={require("./assets/images/splash-init.gif")}
+              contentFit="contain"
+            />
+          </View>
+        )}
       </NavigationContainer>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  image: {
+    width: 500,
+    height: 500,
+  },
+});
+
 export default App;

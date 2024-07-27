@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "cidd_app",
-    "slug": "cidd_app",
-    "version": "1.0.0",
+    "name": "cidd",
+    "slug": "cidd",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/app.png",
     "userInterfaceStyle": "light",
@@ -36,7 +36,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -49,7 +49,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "7625a210-db54-45e5-96aa-f7cf7fca6d42"
+        "projectId": "dbbd31b4-3fd3-4b47-a3dd-e86b972127d1"
       }
     }
   }
