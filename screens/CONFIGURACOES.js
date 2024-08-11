@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import shareContent from "../components/ShareContent/ShareContent"
 import CustomModal from "../components/CustomModal/CustomModal";
+import SOBREAPP from "./SOBREAPP";
 
 const CONFIGURACOES = () => {
   const navigation = useNavigation();
@@ -44,11 +45,6 @@ const CONFIGURACOES = () => {
         onPress={() => {}}
         textStyle={styles.apoieEsseAppText}
       />
-      <MenuItem
-        icon={require("../assets/images/logo-app.png")}
-        text="Sobre o aplicativo"
-        onPress={() => {}}
-      /> 
       {/* 
       <MenuItem
         icon={require("../assets/images/mail.png")}
@@ -61,6 +57,11 @@ const CONFIGURACOES = () => {
         text="Dicas para tirar fotos"
         onPress={() => setModalVisible(true)}
       />
+      <MenuItem
+        icon={require("../assets/images/logo-app.png")}
+        text="Sobre o aplicativo"
+        onPress={() => navigation.navigate(SOBREAPP)}
+      /> 
       <CustomModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

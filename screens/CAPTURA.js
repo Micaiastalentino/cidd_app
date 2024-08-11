@@ -106,7 +106,7 @@ const CAPTURA = () => {
       <View style={styles.contPrim}>
         {historico.length === 0 ? (
           <View style={styles.vazio}>
-            <Text style={styles.textovazio}>Nenhum histórico de captura!</Text>
+            <Text style={styles.textovazio}>Nenhum histórico de captura</Text>
           </View>
         ) : (
           historico.map((item, index) => (

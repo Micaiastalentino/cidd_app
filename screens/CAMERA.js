@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Color, Border, Padding } from "../GlobalStyles";
+import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from "expo-image";
 import axios from 'axios';
-
-import { Camera } from 'expo-camera';
-import { CameraView, useCameraPermissions } from 'expo-camera'; //nova atualização
-
-import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker";//Componente
-import CustomModal from "../components/CustomModal/CustomModal";//Componente
-
-import { FlashMode } from 'expo-camera/build/legacy/Camera.types';
-import ViewImage from '../components/ViewImage/ViewImage';
-
+import { CameraView, useCameraPermissions } from 'expo-camera';//Componente;
+import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker";//Componente;
+import CustomModal from "../components/CustomModal/CustomModal";//Componente;
+import { FlashMode } from 'expo-camera/build/legacy/Camera.types';//Componente;
 
 //Função carregamento;
 const LoadingModal = ({ visible }) => (
@@ -31,31 +25,42 @@ const CAMERA = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false); // Estado para controlar o carregamento;
   const [modalVisible, setModalVisible] = useState(false);
-  const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64
+  const [imageBase64, setImageBase64] = useState(null); // Adicionando estado para armazenar a imagem em base64;
   const [respostaAPI, setRespostaAPI] = useState(null);
-
   const [permission, requestPermission] = useCameraPermissions();
-
-  //const [type, setType] = useState(Camera.Constants.Type.back);
-  const [facing, setFacing] = useState('back'); //atualização
-
-  //const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-  const [flash, setFlash] = useState('off');
-
+  const [facing, setFacing] = useState('back'); // Atualização;
+  const [flash, setFlash] = useState('off'); // Atualização;
   const [isCameraReady, setIsCameraReady] = useState(false);
 
-  //Verifica e navega para DIAGSAUDAVEL toda vez que repostaAPI é atualizada;
   useEffect(() => {
-    console.log("API atualizada:", respostaAPI);
+    //console.log("API atualizada:", respostaAPI);
     if (respostaAPI !== null) {
-      navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage, respostaAPI });
+      if (!('cacau' in respostaAPI && 'no_cacau' in respostaAPI)) {
+        navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage, respostaAPI });
+      } else {
+        Alert.alert(
+          'Ops, peço desculpa', 
+          'Não foi possível localizar um fruto de cacaueiro. Poderia enviar outra fotografia, por favor?',
+          [
+            {
+              text: 'DICAS',
+              onPress: () => setModalVisible(true),
+              style: 'default' // Opções: 'default', 'cancel', 'destructive'
+            },
+            {
+              text: 'OK',
+              onPress: () => console.log('Usuário confirmou'),
+              style: 'default' // 'cancel' para cancelar, 'destructive' para uma ação destrutiva
+            }
+          ]
+        );
+      }
     }
-  }, [respostaAPI]); // Execute sempre que respostaAPI for atualizado;
+  }, [respostaAPI]); //Execute sempre que respostaAPI for atualizado
 
- if (!permission) {
+  if (!permission) {
     // Camera permissions are still loading.
     return <View />;
   }
@@ -63,14 +68,20 @@ const CAMERA = () => {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>Precisamos da sua permissão para mostrar a câmera</Text>
-        <Button onPress={requestPermission} title="Permitir uso da câmera" />
+      <View style={styles.permiss}>
+        <View>
+          <Text style={styles.tit1}>Para que você possa capturar ou enviar fotos diretamente pelo nosso aplicativo, precisamos da sua permissão para acessar a câmera e a galeria do seu dispositivo.</Text>
+        </View>
+        <TouchableOpacity style={styles.botao} onPress={requestPermission}>
+          <Text style={styles.tit2}>
+            Permitir acesso a câmera 
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
-  // Função para mostrar a tela de carregamento
+  // Função para mostrar a tela de carregamento;
   const showLoading = () => {
     setIsLoading(true);
   };
@@ -78,9 +89,9 @@ const CAMERA = () => {
   // Tirar uma foto;
   const takePicture = async () => {
     if (cameraRef) {
-      const image = await cameraRef.takePictureAsync({ quality: 1 }); //QUALITY - RESOLUÇÃO;
+      const image = await cameraRef.takePictureAsync({ quality: 1 }); //Quality 1: melhor qualidade;
       setCapturedImage(image.uri);
-      console.log('URI da imagem tirada foto: ', capturedImage);
+      //console.log('URI da imagem tirada foto: ', capturedImage);
       try {
         const img_cam_base64 = await convertImageToBase64(image.uri); //Função Converter ImagemCam para Base64;
         if (img_cam_base64) {
@@ -97,9 +108,8 @@ const CAMERA = () => {
   const selecionarImagemHandler = async () => {
     try {
       const img_armaz = await selecionarImagem(); // Componente SelecionarImagem;
-      console.log('Img selecionada - CAMERA: ', img_armaz);
+      //console.log('Img selecionada - CAMERA: ', img_armaz);
       setCapturedImage(img_armaz);
-
       // Condição (Selecionar Imagem);
       if (img_armaz) {
         const img_armaz_base64 = await convertImageToBase64(img_armaz);
@@ -127,8 +137,11 @@ const CAMERA = () => {
         },
       };
       //Rota API;
-      const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço API;
+      const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
+      //const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço api local;
       setRespostaAPI(res.data.predictions); //Atualiza RespostaAPI;
+      console.log("RespostaAPI:", res.data.predictions);
+
     } catch (error) {
       if (error.response) {
         console.error('Erro de resposta da API:', error.response.data);
@@ -150,15 +163,14 @@ const CAMERA = () => {
   function toggleCameraFlash() {
     setFlash(current => (current === 'off' ? 'on' : 'off'));
   }
-
   //Inicialização Camera;
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
   
+  //Componente de Renderização;
   return (
     <View style={styles.container}>
-
       <CameraView 
         style={styles.camera}
         facing={facing}
@@ -190,13 +202,12 @@ const CAMERA = () => {
           }}>
           <Text style={styles.tirarfoto}>Fotos</Text>
         </TouchableOpacity>
-
         {/*Botão Tirar Foto*/}
         <TouchableOpacity style={styles.botaotirarfoto}
           onPress={async () => {
-            showLoading(); // Mostra a tela de carregamento
+            showLoading(); // Mostra a tela de carregamento;
             try {
-              await takePicture(); // Tira a foto
+              await takePicture(); // Tira a foto;
             } catch (error) {
               console.error('Erro ao processar solicitação:', error);
             } finally {
@@ -209,7 +220,6 @@ const CAMERA = () => {
             source={require("../assets/images/bototirarfoto.png")}
           />
         </TouchableOpacity>
-
         {/*Botão Dicas Capt*/}
         <TouchableOpacity style={styles.dicascaptura} onPress={() => setModalVisible(true)}>
           <Image
@@ -227,18 +237,50 @@ const CAMERA = () => {
           />
         </TouchableOpacity>
       </View>
-
       {/* Tela de carregamento */}
       <LoadingModal visible={isLoading} />
-
     </View>
   );
 };
 
+//Estilos GlobalStyles;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+
+  },
+
+  permiss: {
+    flex: 1,
+    backgroundColor: "#6f4330",
+    alignItems: 'center'
+  },
+
+  botao: {
+    alignContent: 'center',
+    marginTop: "5%",
+    width: "60%",
+    height: "auto",
+    backgroundColor: "#1cca81",
+    borderRadius: 20,
+  },
+
+  tit1: {
+    fontFamily: FontFamily.poppinsRegular,
+    color: "white",
+    margin: 10,
+    lineHeight: 16,
+    fontSize: FontSize.size_xs,
+  },
+
+  tit2: {
+    fontFamily: FontFamily.poppinsRegular,
+    textAlign: 'center',
+    color: "white",
+    margin: 10,
+    lineHeight: 16,
+    fontSize: 14,
   },
 
   camera: {
@@ -259,7 +301,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5
   },
 
-  //BARRA MENU
+  //Barra menu;
   barramenu: {
     backgroundColor: Color.colorWhite,
     flexDirection: "row",
@@ -268,7 +310,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     height: 180,
     width: "100%",
-    position: 'absolute', // Alterado para 'absolute'
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -288,7 +330,6 @@ const styles = StyleSheet.create({
   tirarfoto:{
     marginTop: 2,
   },
-
 
   botaoicontirarfoto: {
     height: "100%",

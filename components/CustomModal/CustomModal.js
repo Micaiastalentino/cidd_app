@@ -93,18 +93,18 @@ const CustomModal = ({ modalVisible, setModalVisible, modalText }) => {
 
 const styles = StyleSheet.create({
   flex1Layout: {
-    borderRadius: Border.br_8xs,
+    borderRadius: 30,
     position: "absolute",
   },
   pertoDeMais1Typo: {
     height: 25,
     justifyContent: "center",
     display: "flex",
-    fontFamily: FontFamily.montserratLight,
+    fontFamily: FontFamily.montserratMedium,
     fontWeight: "300",
     fontSize: FontSize.size_xs,
     textAlign: "center",
-    color: Color.colorWhite,
+    color: "black",
     lineHeight: 20,
     alignItems: "center",
   },
@@ -122,12 +122,12 @@ const styles = StyleSheet.create({
 
   //PRINCIPAL
   containerTelaDicas: {
-    backgroundColor: "#282828",
+    backgroundColor: "white",
     borderStyle: "solid",
     borderColor: "#797777",
     borderWidth: 1,
     width: "80%",
-    height: "75%",
+    height: "70%",
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 40,
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 
   txtFoto: {
     textAlign: "center",
-    color: Color.colorWhite,
+    color: "black",
     lineHeight: 20,
     fontFamily: FontFamily.montserratBold,
     fontWeight: "700",
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
   linhaIcon: {
     maxHeight: "100%",
     width: 272,
+    color: "black",
   },
   eviteCapturarOs: {
     marginTop: 15,

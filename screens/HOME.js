@@ -10,6 +10,7 @@ import TIPOCLASS from "./TIPOSCLASS";
 import PERFIL from "./PERFIL";
 import CustomModal from "../components/CustomModal/CustomModal";
 import shareContent from "../components/ShareContent/ShareContent";
+import SOBREAPP from "./SOBREAPP";
 
 
 const HOME = () => {
@@ -37,14 +38,9 @@ const HOME = () => {
           <Text style={styles.home}>Início</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.menuItem, styles.info]}  onPress={() => setModalVisible(true)}>
+        <TouchableOpacity style={[styles.menuItem, styles.info]}  onPress={() => navigation.navigate(SOBREAPP)}>
           <Feather name="info" size={30} color={Color.colorSienna}/>
           <Text style={styles.fontMenu}>Info</Text>
-          <CustomModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            modalText="Entendido!"
-          />
         </TouchableOpacity>
         
         <View style={styles.menuItem}>
