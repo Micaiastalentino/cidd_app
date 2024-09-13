@@ -10,6 +10,7 @@ import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicke
 import CustomModal from "../components/CustomModal/CustomModal";
 import { FlashMode } from 'expo-camera/build/legacy/Camera.types';
 import NetInfo from '@react-native-community/netinfo';
+import { color } from 'd3-color';
 
 const LoadingModal = ({ visible }) => (
   <Modal transparent visible={visible}>
@@ -20,9 +21,9 @@ const LoadingModal = ({ visible }) => (
       />
       <ActivityIndicator 
         size={60} 
-        color="#6f4330" 
+        color="#9F7766" 
       />
-      <Text>Diagnosticando...</Text>
+      <Text style={{ color: '#9F7766' }}>Diagnosticando...</Text>
     </View>
   </Modal>
 );
@@ -164,7 +165,7 @@ const CAMERA = () => {
       };
       //Rota API;
       //const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
-      const res = await axios.post('http://192.168.1.105/predict', imageBase64, config); //Endereço api local;
+      const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço api local;
       setRespostaAPI(res.data.predictions); //Atualiza RespostaAPI;
       console.log("RespostaAPI:", res.data.predictions);
 
