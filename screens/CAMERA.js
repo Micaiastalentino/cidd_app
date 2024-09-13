@@ -9,7 +9,6 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { selecionarImagem, convertImageToBase64 } from "../components/ImagePicker/ImagePicker";
 import CustomModal from "../components/CustomModal/CustomModal";
 import { FlashMode } from 'expo-camera/build/legacy/Camera.types';
-
 import NetInfo from '@react-native-community/netinfo';
 
 const LoadingModal = ({ visible }) => (
@@ -33,10 +32,10 @@ const CAMERA = () => {
   const [facing, setFacing] = useState('back');
   const [flash, setFlash] = useState('off');
   const [isCameraReady, setIsCameraReady] = useState(false);
-
   const [noCacauCount, setNoCacauCount] = useState(0); // Estado para contar as classificações incorretas
   const [conect, setConect] = useState(true);
 
+  //Efeito para monitorar o estado da conexão do dispositivo;
   useEffect (()=>{
     const unsubscribe = NetInfo.addEventListener(state => {
       setConect(state.isConnected);
@@ -45,6 +44,7 @@ const CAMERA = () => {
     return () => unsubscribe();
   }, []);
 
+  //Efeito para atualizar o estado da resposta da API.
   useEffect(() => {
     if (respostaAPI !== null) {
       if (!('cacau' in respostaAPI && 'no_cacau' in respostaAPI)) {
