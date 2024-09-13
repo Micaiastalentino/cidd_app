@@ -14,7 +14,14 @@ import NetInfo from '@react-native-community/netinfo';
 const LoadingModal = ({ visible }) => (
   <Modal transparent visible={visible}>
     <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color="black" />
+      <Image 
+        source={require('../assets/images/app-logo-cacau.png')} // Caminho da sua imagem
+        style={styles.loadingImage} 
+      />
+      <ActivityIndicator 
+        size={60} 
+        color="#6f4330" 
+      />
       <Text>Diagnosticando...</Text>
     </View>
   </Modal>
@@ -157,7 +164,7 @@ const CAMERA = () => {
       };
       //Rota API;
       //const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
-      const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço api local;
+      const res = await axios.post('http://192.168.1.105/predict', imageBase64, config); //Endereço api local;
       setRespostaAPI(res.data.predictions); //Atualiza RespostaAPI;
       console.log("RespostaAPI:", res.data.predictions);
 
@@ -188,14 +195,6 @@ const CAMERA = () => {
   
   return (
     <View style={styles.container}>
-
-      { !conect && (
-        <View style={styles.noConnectionContainer}>
-          <Text style={styles.noConnectionText}>
-            Você está offline. Conecte-se à internet para continuar.
-          </Text>
-        </View>
-      )}
 
       <CameraView 
         style={styles.camera}
@@ -273,18 +272,6 @@ const styles = StyleSheet.create({
 
   },
 
-  noConnectionContainer: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    backgroundColor: 'red',
-    padding: 10,
-  },
-  noConnectionText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-
   permiss: {
     flex: 1,
     backgroundColor: "#6f4330",
@@ -352,6 +339,13 @@ const styles = StyleSheet.create({
 
   modal:{
     margin: 10,
+  },
+
+    loadingImage:{
+    width: 30, // Largura da imagem
+    height: 30, // Altura da imagem
+    marginBottom: -45 // Espaçamento entre a imagem e o ActivityIndicator
+    //position: "absolute", // Espaçamento entre a imagem e o ActivityIndicator
   },
 
   loadingContainer: {
