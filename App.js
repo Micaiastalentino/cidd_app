@@ -2,7 +2,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar, TouchableOpacity, StyleSheet, View } from "react-native";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Feather } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
 import { Image } from "expo-image";
 import HOME from "./screens/HOME";
@@ -17,6 +17,9 @@ import DET_CAPTURA from "./screens/DET_CAPTURA";
 import SOBREAPP from "./screens/SOBREAPP"
 import ViewDicas from "./components/CustomModal/CustomModal";
 import SplashScreen from "./components/SplashScreen/SplashScreen";
+
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo'; // Importar o hook
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -28,6 +31,8 @@ const App = () => {
     "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
+
+  const netInfo = useNetInfo(); // Hook para pegar o status da conexão
 
   // Display Splash Screen (2s); 
   const [isSplashVisible, setIsSplashVisible] = React.useState(true);
@@ -73,16 +78,29 @@ const App = () => {
               backgroundColor: "#6f4325",
             },
             headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('CONFIGURACOES')}>
-                <Entypo name="menu" size={33} color="#FFFFFF" />
-              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {/* Ícone de Menu*/}
+                <TouchableOpacity onPress={() => navigation.navigate('MENU')} style={{ marginRight: 10 }}>
+                  <Entypo name="menu" size={33} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
             ),
             headerLeft: () => (
-              <Image
-                style={{ height: 26, width: 26 }}
-                contentFit="cover"
-                source={require("./assets/images/app.png")}
-              />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image
+                  style={{ height: 26, width: 26 }}
+                  contentFit="cover"
+                  source={require("./assets/images/app.png")}
+                />
+                {/* Ícone de Conexão com a Internet */}
+                <TouchableOpacity style={{ marginLeft: 18 }}>
+                  {netInfo.isConnected ? (
+                    <Feather name="wifi" size={26} color="#FEFBFF" />
+                  ) : (
+                    <Feather name="wifi-off" size={26} color="#FFFFFF" />
+                  )}
+                </TouchableOpacity>
+              </View>
             ),
           })}
         />
