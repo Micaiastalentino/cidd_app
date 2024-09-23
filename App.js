@@ -80,7 +80,7 @@ const App = () => {
             headerRight: () => (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* Ícone de Menu*/}
-                <TouchableOpacity onPress={() => navigation.navigate('MENU')} style={{ marginRight: 10 }}>
+                <TouchableOpacity onPress={() => navigation.navigate('CONFIGURACOES')} style={{ marginRight: 10 }}>
                   <Entypo name="menu" size={33} color="#FFFFFF" />
                 </TouchableOpacity>
               </View>
