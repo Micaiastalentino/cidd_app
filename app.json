@@ -10,9 +10,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Permitir que $(PRODUCT_NAME) acesse sua câmera",
-          "microphonePermission": "Permitir que $(PRODUCT_NAME) acesse seu microfone",
-          "recordAudioAndroid": true
+          "cameraPermission": "Permitir que $(PRODUCT_NAME) acesse sua câmera"
         }
       ]
     ],
@@ -25,8 +23,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Permitir que $(PRODUCT_NAME) acesse sua câmera",
-        "NSMicrophoneUsageDescription": "Permitir que $(PRODUCT_NAME) acesse seu microfone"
+        "NSCameraUsageDescription": "Permitir que $(PRODUCT_NAME) acesse sua câmera"
       }
     },
     "android": {
@@ -35,8 +32,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.CAMERA"
       ],
       "package": "com.micaias_de_oliveira.cidd"
     },

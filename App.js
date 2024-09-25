@@ -17,7 +17,6 @@ import DET_CAPTURA from "./screens/DET_CAPTURA";
 import SOBREAPP from "./screens/SOBREAPP"
 import ViewDicas from "./components/CustomModal/CustomModal";
 import SplashScreen from "./components/SplashScreen/SplashScreen";
-
 import NetInfo, { useNetInfo } from '@react-native-community/netinfo'; // Importar o hook
 
 const Stack = createNativeStackNavigator();
