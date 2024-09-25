@@ -26,7 +26,7 @@ const SOBREAPP = () => {
                 Isso facilita a tomada de decisões e contribui para a saúde e produtividade das lavouras.
             </Text>
             <Text style={styles.tit3}>
-                <Text style={{ fontWeight: 'bold' }}>Versão:</Text> 1.5.0{'\n'}
+                <Text style={{ fontWeight: 'bold' }}>Versão:</Text> 1.6.1{'\n'}
                 <Text style={{ fontWeight: 'bold' }}>Licença:</Text> Gratuito para uso não comercial.
             </Text>
       </View>
