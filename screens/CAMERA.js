@@ -1,5 +1,5 @@
   import React, { useState, useEffect } from 'react';
-  import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert, Button } from "react-native";
+  import { Text, StyleSheet, View, Pressable, TouchableOpacity, ActivityIndicator, Modal, Alert, Dimensions } from "react-native";
   import { useNavigation } from "@react-navigation/native";
   import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
   import { MaterialIcons } from '@expo/vector-icons';
@@ -12,6 +12,7 @@
   import NetInfo from '@react-native-community/netinfo';
   import { color } from 'd3-color';
 
+  
   const LoadingModal = ({ visible }) => (
     <Modal transparent visible={visible}>
       <View style={styles.loadingContainer}>
@@ -202,6 +203,8 @@
           flash={flash}
           ref={(ref) => setCameraRef(ref)}
           onCameraReady={onCameraReady}
+          autoFocus={true}
+          zoom={0.1}
         > 
           <View style={styles.cameraButtonContainer}>
             <TouchableOpacity style={styles.cameraButton} onPress={toggleCameraFlash}>
@@ -224,10 +227,11 @@
                 setIsLoading(false);
               }
             }}>
-            <Text style={styles.tirarfoto}>Fotos</Text>
+            <Text style={[styles.tirarfoto, styles.fonttext]}>Fotos</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.botaotirarfoto}
             onPress={async () => {
+              await new Promise((resolve) => setTimeout(resolve, 1000)); //Pausa de 1s antes de chamar a API;
               showLoading();
               try {
                 await takePicture();
@@ -249,7 +253,7 @@
               contentFit="cover"
               source={require("../assets/images/firrbulb.png")}
             />
-            <Text style={[styles.TextdicasDeCaptura]}>
+            <Text style={[styles.TextdicasDeCaptura, styles.fonttext]}>
               Dicas de Captura
             </Text>
             <CustomModal
@@ -285,6 +289,13 @@
       height: "auto",
       backgroundColor: "#1cca81",
       borderRadius: 20,
+    },
+
+    fonttext:{
+      fontWeight: "500",
+      fontFamily: FontFamily.poppinsMedium,
+      color: Color.colorSienna,
+      fontSize: 13,
     },
 
     tit1: {
@@ -365,10 +376,10 @@
     },
     
     circulo: {
-      borderRadius: Border.br_31xl,
+      borderRadius: Border.br_11xl,
       borderStyle: "solid",
       borderColor: Color.colorSienna,
-      borderWidth: 1,
+      borderWidth: 2,
       height: 40,
       paddingHorizontal: Padding.p_12xl,
       paddingVertical: 5,

@@ -3,7 +3,8 @@ import { Image } from "expo-image";
 import { StyleSheet, Text, View, Pressable, ScrollView, Platform, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontFamily, FontSize, Color, Padding } from "../GlobalStyles";
-import { Feather } from '@expo/vector-icons';
+import { Feather, Entypo } from '@expo/vector-icons';
+import {MaterialIcons, } from 'react-native-vector-icons';
 import CAMERA from "./CAMERA";
 import CAPTURA from "./CAPTURA";
 import TIPOCLASS from "./TIPOSCLASS";
@@ -11,6 +12,7 @@ import PERFIL from "./PERFIL";
 import CustomModal from "../components/CustomModal/CustomModal";
 import shareContent from "../components/ShareContent/ShareContent";
 import SOBREAPP from "./SOBREAPP";
+import CONFIGURACOES from "./CONFIGURACOES";
 
 
 const HOME = () => {
@@ -33,9 +35,9 @@ const HOME = () => {
 
       {/*MENU BARRA INFERIOR*/}
       <View style={styles.contMenu}>
-        <TouchableOpacity style={styles.menuItem}>
-          <Feather name="home" size={30} color={Color.colorSienna} /> 
-          <Text style={styles.home}>Início</Text>
+        <TouchableOpacity style={styles.menuItem} onPress={() => setModalVisible(true)}>
+          <Entypo name="light-bulb" size={28} color={Color.colorSienna} /> 
+          <Text style={styles.home}>Dicas</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.menuItem, styles.info]}  onPress={() => navigation.navigate(SOBREAPP)}>
@@ -43,24 +45,28 @@ const HOME = () => {
           <Text style={styles.fontMenu}>Info</Text>
         </TouchableOpacity>
         
-        <View style={styles.menuItem}>
-          <Pressable  onPress={() => navigation.navigate(CAMERA)}>
+        <Pressable style={styles.menuCam} onPress={() => navigation.navigate(CAMERA)}>
             <View style={styles.bordaCam}>
               <Feather name="camera" size={34} color={'white'}/>
             </View>
-          </Pressable>
-        </View>
-
-        <Pressable style={styles.menuItem} onPress={() => navigation.navigate(CAPTURA)}>
+        </Pressable>
+        
+        <TouchableOpacity style={styles.menuClock} onPress={() => navigation.navigate(CAPTURA)}>
           <Feather name="clock" size={30} color={Color.colorSienna}/>
           <Text style={styles.fontMenu}>Capturas</Text>
-        </Pressable>
+        </TouchableOpacity>
 
-        <Pressable style={styles.menuItem} onPress={() => navigation.navigate(PERFIL)}>
-          <Feather name="user" size={30} color={Color.colorSienna}/>
-          <Text style={styles.fontMenu}>Perfil</Text>
-        </Pressable>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate(CONFIGURACOES)}>
+          <Feather name="settings" size={28} color={Color.colorSienna}/>
+          <Text style={styles.fontMenu}>Config.</Text>
+        </TouchableOpacity>
       </View>
+
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        modalText="Entendido!"
+      />
 
       <TouchableOpacity style={[styles.ret_verde_01, styles.tamanhoRet]} onPress={() => navigation.navigate(TIPOCLASS)}>
         <Text style={[styles.txtTipoClassi, styles.alinhamento]}>
@@ -122,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     paddingVertical: 10,
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
     height: 65,
     width: "100%",
     position: 'absolute', // Alterado para 'absolute'
@@ -132,6 +138,14 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     alignItems: 'center',
+  },
+  menuClock: {
+    alignItems: 'center',
+    left: 8,
+  },
+  menuCam: {
+    alignItems: 'center',
+    left: 10,
   },
   info:{
     left: 10,
@@ -148,7 +162,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.poppinsMedium,
     color: Color.colorSienna,
     lineHeight: 16,
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.size_2xs,
   },
 
   //BORDA CAMERA;

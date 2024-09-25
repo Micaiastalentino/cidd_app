@@ -79,9 +79,13 @@ const App = () => {
             },
             headerRight: () => (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* Ícone de Menu*/}
-                <TouchableOpacity onPress={() => navigation.navigate('CONFIGURACOES')} style={{ marginRight: 10 }}>
-                  <Entypo name="menu" size={33} color="#FFFFFF" />
+                {/* Ícone de Conexão com a Internet */}
+                <TouchableOpacity style={{ marginLeft: 18 }}>
+                  {netInfo.isConnected ? (
+                    <Feather name="wifi" size={26} color="#FEFBFF" />
+                  ) : (
+                    <Feather name="wifi-off" size={26} color="#FFFFFF" />
+                  )}
                 </TouchableOpacity>
               </View>
             ),
@@ -92,14 +96,6 @@ const App = () => {
                   contentFit="cover"
                   source={require("./assets/images/app.png")}
                 />
-                {/* Ícone de Conexão com a Internet */}
-                <TouchableOpacity style={{ marginLeft: 18 }}>
-                  {netInfo.isConnected ? (
-                    <Feather name="wifi" size={26} color="#FEFBFF" />
-                  ) : (
-                    <Feather name="wifi-off" size={26} color="#FFFFFF" />
-                  )}
-                </TouchableOpacity>
               </View>
             ),
           })}
