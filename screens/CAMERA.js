@@ -176,8 +176,8 @@
         };
         //Rota API;
         
-        const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço api rest;
-        //const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
+        //const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço api rest;
+        const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
         setRespostaAPI(res.data.predictions); //Atualiza RespostaAPI;
         console.log("RespostaAPI:", res.data.predictions);
 
