@@ -53,7 +53,16 @@
       return () => unsubscribe();
     }, []);
 
-    //Efeito para atualizar o estado da resposta da API.
+    //Verifica e navega para DIAGSAUDAVEL toda vez que repostaAPI é atualizada; (Somente 1 modelo);
+    useEffect(() => {
+      console.log("API atualizada:", respostaAPI);
+      if (respostaAPI !== null) {
+        navigation.navigate('DIAGSAUDAVEL_TST', { capturedImage, respostaAPI });
+      }
+    }, [respostaAPI]); // Execute sempre que respostaAPI for atualizado;
+
+    /*
+    //Efeito para atualizar o estado da resposta da API; (2 modelos integrados);
     useEffect(() => {
       if (respostaAPI !== null) {
         if (!('cacau' in respostaAPI && 'no_cacau' in respostaAPI)) {
@@ -87,6 +96,7 @@
         }
       }
     }, [respostaAPI]);
+    */
 
     if (!permission) {
       return <View />;
@@ -165,7 +175,9 @@
           },
         };
         //Rota API;
-        const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
+        
+        const res = await axios.post('http://192.168.1.105:5000/predict', imageBase64, config); //Endereço api rest;
+        //const res = await axios.post('https://api-cidd.npca.tec.br/predict', imageBase64, config); //Endereço api rest;
         setRespostaAPI(res.data.predictions); //Atualiza RespostaAPI;
         console.log("RespostaAPI:", res.data.predictions);
 
